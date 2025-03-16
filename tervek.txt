@@ -1,0 +1,9 @@
+sorozat/film wishlist
+filmeket bejelölni, hogy láttál
+sorozatba hol jársz
+link, hogy hol lehet megnézni
+
+bejelentkezős rendszer
+meg lehet osztani, hogy mi a wishlisted
+
+sorozat hozzáadásánál imdbből szendje az infókat, és ha esetleg szar akkor lehessen editelni, van valami TMDB vagy milyen api

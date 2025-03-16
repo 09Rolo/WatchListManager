@@ -9,5 +9,6 @@ echo.
 echo.
 echo -----Leállítás-----
 
+
 ping localhost -n 2 >nul
 exit
