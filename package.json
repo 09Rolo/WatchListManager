@@ -1,0 +1,17 @@
+{
+  "name": "watchlistmanager",
+  "version": "0.0.1",
+  "description": "For managing movies and series",
+  "main": "./system/server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node ./system/server.js"
+  },
+  "author": "Rolo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql": "^2.18.1",
+    "path": "^0.12.7"
+  }
+}
