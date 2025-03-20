@@ -29,3 +29,6 @@ function handleDisconnect() {
 }
 
 handleDisconnect();
+
+
+module.exports = con

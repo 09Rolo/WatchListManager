@@ -1,14 +1,19 @@
-const PORT = 999
-
+require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
 const app = express();
 
-app.use(express.static(path.join(__dirname)));
+
+const PORT = process.env.PORT
+
+
+app.use(express.static(path.join(__dirname, 'web')));
+
+app.use(express.json());
 
 app.get('/', async(req, res) => {
-    res.sendFile(path.join(__dirname, "/web/index.html"));
+    res.sendFile(path.join(__dirname, "web", "index.html"));
 });
 
 app.listen(PORT, () => {
@@ -16,4 +21,9 @@ app.listen(PORT, () => {
 });
 
 
-const db = require('./db.js');
+
+module.exports = app
+
+//indítsa el a többit is
+require("./db.js")
+require("./register_login.js")
