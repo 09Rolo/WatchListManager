@@ -6,7 +6,7 @@
     <title>WatchListManager</title>
 
     <link rel="stylesheet" href="./styles/basics.css">
-    
+    <link rel="stylesheet" href="./styles/auth_pc.css">
 </head>
 <body>
     <div id="top"></div>
@@ -25,43 +25,58 @@
 
 
     <div class="container">
+        <div id="vissza" class="cant_select">
+            <span>&larrhk;</span><p>Vissza a főoldalra</p>
+        </div>
+
         <div id="login_side">
-            <div id="login_small" class="small">
+            <div id="login_small" class="small cant_select">
                 <h2>Már van fiókod?</h2>
                 <button id="switch_to_login">Jelentkezz be</button>
             </div>
 
-            <div id="login_big" class="big">
+            <div id="login_big" class="big cant_select">
                 <h2>Jelentkezz be a fiókodba</h2>
-                <label for="email_l">Email cím</label>
-                <input type="email" name="email" id="email_l" minlength="5" placeholder="pelda@pelda.hu">
-                
-                <label for="password_l">Jelszó</label>
-                <input type="password" name="password" id="password_l" minlength="5" placeholder="Jelszó">
 
-                <button id="login_button">Bejelentkezés</button>
+                <label for="email_l">
+                    <input type="email" name="email" id="email_l" minlength="5" placeholder=" ">
+                    <span>Email cím</span>
+                </label>
+                
+                <label for="password_l">
+                    <input type="password" name="password" id="password_l" minlength="5" placeholder=" ">
+                    <span>Jelszó</span>
+                </label>
+
+                <input type="submit" value="Bejelentkezés" id="login_button">
             </div>
         </div>
 
 
         <div id="register_side">
-            <div id="register_small" class="small">
+            <div id="register_small" class="small cant_select">
                 <h2>Még nincs fiókod?</h2>
                 <button id="switch_to_register">Regisztrálj egyet</button>
             </div>
             
-            <div id="register_big" class="big">
+            <div id="register_big" class="big cant_select">
                 <h2>Regisztrálj egy fiókot</h2>
-                <label for="email_r">Email cím</label>
-                <input type="email" name="email" id="email_r" minlength="5" placeholder="pelda@pelda.hu">
+                <label for="email_r">
+                    <input type="email" name="email" id="email_r" minlength="5" placeholder=" ">
+                    <span>Email cím</span>
+                </label>
 
-                <label for="username_r">Felhasználónév</label>
-                <input type="text" name="username" id="username_r" minlength="2" placeholder="Felhasználónév">
+                <label for="username_r">
+                    <input type="text" name="username" id="username_r" minlength="2" placeholder=" ">
+                    <span>Felhasználónév</span>
+                </label>
                 
-                <label for="password_r">Jelszó</label>
-                <input type="password" name="password" id="password_r" minlength="5" placeholder="Jelszó">
+                <label for="password_r">
+                    <input type="password" name="password" id="password_r" minlength="5" placeholder=" ">
+                    <span>Jelszó</span>
+                </label>
 
-                <button id="register_button">Regisztráció</button>
+                <input type="submit" value="Regisztráció" id="register_button">
             </div>
         </div>
     </div>

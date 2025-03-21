@@ -62,3 +62,58 @@ window.onload = async () => {
 
 
 //kinézetért felelős cuccok ...
+const loginSide = document.getElementById("login_side")
+const registerSide = document.getElementById("register_side")
+
+const loginSmall = document.getElementById("login_small")
+const registerSmall = document.getElementById("register_small")
+
+const loginBig = document.getElementById("login_big")
+const registerBig = document.getElementById("register_big")
+
+const switchToLogin = document.getElementById("switch_to_login")
+const switchToRegister = document.getElementById("switch_to_register")
+
+
+
+loginSmall.style.display = "none"
+registerBig.style.display = "none"
+SwitchToLogin()
+
+
+
+switchToLogin.onclick = () => {
+    SwitchToLogin()
+}
+
+switchToRegister.onclick = () => {
+    SwitchToRegister()
+}
+
+function SwitchToLogin() {
+    registerSide.style.width = "35%"
+    loginSide.style.width = "65%"
+
+    loginBig.style.display = ""
+    loginSmall.style.display = "none"
+
+    registerBig.style.display = "none"
+    registerSmall.style.display = ""
+}
+
+function SwitchToRegister() {
+    registerSide.style.width = "65%"
+    loginSide.style.width = "35%"
+
+    loginBig.style.display = "none"
+    loginSmall.style.display = ""
+
+    registerBig.style.display = ""
+    registerSmall.style.display = "none"
+}
+
+
+const vissza = document.getElementById("vissza")
+vissza.onclick = () => {
+    window.location.pathname = "/"
+}
