@@ -28,15 +28,15 @@ app.post("/register", async (req, res) => {
                         if (!err) {
                             if (result.length == 1) {
                                 //oksa, benne van
-                                res.status(201).json({ message: "Sikeres regisztráció!", user: result[0] });
+                                res.status(201).json({ message: "Sikeres regisztráció!", type: "success", user: result[0] });
                                 
                             } else {
-                                res.status(500).json({ message: "Jelentkezz be!", error: "Server speed error?" });
+                                res.status(500).json({ message: "Jelentkezz be!", type: "error", error: "Server speed error?" });
                             }
                         }
                     });
                 } else {
-                    res.status(500).json({ message: "Már létezik ilyen ember", error: "Már létezik ilyen ember" });
+                    res.status(500).json({ message: "Már létezik ilyen ember", type: "error", error: "Már létezik ilyen ember" });
                 }
             }
         });
@@ -59,17 +59,17 @@ app.post("/login", async (req, res) => {
         const user = db.query("SELECT * FROM users WHERE email = ?", [email], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
-                    res.status(401).json({ message: "Helytelen adatok" })
+                    res.status(401).json({ message: "Helytelen adatok", type: "error" })
                 } else {
 
                     try {
                         const validPassword = await bcrypt.compare(password, result[0].password_hash);
                         if (!validPassword) {
-                            return res.status(401).json({ message: "Helytelen jelszó" });
+                            return res.status(401).json({ message: "Helytelen jelszó", type: "error" });
                         }
 
                         const token = jwt.sign({ user_id: result[0].user_id, username: result[0].username, email: result[0].email }, process.env.SECRET_KEY, { expiresIn: "100h" });
-                        res.status(200).json({ message: "Sikeres bejelentkezés", token });
+                        res.status(200).json({ message: "Sikeres bejelentkezés", type: "success", token, user_id: result[0].user_id, username: result[0].username, email: result[0].email });
                     } catch(e) {}
 
                 }
@@ -77,7 +77,7 @@ app.post("/login", async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ message: "Szerver hiba!", error: "Szerver hiba!" });
+        res.status(500).json({ message: "Szerver hiba!", type: "error", error: "Szerver hiba!" });
     }
 });
 
@@ -88,7 +88,7 @@ const verifyToken = (req, res, next) => {
     const token = req.headers["authorization"];
 
     if (!token) {
-        return res.status(403).json({ error: "Engedély megtagadva" });
+        return res.status(403).json({ message: "Engedély megtagadva", type: "error" });
     } 
 
     try {
@@ -96,7 +96,7 @@ const verifyToken = (req, res, next) => {
         req.user = verified;
         next();
     } catch (error) {
-        res.status(401).json({ error: "Helytelen token" });
+        res.status(401).json({ message: "Helytelen token", type: "error" });
     }
 };
 
@@ -105,5 +105,5 @@ const verifyToken = (req, res, next) => {
 
 //homepage
 app.get("/homepage", verifyToken, (req, res) => {
-    res.json({ message: `Üdvözlet ${req.user.username}!` });
+    res.json({ message: `Üdvözlet ${req.user.username}!`, type: "info" });
 });

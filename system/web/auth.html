@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WatchListManager</title>
+
+    <link rel="stylesheet" href="./styles/basics.css">
+    
+</head>
+<body>
+    <div id="top"></div>
+    <div id="fuggony"></div>
+
+    <div id="betolto">
+        <div id="forgo">
+            <h1 class="cant_select">I</h1>
+        </div>
+        <div id="betolto_szoveg">
+            <h2 class="cant_select" >Betöltés <h2 id="h2_betoltesnel_pontok" class="cant_select">...</h2></h2>
+        </div>
+    </div>
+
+    
+
+
+    <div class="container">
+        <div id="login_side">
+            <div id="login_small" class="small">
+                <h2>Már van fiókod?</h2>
+                <button id="switch_to_login">Jelentkezz be</button>
+            </div>
+
+            <div id="login_big" class="big">
+                <h2>Jelentkezz be a fiókodba</h2>
+                <label for="email_l">Email cím</label>
+                <input type="email" name="email" id="email_l" minlength="5" placeholder="pelda@pelda.hu">
+                
+                <label for="password_l">Jelszó</label>
+                <input type="password" name="password" id="password_l" minlength="5" placeholder="Jelszó">
+
+                <button id="login_button">Bejelentkezés</button>
+            </div>
+        </div>
+
+
+        <div id="register_side">
+            <div id="register_small" class="small">
+                <h2>Még nincs fiókod?</h2>
+                <button id="switch_to_register">Regisztrálj egyet</button>
+            </div>
+            
+            <div id="register_big" class="big">
+                <h2>Regisztrálj egy fiókot</h2>
+                <label for="email_r">Email cím</label>
+                <input type="email" name="email" id="email_r" minlength="5" placeholder="pelda@pelda.hu">
+
+                <label for="username_r">Felhasználónév</label>
+                <input type="text" name="username" id="username_r" minlength="2" placeholder="Felhasználónév">
+                
+                <label for="password_r">Jelszó</label>
+                <input type="password" name="password" id="password_r" minlength="5" placeholder="Jelszó">
+
+                <button id="register_button">Regisztráció</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="./client/load.js"></script>
+    <script src="./client/cl_register_login.js"></script>
+    <script src="./client/cl_auth.js"></script>
+</body>
+</html>

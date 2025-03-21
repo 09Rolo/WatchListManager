@@ -22,6 +22,12 @@ app.listen(PORT, () => {
 
 
 
+//mutogás :D
+app.get('/auth', async(req, res) => {
+  res.sendFile(path.join(__dirname, "web", "auth.html"));
+});
+
+
 module.exports = app
 
 //indítsa el a többit is

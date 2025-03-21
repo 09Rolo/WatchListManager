@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>404</title>
+
+    <style>
+        body {
+            min-width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background-color: rgb(30, 30, 30);
+        }
+    </style>
+</head>
+<body onload="redirect()">
+    <h1>404</h1>
+    <h2>Page not found</h2>
+
+
+    <script>
+        redirect()
+        
+        function redirect() {
+            window.location.replace("http://kissroland.hu/404")
+        }
+    </script>
+</body>
+</html>

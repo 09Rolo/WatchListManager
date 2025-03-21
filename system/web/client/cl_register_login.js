@@ -1,20 +1,4 @@
 
-//Alap DOM cuccok
-const loginButton = document.getElementById("login_button")
-const registerButton = document.getElementById("register_button")
-const logoutButton = document.getElementById("logout_button")
-
-const emailLogin = document.getElementById("email_l")
-const usernameLogin = document.getElementById("username_l")
-const passwordLogin = document.getElementById("password_l")
-
-const emailRegister = document.getElementById("email_r")
-const usernameRegister = document.getElementById("username_r")
-const passwordRegister = document.getElementById("password_r")
-
-const welcomer = document.getElementById("welcomer")
-
-
 //loadnál
 window.onload = async () => {
     const token = localStorage.getItem("token");
@@ -37,14 +21,14 @@ async function login(details) {
 
         if (response.ok) {
             localStorage.setItem("token", result.token)
-            localStorage.setItem("user", JSON.stringify({ username: details.username}))
+            localStorage.setItem("user", JSON.stringify({ user_id: result.user_id, username: result.username, email: result.email }))
 
             checkLogin(result.token)
         } else {
             logout()
         }
 
-        alert(result.message)  //nem alert nyílván hanem valami saját error box vagy valami
+        notify(result.message, result.type)
     } catch(e) {
         console.log("Error:", e)
     }
@@ -53,7 +37,7 @@ async function login(details) {
 //checker
 async function checkLogin(token) {
     if (!token) {
-        welcomer.innerHTML = "Nem vagy bejelentkezve!"
+        return false
     } else {
         try {
             const response = await fetch(`${location.origin}/homepage`, {
@@ -66,14 +50,16 @@ async function checkLogin(token) {
             const result = await response.json()
 
             if (response.ok) {
-                welcomer.innerHTML = result.message
+                return true
             } else {
-                alert("Lejárt a munkaidő")
-                localStorage.removeItem("token"); // Remove invalid token
+                notify("Lejárt a munkaidő", "error")
+                localStorage.removeItem("token");
+                return false
             }
 
         } catch(e) {
             console.error(e)
+            return false
         }
     }
 }
@@ -96,13 +82,7 @@ async function register(details) {
 
         const result = await response.json()
 
-        alert(result.message)  //nem alert nyílván hanem valami saját error box vagy valami
-
-        login({
-            username: details.username,
-            email: details.email,
-            password: details.password
-        })
+        notify(result.message, result.type)
 
     } catch(e) {
         console.log("Error: ", e)
@@ -119,41 +99,8 @@ function logout() {
     checkLogin()
 }
 
-
-
-
-
-//Buttons
-loginButton.onclick = async () => {
-    const loginDetails = {
-        email: emailLogin.value,
-        username: usernameLogin.value,
-        password: passwordLogin.value
-    }
-
-    login(loginDetails)
-}
-
-
-registerButton.onclick = async () => {
-    const registerDetails = {
-        email: emailRegister.value,
-        username: usernameRegister.value,
-        password: passwordRegister.value
-    }
-
-    register(registerDetails)
-}
-
-
+/*
 logoutButton.onclick = () => {
     logout()
 }
-
-
-
-
-//dev
-function getStorageItems() {
-    console.log(localStorage.user, localStorage.token)
-}
+*/
