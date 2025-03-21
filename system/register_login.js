@@ -68,7 +68,7 @@ app.post("/login", async (req, res) => {
                             return res.status(401).json({ message: "Helytelen jelszó" });
                         }
 
-                        const token = jwt.sign({ userId: result[0].id }, process.env.SECRET_KEY, { expiresIn: "100h" });
+                        const token = jwt.sign({ user_id: result[0].user_id, username: result[0].username, email: result[0].email }, process.env.SECRET_KEY, { expiresIn: "100h" });
                         res.status(200).json({ message: "Sikeres bejelentkezés", token });
                     } catch(e) {}
 
@@ -85,8 +85,11 @@ app.post("/login", async (req, res) => {
 
 // biztonságosság
 const verifyToken = (req, res, next) => {
-    const token = req.headers["authorization"]?.split(" ")[1];
-    if (!token) return res.status(403).json({ error: "Engedély megtagadva" });
+    const token = req.headers["authorization"];
+
+    if (!token) {
+        return res.status(403).json({ error: "Engedély megtagadva" });
+    } 
 
     try {
         const verified = jwt.verify(token, process.env.SECRET_KEY);
@@ -99,7 +102,8 @@ const verifyToken = (req, res, next) => {
 
 
 
+
 //homepage
-app.get("/home", verifyToken, (req, res) => {
-    res.json({ message: `Üdvözlet ${req.user.userId}!` });
+app.get("/homepage", verifyToken, (req, res) => {
+    res.json({ message: `Üdvözlet ${req.user.username}!` });
 });
