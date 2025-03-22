@@ -199,3 +199,186 @@ async function notify(message, type, time) {
 }
 //-------------------------------------------------------------------------------
 
+//elforgatásos cucc
+var previousOrientation = window.orientation;
+var checkOrientation = function(){
+    if(window.orientation !== previousOrientation){
+        previousOrientation = window.orientation;
+        window.location.reload()
+    }
+};
+
+window.addEventListener("resize", checkOrientation, false);
+window.addEventListener("orientationchange", checkOrientation, false);
+
+
+
+
+
+//-------------------------------------------------------------------------------Iras
+
+function iras(element, arg) {
+
+
+    if (!element) {
+        let alltype = document.querySelectorAll(".type")
+
+        if (alltype) {
+            alltype.forEach(specelem => {
+                let elem = specelem
+
+                var txt = elem.innerHTML
+                elem.innerHTML = ""
+            
+                var speed = 30;
+            
+                for (let i = 0; i < txt.length; i++) {
+                    setTimeout(() => {
+                        elem.innerHTML += txt.charAt(i);  
+                    }, 500 + i*speed);
+                }
+            });
+        }
+    }
+
+
+    if (element) {
+        var elem = document.getElementById(element)
+
+
+        if (!arg) {
+            var elem = document.getElementById(element)
+            
+            if (elem) {
+                var txt = elem.innerHTML
+                elem.innerHTML = ""
+            
+                var speed = 30;
+            
+                for (let i = 0; i < txt.length; i++) {
+                    setTimeout(() => {
+                        elem.innerHTML += txt.charAt(i);  
+                    }, 1500 + i*speed);
+                }
+            }
+        }
+
+
+
+
+        if (arg == "eleje") {
+            if (elem) {
+                var txt = elem.innerHTML
+                elem.innerHTML = ""
+            
+                var speed = 1000;
+            
+                for (let i = 0; i < txt.length; i++) {
+                    setTimeout(() => {
+                        elem.innerHTML += txt.charAt(i);
+                    }, 1500 + i*speed);
+                }
+            }
+        }
+
+
+        if (arg == "gyorsabb") {
+            if (elem) {
+                var txt = elem.innerHTML
+                elem.innerHTML = ""
+            
+                var speed = 100;
+            
+                for (let i = 0; i < txt.length; i++) {
+                    setTimeout(() => {
+                        elem.innerHTML += txt.charAt(i);
+                    }, 500 + i*speed);
+                }
+            }
+        }
+
+
+        if (arg == "observeres") {
+            let alltype = document.querySelectorAll(".type")
+            let already = false
+
+            if (alltype) {
+                alltype.forEach(specelem => {
+
+
+                    for(let i = 0; i <= specelem.classList.length; i++) {
+                        if (specelem.classList[i] == "typed") {
+                            already = false
+                            break
+                        } else {
+                            already = true
+                        }
+                    }
+
+
+
+                    if (already == true) {
+                        elem = specelem
+
+                        var txt = elem.innerHTML
+                        elem.innerHTML = ""
+                        
+                        var speed = 30;
+                        
+                        for (let i = 0; i < txt.length; i++) {
+                            setTimeout(() => {
+                                elem.innerHTML += txt.charAt(i);  
+                            }, 500 + i*speed * 2);
+                        }
+
+
+
+                        elem.classList.remove("type")
+                        elem.classList.remove("needtype")
+                        elem.classList.add("typed")
+                    }
+                });
+            }
+        }
+    }
+}
+
+
+
+const obsever = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        //console.log(entry)
+
+        if(entry.isIntersecting) {
+            entry.target.classList.add("show")
+        } else {
+            entry.target.classList.remove("show")
+        }
+    })
+})
+
+
+const needtypeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        //console.log(entry)
+
+        if(entry.isIntersecting) {
+            entry.target.classList.add("type")
+
+            iras(entry.target, "observeres")
+        } else {
+            
+        }
+    })
+})
+
+
+
+const hiddenElements = document.querySelectorAll(".hidden")
+hiddenElements.forEach((el) => {obsever.observe(el)})
+
+const needtypeElements = document.querySelectorAll(".needtype")
+needtypeElements.forEach((el) => {needtypeObserver.observe(el)})
+//-------------------------------------------------------------------------------
+
+

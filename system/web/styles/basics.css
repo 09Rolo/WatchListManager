@@ -400,3 +400,13 @@ body {
     }
     
 }
+
+
+@media screen and (max-height: 500px) {
+    body {
+        cursor: auto;
+    }
+    .cursor, .cursor-border {
+        display: none !important;
+    }
+}

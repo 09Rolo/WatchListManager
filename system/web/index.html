@@ -28,18 +28,8 @@
     </div>
 
 
-
-    <!--Mehet ide a többi
-    <h2 id="welcomer">Üdvözlet</h2>
-    <button onclick="logout()">Kijelentkezés</button>
-    <button onclick="window.location.pathname = '/auth'">AUTH</button>
-    -->
-
-
-
-
     <div id="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
                     <img src="/imgs/WatchListManager.png" alt="Logo" width="30" height="24"
@@ -62,13 +52,13 @@
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
                             <li class="nav-item">
-                                <a class="nav-link active" href="#">Infó</a>
+                                <a class="nav-link" href="#info" onclick="CheckHashtag()">Infó</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Sorozatok</a>
+                                <a class="nav-link" href="#sorozatok" onclick="CheckHashtag()">Sorozatok</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Filmek</a>
+                                <a class="nav-link" href="#filmek" onclick="CheckHashtag()">Filmek</a>
                             </li>
 
                             <!--Fiók dropdown cucc-->
@@ -116,6 +106,69 @@
                 </div>
             </div>
         </nav>
+
+
+        <div class="reszek">
+            <div id="info" class="resz">
+                <div id="info_small" class="small">
+                    <h2 id="info_small_button" class="needtype">Információ</h2>
+                </div>
+
+                <div id="info_big" class="big">
+                    <h2>Információ</h2>
+
+                    <ul>
+                        <li><b class="needtype">Üdvözöllek a weboldalon!</b></li>
+                        <li>Ezt a weboldalt <a href="https://kissroland.hu/" target="_blank" rel="noopener noreferrer" class="inline_a">Rolo</a> írta, remélem tetszeni fog.</li>
+                        <li>Az oldal a számontartás tekintetében jött létre, hogy követni lehessen hol járunk egy sorozatban, vagy éppen milyen filmeket szeretnénk megnézni.</li>
+                        <li>A kívánságlistát a barátaiddal is meg tudod osztani, így egyszerűbb lesz eldönteni melyik filmet nézzétek</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div id="sorozatok" class="resz">
+                <div id="sorozatok_small" class="small">
+                    <h2 id="sorozatok_small_button" class="needtype">Sorozatok</h2>
+                </div>
+
+                <div id="sorozatok_big" class="big">
+                    <h2>Sorozatok</h2>
+
+                    <ul>
+                        <li>Itt hozzáadhatsz sorozatok amelyeket éppen nézel, és ha megnézel egy részt bejelölheted, hogy láttad. Ezzel mindig sorban nézheted az epizódokat</li>
+                        <li>Illetve linket is csatolhatsz sorozatokhoz, amivel egyszerűbb lesz megtalálni őket, és online ingyenesen nézni</li>
+                        <li>Írhatsz még jegyzeteket is, ha esetleg egy részt nem tudsz végig nézni akkor az időpontot ahol jártál és hasonlók</li>
+                    </ul>
+
+                    <a href="/sorozatok" id="sorozatok_starthere_button">Kezdj neki itt</a>
+                </div>
+            </div>
+
+
+
+            <div id="filmek" class="resz">
+                <div id="filmek_small" class="small">
+                    <h2 id="filmek_small_button" class="needtype">Filmek</h2>
+                </div>
+
+                <div id="filmek_big" class="big">
+                    <h2>Filmek</h2>
+
+                    <ul>
+                        <li>Itt hozzáadhatsz filmeket amelyeket szeretnél nézni. Illetve megjelölheted, hogy láttad őket.</li>
+                        <li>Illetve linket is csatolhatsz filmekhez, amivel egyszerűbb lesz megtalálni őket, és online ingyenesen nézni</li>
+                        <li>Írhatsz még jegyzeteket is, ha esetleg nem jutnál a végéig akkor az időpontot ahol jártál és hasonlók</li>
+                        <li>Illetve megoszthatod a barátaiddal a kívánságlistádat, és közösen is választhattok filmet</li>
+                    </ul>
+
+                    <a href="/filmek" id="filmek_starthere_button">Kezdj neki itt</a>
+                </div>
+            </div>
+        </div>
+
+
 
     </div>
 
