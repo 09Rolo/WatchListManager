@@ -22,10 +22,22 @@ app.listen(PORT, () => {
 
 
 
-//mutogás :D
+
+//-------------------------------------------------------mutogás :D
 app.get('/auth/:section?', async(req, res) => {
   res.sendFile(path.join(__dirname, "web", "auth.html"));
 });
+
+app.get('/sorozatok/:section?', async(req, res) => {
+  res.sendFile(path.join(__dirname, "web", "sorozatok.html"));
+});
+
+app.get('/filmek/:section?', async(req, res) => {
+  res.sendFile(path.join(__dirname, "web", "filmek.html"));
+});
+//-------------------------------------------------------
+
+
 
 
 module.exports = app
