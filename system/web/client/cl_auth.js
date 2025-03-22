@@ -65,6 +65,26 @@ window.onload = async () => {
 }
 
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-password").forEach(button => {
+        button.addEventListener("click", function () {
+            const targetId = this.getAttribute("data-target");
+            const passwordField = document.getElementById(targetId);
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.textContent = "🙊";
+            } else {
+                passwordField.type = "password";
+                this.textContent = "🙈";
+            }
+        });
+    });
+});
+
+
+
 //kinézetért felelős cuccok ...
 const loginSide = document.getElementById("login_side")
 const registerSide = document.getElementById("register_side")

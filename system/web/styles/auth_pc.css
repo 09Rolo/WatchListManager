@@ -232,3 +232,35 @@
 
 
 
+
+
+/*pass show*/
+.big label.password-container span {
+    position: relative;
+    top: -35%;
+}
+
+.big label.password-container input:focus~span,
+.big label.password-container input:not(:placeholder-shown)~span{
+    position: relative;
+    top: -60%;
+}
+
+
+.password-container .toggle-password {
+    position: relative;
+    width: fit-content;
+    top: -65%;
+    right: -100%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 100%;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    padding: 0px 3px 0px 3px;
+}
+
+.password-container .toggle-password:hover {
+    color: white;
+}
