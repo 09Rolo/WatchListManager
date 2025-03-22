@@ -12,6 +12,22 @@ const app = require("./server.js")
 app.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
 
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Érvénytelen email formátum", type: "error" });
+    }
+
+    // Username and password length validation
+    if (username.length < 3 || username.length > 20) {
+        return res.status(400).json({ message: "A felhasználónévnek 3 és 20 karakter között kell lennie", type: "error" });
+    }
+    if (password.length < 6) {
+        return res.status(400).json({ message: "A jelszónak legalább 6 karakter hosszúnak kell lennie", type: "error" });
+    }
+
+
     try {
         // Hash the password
         const salt = await bcrypt.genSalt(10);
@@ -52,6 +68,18 @@ app.post("/register", async (req, res) => {
 //bejelentkezés
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
+
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Érvénytelen email formátum", type: "error" });
+    }
+
+    if (password.length < 6) {
+        return res.status(400).json({ message: "A jelszónak legalább 6 karakter hosszúnak kell lennie", type: "error" });
+    }
+
 
     try {
         //Check if user exists

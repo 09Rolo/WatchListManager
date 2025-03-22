@@ -19,13 +19,15 @@ loginButton.onclick = async () => {
 
     await login(loginDetails)
 
+    setTimeout( async () => {
+        const token = localStorage.getItem("token");
+        const isLoggedin = await checkLogin(token)
 
-    const token = localStorage.getItem("token");
-    const isLoggedin = await checkLogin(token)
-
-    if (isLoggedin) {
-        window.location.pathname = "/"
-    }
+        if (isLoggedin) {
+            window.location.pathname = "/"
+        }
+    }, 1000);
+    
 }
 
 
@@ -38,14 +40,16 @@ registerButton.onclick = async () => {
 
     await register(registerDetails)
 
-    await login(registerDetails)
+    await login(registerDetails, "no-notify")
 
-    const token = localStorage.getItem("token");
-    const isLoggedin = await checkLogin(token)
+    setTimeout( async () => {
+        const token = localStorage.getItem("token");
+        const isLoggedin = await checkLogin(token)
 
-    if (isLoggedin) {
-        window.location.pathname = "/"
-    }
+        if (isLoggedin) {
+            window.location.pathname = "/"
+        }
+    }, 1000);
 }
 
 
@@ -73,7 +77,7 @@ const registerBig = document.getElementById("register_big")
 
 const switchToLogin = document.getElementById("switch_to_login")
 const switchToRegister = document.getElementById("switch_to_register")
-
+const vissza = document.getElementById("vissza")
 
 
 loginSmall.style.display = "none"
@@ -91,29 +95,124 @@ switchToRegister.onclick = () => {
 }
 
 function SwitchToLogin() {
-    registerSide.style.width = "35%"
-    loginSide.style.width = "65%"
+    if (screen.width >= 660) {
+        registerSide.style.width = "35%"
+        loginSide.style.width = "65%"
 
-    loginBig.style.display = ""
-    loginSmall.style.display = "none"
 
-    registerBig.style.display = "none"
-    registerSmall.style.display = ""
+        loginBig.style.opacity = "0"
+        loginBig.style.display = ""
+        setTimeout(() => {
+            loginBig.style.opacity = "1"
+        }, 500);
+
+        registerSmall.style.opacity = "0"
+        registerSmall.style.display = ""
+        setTimeout(() => {
+            registerSmall.style.opacity = "1"
+        }, 500);
+        
+        
+        loginSmall.style.display = "none"
+        registerBig.style.display = "none"
+
+        vissza.style.top = "0"
+    } else {
+        //kicsi
+        loginSide.style.transition = "height 1s ease-in-out"
+        registerSide.style.transition = "height 1s ease-in-out"
+
+        registerSide.style.height = "30%"
+        loginSide.style.height = "75%"
+
+
+        loginBig.style.opacity = "0"
+        loginBig.style.display = ""
+        setTimeout(() => {
+            loginBig.style.opacity = "1"
+        }, 500);
+
+        registerSmall.style.opacity = "0"
+        registerSmall.style.display = ""
+        setTimeout(() => {
+            registerSmall.style.opacity = "1"
+        }, 500);
+        
+        
+        loginSmall.style.display = "none"
+        registerBig.style.display = "none"
+
+
+        vissza.style.opacity = "0"
+
+        setTimeout(() => {
+            vissza.style.top = "0"
+            vissza.style.bottom = ""
+            vissza.style.opacity = "1"
+        }, 500);
+    }
 }
 
 function SwitchToRegister() {
-    registerSide.style.width = "65%"
-    loginSide.style.width = "35%"
+    if (screen.width >= 660) {
+        registerSide.style.width = "65%"
+        loginSide.style.width = "35%"
 
-    loginBig.style.display = "none"
-    loginSmall.style.display = ""
+        loginSmall.style.opacity = "0"
+        loginSmall.style.display = ""
+        setTimeout(() => {
+            loginSmall.style.opacity = "1"
+        }, 500);
 
-    registerBig.style.display = ""
-    registerSmall.style.display = "none"
+        registerBig.style.opacity = "0"
+        registerBig.style.display = ""
+        setTimeout(() => {
+            registerBig.style.opacity = "1"
+        }, 500);
+        
+
+        loginBig.style.display = "none"
+        registerSmall.style.display = "none"
+
+        vissza.style.top = "0"
+    } else {
+        //kicsi
+        loginSide.style.transition = "height 1s ease-in-out"
+        registerSide.style.transition = "height 1s ease-in-out"
+
+        registerSide.style.height = "80%"
+        loginSide.style.height = "15%"
+
+
+        loginSmall.style.opacity = "0"
+        loginSmall.style.display = ""
+        setTimeout(() => {
+            loginSmall.style.opacity = "1"
+        }, 500);
+
+        registerBig.style.opacity = "0"
+        registerBig.style.display = ""
+        setTimeout(() => {
+            registerBig.style.opacity = "1"
+        }, 500);
+        
+        
+        loginBig.style.display = "none"
+        registerSmall.style.display = "none"
+
+
+        vissza.style.opacity = "0"
+
+        setTimeout(() => {
+            vissza.style.top = ""
+            vissza.style.bottom = "0"
+            vissza.style.opacity = "1"
+        }, 500);
+        
+    }
 }
 
 
-const vissza = document.getElementById("vissza")
 vissza.onclick = () => {
     window.location.pathname = "/"
 }

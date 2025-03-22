@@ -9,7 +9,7 @@ window.onload = async () => {
 
 
 //Bejelentkezés dolgok
-async function login(details) {
+async function login(details, donotify) {
     try {
         const response = await fetch(`${location.origin}/login`, {
             method: "POST",
@@ -28,7 +28,10 @@ async function login(details) {
             logout()
         }
 
-        notify(result.message, result.type)
+
+        if (!donotify || donotify != "no-notify") {
+            notify(result.message, result.type)
+        }
     } catch(e) {
         console.log("Error:", e)
     }
@@ -68,7 +71,7 @@ async function checkLogin(token) {
 
 
 //Regisztrációs cuccok
-async function register(details) {
+async function register(details, donotify) {
     try {
         const response = await fetch(`${location.origin}/register`, {
             method: "POST",
@@ -82,7 +85,9 @@ async function register(details) {
 
         const result = await response.json()
 
-        notify(result.message, result.type)
+        if (!donotify || donotify != "no-notify") {
+            notify(result.message, result.type)
+        }
 
     } catch(e) {
         console.log("Error: ", e)
