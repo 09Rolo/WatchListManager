@@ -290,7 +290,7 @@ body {
         border-radius: 50%;
         background-color: white;
     
-        z-index: 999;
+        z-index: 100000;
         pointer-events: none;
     }
     
@@ -309,7 +309,7 @@ body {
         border-radius: 50%;
         background-color: none;
     
-        z-index: 999;
+        z-index: 100000;
         pointer-events: none;
     }
     

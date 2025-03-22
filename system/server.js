@@ -23,7 +23,7 @@ app.listen(PORT, () => {
 
 
 //mutogás :D
-app.get('/auth', async(req, res) => {
+app.get('/auth/:section?', async(req, res) => {
   res.sendFile(path.join(__dirname, "web", "auth.html"));
 });
 

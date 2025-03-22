@@ -43,7 +43,7 @@ async function checkLogin(token) {
         return false
     } else {
         try {
-            const response = await fetch(`${location.origin}/homepage`, {
+            const response = await fetch(`${location.origin}/verify`, {
                 method: "GET",
                 headers: {
                     "Authorization": token

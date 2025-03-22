@@ -131,7 +131,7 @@ const verifyToken = (req, res, next) => {
 
 
 
-//homepage
-app.get("/homepage", verifyToken, (req, res) => {
-    res.json({ message: `Üdvözlet ${req.user.username}!`, type: "info" });
+//verify
+app.get("/verify", verifyToken, (req, res) => { //ez viszont kell ez a get
+    res.json({ message: `${req.user.username}`, type: "info" });  //ez csak van ha kellene később
 });

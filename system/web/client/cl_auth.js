@@ -62,6 +62,15 @@ window.onload = async () => {
     if (isLoggedin) {
         window.location.pathname = "/"
     }
+
+    const sectionParts = window.location.pathname.split("/")
+    const section = sectionParts[2]
+
+    if (section && section == "login") {
+        SwitchToLogin()
+    } else if (section && section == "register") {
+        SwitchToRegister()
+    }
 }
 
 

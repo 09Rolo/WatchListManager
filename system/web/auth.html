@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="hu" data-bs-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WatchListManager</title>
+    <link rel="shortcut icon" href="/imgs/WLM.png" type="image/x-icon">
+    <title>Watch List Manager</title>
 
-    <link rel="stylesheet" href="./styles/basics.css">
-    <link rel="stylesheet" href="./styles/auth_pc.css">
-    <link rel="stylesheet" href="./styles/auth_mobile.css">
+    <link rel="stylesheet" href="/styles/basics.css">
+    <link rel="stylesheet" href="/styles/auth_pc.css">
+    <link rel="stylesheet" href="/styles/auth_mobile.css">
 </head>
+
 <body>
     <div id="top"></div>
     <div id="fuggony"></div>
@@ -18,16 +21,18 @@
             <h1 class="cant_select">I</h1>
         </div>
         <div id="betolto_szoveg">
-            <h2 class="cant_select" >Betöltés <h2 id="h2_betoltesnel_pontok" class="cant_select">...</h2></h2>
+            <h2 class="cant_select">Betöltés <h2 id="h2_betoltesnel_pontok" class="cant_select">...</h2>
+            </h2>
         </div>
     </div>
 
-    
+
 
 
     <div class="container">
         <div id="vissza" class="cant_select">
-            <span>&larrhk;</span><p>Vissza a főoldalra</p>
+            <span>&larrhk;</span>
+            <p>Vissza a főoldalra</p>
         </div>
 
         <div id="login_side">
@@ -43,7 +48,7 @@
                     <input type="email" name="email" id="email_l" minlength="5" placeholder=" ">
                     <span>Email cím</span>
                 </label>
-                
+
                 <label for="password_l" class="password-container">
                     <input type="password" name="password" id="password_l" minlength="5" placeholder=" ">
                     <span>Jelszó</span>
@@ -60,7 +65,7 @@
                 <h2>Még nincs fiókod?</h2>
                 <button id="switch_to_register">Regisztrálj egyet</button>
             </div>
-            
+
             <div id="register_big" class="big cant_select">
                 <h2>Regisztrálj egy fiókot</h2>
                 <label for="email_r">
@@ -72,7 +77,7 @@
                     <input type="text" name="username" id="username_r" minlength="2" placeholder=" ">
                     <span>Felhasználónév</span>
                 </label>
-                
+
                 <label for="password_r" class="password-container">
                     <input type="password" name="password" id="password_r" minlength="5" placeholder=" ">
                     <span>Jelszó</span>
@@ -86,8 +91,9 @@
 
 
 
-    <script src="./client/load.js"></script>
-    <script src="./client/cl_register_login.js"></script>
-    <script src="./client/cl_auth.js"></script>
+    <script src="/client/load.js"></script>
+    <script src="/client/cl_register_login.js"></script>
+    <script src="/client/cl_auth.js"></script>
 </body>
+
 </html>
