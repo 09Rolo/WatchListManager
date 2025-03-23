@@ -46,9 +46,9 @@ async function loggedIn() {
     menu_username.innerHTML = JSON.parse(localStorage.getItem("user")).username
 
     sorozatok_starthere_button.href = "/sorozatok"
-    sorozatok_starthere_button.innerHTML = "Kezdj neki itt"
+    sorozatok_starthere_button.innerHTML = "Kezeld őket itt"
     filmek_starthere_button.href = "/filmek"
-    filmek_starthere_button.innerHTML = "Kezdj neki itt"
+    filmek_starthere_button.innerHTML = "Kezeld őket itt"
 }
 
 

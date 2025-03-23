@@ -45,3 +45,4 @@ module.exports = app
 //indítsa el a többit is
 require("./db.js")
 require("./register_login.js")
+require("./sorozatok_filmek.js")

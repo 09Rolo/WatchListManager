@@ -30,24 +30,24 @@
     
 
     <div id="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
+
                 <a class="navbar-brand" href="/">
-                    <img src="/imgs/WatchListManager.png" alt="Logo" width="30" height="24"
-                        class="d-inline-block align-text-top">
+                    <img src="/imgs/WatchListManager.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
                     Watch List Manager
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel">
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menü</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Bezárás"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -55,6 +55,30 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/">Főoldal</a>
                             </li>
+
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Keresés nyelve
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <div id="menu_language">
+                                        <li>
+                                            <a class="dropdown-item" href="/filmek/hu" id="menu_language_hu">
+                                                Magyar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="/filmek/en" id="menu_language_en">
+                                                Angol
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+
                             <!--többi elem ha kell-->
 
                             <!--Fiók dropdown cucc-->
@@ -96,10 +120,13 @@
                                 </ul>
                             </li>
 
-
                         </ul>
                     </div>
                 </div>
+
+                <form class="d-flex mx-auto" role="search">
+                    <input id="searchbar" class="form-control me-2 searchbar" type="search" placeholder="Kezdj el írni" aria-label="Keresés">
+                </form>
             </div>
         </nav>
 
@@ -107,7 +134,29 @@
 
 
         <!--Többi ide-->
-        <h2>Filmek</h2>
+
+        <div id="main">
+            <h2>Filmek</h2>
+
+            <div id="searched">
+                <h3>Keresett Filmek</h3>
+
+                <div id="searched_movies_list">
+                    <p class="info">Nincs itt semmi, írj be valamit a keresőbe</p>
+                </div>
+            </div>
+
+            <hr style="width: 100%;">
+
+            <div id="sajat">
+                <h3>Saját Filmek</h3>
+
+                <div id="sajat_movies_list">
+                    <p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
