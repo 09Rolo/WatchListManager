@@ -104,7 +104,7 @@ searchbar.addEventListener("input", async (e) => {
 
           sortedMovies.forEach(el => {
             searched_movies_list.innerHTML += `
-                <div class="card" style="width: 18rem;">
+                <div class="card" id="${el.id}" style="width: 18rem;">
                     <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
                         <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="film poszter">
@@ -123,6 +123,8 @@ searchbar.addEventListener("input", async (e) => {
             `
           });
 
+
+          GiveClickEventToCards()
 
           if (searched_movies_list.innerHTML == "") {
             searched_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
@@ -145,5 +147,18 @@ function ratingColor(rating) {
     } else {
         return "red"
     }
+}
+
+
+function GiveClickEventToCards() {
+    var cards = document.getElementsByClassName("card")
+
+    Array.from(cards).forEach(el => {
+        el.addEventListener("click", function(e) {
+            console.log(e)
+            window.location.replace(`${window.location.origin}/film/${this.id}`)
+        })
+    })
+    
 }
 

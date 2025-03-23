@@ -104,7 +104,7 @@ searchbar.addEventListener("input", async (e) => {
 
           sortedSeries.forEach(el => {
             searched_series_list.innerHTML += `
-                <div class="card" style="width: 18rem;">
+                <div class="card" id="${el.id}" style="width: 18rem;">
                     <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
                         <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="sorozat poszter">
@@ -122,6 +122,9 @@ searchbar.addEventListener("input", async (e) => {
                 </div>
             `
           });
+
+
+          GiveClickEventToCards()
 
 
           if (searched_series_list.innerHTML == "") {
@@ -146,3 +149,15 @@ function ratingColor(rating) {
     }
 }
 
+
+function GiveClickEventToCards() {
+    var cards = document.getElementsByClassName("card")
+
+    Array.from(cards).forEach(el => {
+        el.addEventListener("click", function(e) {
+            console.log(e)
+            window.location.replace(`${window.location.origin}/sorozat/${this.id}`)
+        })
+    })
+    
+}
