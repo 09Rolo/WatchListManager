@@ -105,13 +105,20 @@ searchbar.addEventListener("input", async (e) => {
           sortedSeries.forEach(el => {
             searched_series_list.innerHTML += `
                 <div class="card" style="width: 18rem;">
-                  <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="sorozat poszter">
-                  <div class="card-body">
-                    <h5 class="card-title"><b>${el.name}</b></h5>
-                    <p class="card-text">${el.overview}</p>
-                    <a href="#" class="btn btn-primary">Bővebben</a>
-                    <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
-                  </div>
+                    <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="bluredimg" alt="poszter">
+                    <div class="imgkeret">
+                        <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="sorozat poszter">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><b>${el.name}</b></h5>
+                        <i class="bi bi-journal-arrow-up showtexticon"></i>
+                        <p class="card-text">${el.overview}</p>
+                        <a href="#" class="btn btn-primary">Adatlap</a>
+                        <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
+                    </div>
                 </div>
             `
           });

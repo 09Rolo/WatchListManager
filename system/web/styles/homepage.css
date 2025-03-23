@@ -1,7 +1,8 @@
-body {
-    min-height: fit-content !important;
-    max-height: fit-content !important;
+body, #container, .reszek {
+    min-height: calc(100vh - 60px) !important;
+    max-height: calc(100vh - 60px) !important;
 }
+
 
 .reszek {
     display: flex;
@@ -90,4 +91,27 @@ body {
 
 .inline_a {
     color: var(--red-underline);
+}
+
+
+
+
+#sorozatok {
+    background-image: url("../imgs/sorozatok_hatter_w2000.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: 70%;
+}
+
+#filmek {
+    background-image: url("../imgs/filmek_hatter_w2000.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: 90%;
 }
