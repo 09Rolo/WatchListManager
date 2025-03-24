@@ -26,7 +26,6 @@ window.onload = async () => {
 
 
 var API_KEY = ""
-var BASE_URL = ""
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
@@ -49,7 +48,6 @@ async function loggedIn() {
     
         if (response.ok) {
             API_KEY = result.apiKey
-            BASE_URL = result.baseUrl
         } else {
             notify("Hiba történt az API-al", "error")
         }
@@ -113,7 +111,7 @@ searchbar.addEventListener("input", async (e) => {
                         <h5 class="card-title"><b>${el.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${el.overview}</p>
-                        <a href="#" class="btn btn-primary">Adatlap</a>
+                        <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
                         <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
                     </div>
                     <div class="card-footer">
@@ -124,7 +122,7 @@ searchbar.addEventListener("input", async (e) => {
           });
 
 
-          GiveClickEventToCards()
+          GiveHrefToAdatlapButton()
 
           if (searched_movies_list.innerHTML == "") {
             searched_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
@@ -150,14 +148,11 @@ function ratingColor(rating) {
 }
 
 
-function GiveClickEventToCards() {
-    var cards = document.getElementsByClassName("card")
+function GiveHrefToAdatlapButton() {
+    var adatlapB = document.getElementsByClassName("adatlap-button")
 
-    Array.from(cards).forEach(el => {
-        el.addEventListener("click", function(e) {
-            console.log(e)
-            window.location.replace(`${window.location.origin}/film/${this.id}`)
-        })
+    Array.from(adatlapB).forEach(el => {
+        el.href = `${window.location.origin}/film/${el.id}`
     })
     
 }

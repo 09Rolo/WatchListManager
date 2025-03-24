@@ -26,7 +26,6 @@ window.onload = async () => {
 
 
 var API_KEY = ""
-var BASE_URL = ""
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
@@ -49,7 +48,6 @@ async function loggedIn() {
     
         if (response.ok) {
             API_KEY = result.apiKey
-            BASE_URL = result.baseUrl
         } else {
             notify("Hiba történt az API-al", "error")
         }
