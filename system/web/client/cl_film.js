@@ -135,24 +135,28 @@ async function getData() {
         elsoresz.innerHTML = ""
 
         elsoresz.innerHTML = `
-            <div id="poster">
-                <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="fadedimg">
-                <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" is="posterimg">
-            </div>
-            <div class="adatok">
+            <div class="adatok col-md-7 col-10">
                 <div class="felso">
-                    <h2 id="cim">${adatok.title}</h2>
+                    <h2 id="cim" class="underline_hover">${adatok.title}</h2>
                     <hr>
                     <p id="leiras">${adatok.overview}</p>
                 </div>
                 <div class="also">
-                    <p id="budget">Költségvetés: ${adatok.budget}$</p>
-                    <p id="kategoriak">${getGenres(adatok.genres)}</p>
-                    <p id="releasedate">Megjelenés: ${adatok.release_date}</p>
-                    <p id="hossz">Hossz: ${adatok.runtime} perc, ${toHoursAndMinutes(adatok.runtime)["hours"]}:${toHoursAndMinutes(adatok.runtime)["minutes"]}</p>
-                    <p id="status">Státusz: ${adatok.status}</p>
-                    <p id="ertekeles" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average}</p>
+                    <div class="rowba">
+                        <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
+                        <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
+                        <p id="ertekeles" class="rating" style="color: white;">${adatok.vote_average}</p>
+                    </div>
+
+                    <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
+                    <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
+                    <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
+                    <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
                 </div>
+            </div>
+            <div id="poster" class="col-md-4 col-10">
+                <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="fadedimg" class="img-fluid">
+                <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="posterimg" class="img-fluid">
             </div>
         `
 

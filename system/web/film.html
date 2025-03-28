@@ -130,34 +130,46 @@
         <div class="navbarfixmarginja"></div>
 
 
+
         <!--Többi ide-->
         <div class="main">
-            <div class="resz" id="elsoresz">
-                <div id="poster">
-                    <img src="" id="fadedimg">
-                    <img src="" is="posterimg">
-                </div>
-                <div class="adatok">
+            <div class="resz row" id="elsoresz">
+                <div class="adatok col-md-7 col-12">
                     <div class="felso">
-                        <h2 id="cim"></h2>
+                        <h2 id="cim" class="underline_hover"></h2>
                         <hr>
                         <p id="leiras"></p>
                     </div>
                     <div class="also">
-                        <p id="budget"></p>
-                        <p id="kategoriak"></p>
+                        <div class="rowba">
+                            <p id="kategoriak"></p>
+                            <p id="hossz"><span class="bold"></span></p>
+                            <p id="ertekeles" class="rating" style="color: white;"></p>
+                        </div>
+
                         <p id="releasedate"></p>
-                        <p id="hossz"></p>
+                        <p id="budget"></p>
                         <p id="status"></p>
-                        <p id="ertekeles" style="color: white;"></p>
+                        <a href="https://www.imdb.com/title/" target="_blank" rel="noopener noreferrer" id="imdblink">IMDB Link</a>
                     </div>
+                </div>
+                <div id="poster" class="col-md-5 col-12">
+                    <img src="" id="fadedimg" class="img-fluid">
+                    <img src="" is="posterimg" class="img-fluid">
                 </div>
             </div>
 
             <div class="resz" id="masodikresz">
                 <div class="felso">
-                    <button id="wishlist"><abbr title="Kívánságlistára"><i class="bi bi-bookmark-plus"></i></abbr></button>
-                    <button id="watched"><abbr title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></abbr></button>
+                    <div id="wishlistcontainer">
+                        <p id="wishlisttext">Kívánságlistára</p>
+                        <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus"></i></button>
+                    </div>
+
+                    <div id="watchedcontainer">
+                        <p id="watchedtext">Megnézettnek jelölés</p>
+                        <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
+                    </div>
                 </div>
                 <div class="also">
                     <div class="bevitel">
