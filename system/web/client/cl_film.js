@@ -8,6 +8,9 @@ const menu_username = document.getElementById("menu_username")
 const menu_logout_button = document.getElementById("menu_logout_button")
 
 
+var dataAdded = false
+
+
 window.onload = async () => {
     menu_account.style.display = "none"
     menu_login_register.style.display = "none"
@@ -139,19 +142,44 @@ async function getData() {
                 <div class="felso">
                     <h2 id="cim" class="underline_hover">${adatok.title}</h2>
                     <hr>
+                    <p id="sajatnote"></p><br>
                     <p id="leiras">${adatok.overview}</p>
                 </div>
                 <div class="also">
                     <div class="rowba">
                         <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
                         <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
-                        <p id="ertekeles" class="rating" style="color: white;">${adatok.vote_average}</p>
+                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average}</p>
                     </div>
 
                     <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
                     <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
                     <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
                     <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
+                    <br>
+                    <a href="" target="_blank" rel="noopener noreferrer"></a>
+
+                        
+                    <div id="inputactions">
+                        <div id="wishlistcontainer">
+                            <p id="wishlisttext">Kívánságlistára</p>
+                            <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
+                        </div>
+    
+                        <div id="watchedcontainer">
+                            <p id="watchedtext">Megnézettnek jelölés</p>
+                            <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
+                        </div>
+
+                        <div class="bevitel">
+                            <input type="text" name="link" id="link" placeholder="Link">
+                            <button id="linkbutton">Link hozzáadása</button>
+                        </div>
+                        <div class="bevitel">
+                            <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
+                            <button id="notebutton">Jegyzet hozzáadása</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="poster" class="col-md-4 col-10">
@@ -160,7 +188,278 @@ async function getData() {
             </div>
         `
 
+        dataAdded = true
 
     }
 
 }
+
+
+
+//------------------------------------------------------Backend cuccok---------------------------------------------
+
+async function checkWishlist(id) {
+    var amiMegy = {
+        user_id: JSON.parse(localStorage.user).user_id,
+        tipus: "movie"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getWishlist`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(i in result.dataVissza) {
+                if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    return true
+                }
+            }
+
+            return false
+        }
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+
+
+
+async function checkWatched(id) {
+    var amiMegy = {
+        user_id: JSON.parse(localStorage.user).user_id,
+        tipus: "movie"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getWatched`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(i in result.dataVissza) {
+                if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    return true
+                }
+            }
+
+            return false
+        }
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+
+
+
+const checkCondition = setInterval(() => {
+    if (dataAdded) {
+        clearInterval(checkCondition); // Stop checking
+
+
+
+
+const wishlist = document.getElementById("wishlist")  //wishlist button
+const wishlisttext = document.getElementById("wishlisttext")
+const watched = document.getElementById("watched")  //watched button
+const watchedtext = document.getElementById("watchedtext")
+
+const link = document.getElementById("link")  //link input, ennek .value
+const linkbutton = document.getElementById("linkbutton")
+const note = document.getElementById("note")  // note input, kell a .valueja
+const notebutton = document.getElementById("notebutton")
+const id = parseInt((window.location.pathname.split("/")[2]), 10)
+
+
+
+//megnézni megnézte e vagy wishlisten van e
+async function wishlistManage() {
+    var isWishlisted = await checkWishlist(id)
+
+    if (isWishlisted) {
+        wishlist.innerHTML = '<i class="bi bi-bookmark-dash-fill"></i>'
+        wishlisttext.innerHTML = "Kivétel a kívánságlistából"
+        document.body.style.backgroundColor = "var(--wishlisted)"
+
+        wishlist.dataset.do = "remove"
+    } else {
+        wishlist.innerHTML = '<i class="bi bi-bookmark-plus-fill"></i>'
+        wishlisttext.innerHTML = "Kívánságlistára rakás"
+
+        wishlist.dataset.do = "add"
+    }
+}
+
+wishlistManage()
+
+
+
+async function watchedManage() {
+    var isWatched = await checkWatched(id)
+
+    if (isWatched) {
+        watched.innerHTML = '<i class="bi bi-file-excel-fill"></i>'
+        watchedtext.innerHTML = "Jelölés nem megnézettnek"
+        document.body.style.backgroundColor = "var(--watched)"
+
+        watched.dataset.do = "remove"
+    } else {
+        watched.innerHTML = '<i class="bi bi-file-check-fill"></i>'
+        watchedtext.innerHTML = "Jelölés megnézettnek"
+
+        watched.dataset.do = "add"
+    }
+}
+
+watchedManage()
+
+
+
+
+
+wishlist.onclick = async() => {
+
+    if (wishlist.dataset.do == "add") {
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "movie"
+            }
+    
+            const response = await fetch(`${location.origin}/addWishlist`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+    
+            const result = await response.json()
+    
+            notify(result.message, result.type)
+    
+            if(result.type == "success") {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+    } else if(wishlist.dataset.do == "remove") {
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "movie"
+            }
+    
+            const response = await fetch(`${location.origin}/removeWishlist`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+    
+            const result = await response.json()
+    
+            notify(result.message, result.type)
+    
+            if(result.type == "success") {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+    }
+    
+
+}
+
+
+
+
+
+watched.onclick = async() => {
+
+    if (watched.dataset.do == "add") {
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "movie"
+            }
+    
+            const response = await fetch(`${location.origin}/addWatched`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+    
+            const result = await response.json()
+    
+            notify(result.message, result.type)
+    
+            if(result.type == "success") {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+
+    } else if(watched.dataset.do == "remove") {
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "movie"
+            }
+    
+            const response = await fetch(`${location.origin}/removeWatched`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+    
+            const result = await response.json()
+    
+            notify(result.message, result.type)
+    
+            if(result.type == "success") {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+    }
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+}, 100); // Check every 100ms

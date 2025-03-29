@@ -15,3 +15,309 @@ app.get("/getAPIinfo", async (req, res) => {
         res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
     }
 });
+
+
+
+
+//Wishlist
+app.post("/addWishlist", async (req, res) => {
+    const { user_id, media_id, media_type } = req.body;
+
+    if (media_type == "movie") {
+        try {
+
+            const watchedbeUser = await db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                if (!err) {
+                    if (result.length == 0) {
+                        //oksa, nincs benne a watchedben
+                        try {
+                            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.length == 0) {
+                                        //oksa, nincs benne már alapból, szóval most mehet bele
+    
+                                        try {
+                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
+                        
+                                            const newUserRow = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                                if (!err) {
+                                                    if (result.length == 1) {
+                                                        //oksa, benne van
+                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    } else {
+                                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                                    }
+                                                } else {
+                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                }
+                                            });
+                                        } catch(e) {console.log(e)}
+                                    } else {
+                                        res.status(500).json({ message: "Már benne van a kívánságlistádban", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+                        
+                    } else {
+                        res.status(500).json({ message: "Már láttad ezt a filmet", type: "error"});
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+});
+
+
+
+
+app.post("/removeWishlist", async (req, res) => {
+    const { user_id, media_id, media_type } = req.body;
+
+    if (media_type == "movie") {
+        try {
+            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                if (!err) {
+                    if (result.length != 0) {
+                        //oksa, benne van
+                        
+                        try {
+                            const deleteFromWishlist = db.query("DELETE FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.affectedRows > 0) {
+                                        //oksa
+                                        res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+                    } else {
+                        res.status(500).json({ message: "Nincs benne a kívánságlistában", type: "error"});
+                    }
+                } else {
+                    res.status(500).json({ message: "Hiba", type: "error"});
+                }
+            });              
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+});
+
+
+
+
+app.post("/getWishlist", async (req, res) => {
+    const {user_id, tipus} = req.body
+
+    if(tipus == "movie") {
+        try {
+            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+                if (!err) {
+                    if (result.length != 0) {
+                        //oksa benne van legalább 1
+
+                        var dataVissza = []
+
+                        for(i in result) {
+                            dataVissza.push({
+                                media_id: result[i].movie_id,
+                                added_at: result[i].added_at
+                            })
+                        }
+
+                        res.status(200).json({ dataVissza });
+                    } else {
+                        res.status(401).json({ message: "Nincs a kívánságlistán semmi", type: "error"})
+                    }
+                } else {
+                    res.status(401).json({ message: "Hiba", type: "error"})
+                }
+            });
+        } catch(e) {
+            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+        }
+    }
+});
+
+
+
+
+
+
+
+
+
+
+//Watched
+app.post("/addWatched", async (req, res) => {
+    const { user_id, media_id, media_type } = req.body;
+
+    if (media_type == "movie") {
+        try {
+
+            const wishlistbeUser = await db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                if (!err) {
+                    if (result.length == 0) {
+                        //oksa, nincs benne a wishlistben
+                        try {
+                            const watchlistbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.length == 0) {
+                                        //oksa, nincs benne már alapból, szóval most mehet bele
+    
+                                        try {
+                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
+                        
+                                            const newUserRow = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                                if (!err) {
+                                                    if (result.length == 1) {
+                                                        //oksa, benne van
+                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    } else {
+                                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                                    }
+                                                } else {
+                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                }
+                                            });
+                                        } catch(e) {console.log(e)}
+                                    } else {
+                                        res.status(500).json({ message: "Már benne van a megnézett listában", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+                        
+                    } else {
+                        
+                        try {
+                            const deleteFromWishlist = db.query("DELETE FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.affectedRows > 0) {
+                                        //oksa
+                                        try {
+                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
+                        
+                                            const newUserRow = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                                if (!err) {
+                                                    if (result.length == 1) {
+                                                        //oksa, benne van
+                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    } else {
+                                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                                    }
+                                                } else {
+                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                }
+                                            });
+                                        } catch(e) {console.log(e)}
+                                    } else {
+                                        res.status(500).json({ message: "Sikertelen törlés a kívánságlistából", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+});
+
+
+
+
+app.post("/removeWatched", async (req, res) => {
+    const { user_id, media_id, media_type } = req.body;
+
+    if (media_type == "movie") {
+        try {
+            const wachedbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                if (!err) {
+                    if (result.length != 0) {
+                        //oksa, benne van
+                        
+                        try {
+                            const deleteFromWatched = db.query("DELETE FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.affectedRows > 0) {
+                                        //oksa
+                                        res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+                    } else {
+                        res.status(500).json({ message: "Nincs benne a megnézett listában", type: "error"});
+                    }
+                } else {
+                    res.status(500).json({ message: "Hiba", type: "error"});
+                }
+            });              
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+});
+
+
+
+
+app.post("/getWatched", async (req, res) => {
+    const {user_id, tipus} = req.body
+
+    if(tipus == "movie") {
+        try {
+            const wishlistbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+                if (!err) {
+                    if (result.length != 0) {
+                        //oksa benne van legalább 1
+
+                        var dataVissza = []
+
+                        for(i in result) {
+                            dataVissza.push({
+                                media_id: result[i].movie_id,
+                                added_at: result[i].added_at
+                            })
+                        }
+
+                        res.status(200).json({ dataVissza });
+                    } else {
+                        res.status(401).json({ message: "Nincs a megnézettek között semmi", type: "error"})
+                    }
+                } else {
+                    res.status(401).json({ message: "Hiba", type: "error"})
+                }
+            });
+        } catch(e) {
+            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+        }
+    }
+});

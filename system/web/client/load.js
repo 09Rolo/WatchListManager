@@ -171,6 +171,7 @@ async function notify(message, type, time) {
 
 
     const notification = document.createElement('div');
+    notification.classList.add("cant_select")
     notification.textContent = msg;
 
     if (tipus == "info") {

@@ -11,6 +11,9 @@
     --red-theme: rgb(100, 0, 0);
     --red-underline: rgb(250, 30, 30);
 
+    --wishlisted: rgba(0, 34, 55, 0.4);
+    --watched: rgba(0, 54, 27, 0.4);
+
 
     --scroll: 0;
     --scroll-deg-right: 0;
@@ -37,9 +40,9 @@ html {
 body {
     min-width: 100%;
     max-width: 100%;
-
+    /*
     min-height: 100vh;
-    max-height: 100vh;
+    max-height: 100vh;*/
 
     background-color: var(--bg-color);
 
@@ -258,13 +261,14 @@ body {
 }
 
 
-
+.cursor-border {
+    display: none;
+}
 
 
 
 
 @media screen and (min-width: 650px) {
-
 
 
 
@@ -301,6 +305,7 @@ body {
     
     
     .cursor-border {
+        display: block;
         position: fixed;
         top: 0px;
         left: -30px;

@@ -1,3 +1,7 @@
+body {
+    height: max-content;
+    width: max-content;
+}
 
 .navbarfixmarginja {
     width: 100%;
@@ -8,29 +12,10 @@
     font-weight: bold;
 }
 
-/*
-.main {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-}
-*/
-/*
-.resz {
-    display: flex;
-    flex-direction: column;
-}
 
-#elsoresz {
-    flex-direction: row;
-}
-*/
 .resz {
     justify-content: center;
 }
-
 
 
 
@@ -48,14 +33,16 @@
 #poster #posterimg {
     position: relative;
     border: 2px solid black;
+
+    max-height: calc(100vh - 20vh);
 }
 
 #poster #fadedimg {
     position: absolute;
     z-index: -1;
-    width: calc(50vw - 13vw);
     filter: blur(15px);
     border-radius: 20%;
+    max-height: calc(100vh - 10vh);
 }
 
 
@@ -63,6 +50,7 @@
 
 .adatok {
     padding: 25px;
+    height: fit-content;
 }
 
 .adatok .also {
@@ -73,10 +61,23 @@
     flex-wrap: wrap;
 }
 
+.adatok a {
+    width: fit-content;
+    color: var(--red-underline);
+    transition: all 0.3s ease-in-out;
+}
+
+.adatok a:hover {
+    font-size: large;
+    color: var(--red-theme);
+    transition: all 0.3s ease-in-out;
+}
+
 .adatok .also .rowba {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin-bottom: 25px;
     padding: 5px 10px;
@@ -89,7 +90,7 @@
 
 .adatok .also .rowba p {
     padding: 0;
-    margin: 0 30px;
+    margin: 2.5px 30px;
 }
 
 .rating {
@@ -104,3 +105,87 @@
 
     font-weight: bolder;
 }
+
+
+
+
+
+#inputactions {
+    width: 100%;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+
+    text-align: center;
+
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+
+#inputactions div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+
+#inputactions div button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+    height: fit-content;
+
+    /*clear done*/
+
+    border: 1px solid var(--red-underline);
+    border-radius: 20px;
+    background-color: var(--red-theme);
+    padding: 5px 10px;
+
+    margin: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+#inputactions div button:hover {
+    transition: all 0.3s ease-in-out;
+    font-size: larger;
+}
+
+
+
+
+
+#inputactions div p {
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
+.bevitel {
+    width: 100%;
+}
+
+#inputactions input, #inputactions textarea {
+    width: 40%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
