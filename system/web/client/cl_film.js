@@ -142,6 +142,7 @@ async function getData() {
                 <div class="felso">
                     <h2 id="cim" class="underline_hover">${adatok.title}</h2>
                     <hr>
+                    <p id="datumok"></p>
                     <p id="sajatnote"></p><br>
                     <p id="leiras">${adatok.overview}</p>
                 </div>
@@ -153,31 +154,36 @@ async function getData() {
                     </div>
 
                     <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
+                    <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
                     <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
                     <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
                     <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
                     <br>
-                    <a href="" target="_blank" rel="noopener noreferrer"></a>
+                    <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
 
                         
                     <div id="inputactions">
-                        <div id="wishlistcontainer">
-                            <p id="wishlisttext">Kívánságlistára</p>
-                            <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
-                        </div>
-    
-                        <div id="watchedcontainer">
-                            <p id="watchedtext">Megnézettnek jelölés</p>
-                            <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
+                        <div class="gombok">
+                            <div id="wishlistcontainer">
+                                <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
+                                <p id="wishlisttext">Kívánságlistára</p>
+                            </div>
+        
+                            <div id="watchedcontainer">
+                                <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
+                                <p id="watchedtext">Megnézettnek jelölés</p>
+                            </div>
                         </div>
 
-                        <div class="bevitel">
-                            <input type="text" name="link" id="link" placeholder="Link">
-                            <button id="linkbutton">Link hozzáadása</button>
-                        </div>
-                        <div class="bevitel">
-                            <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
-                            <button id="notebutton">Jegyzet hozzáadása</button>
+                        <div class="inputok">
+                            <div class="bevitel">
+                                <input type="text" name="link" id="link" placeholder="Link">
+                                <button id="linkbutton">Link hozzáadása</button>
+                            </div>
+                            <div class="bevitel">
+                                <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
+                                <button id="notebutton">Jegyzet hozzáadása</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -197,6 +203,11 @@ async function getData() {
 
 
 //------------------------------------------------------Backend cuccok---------------------------------------------
+var wishlistbeAddolva
+var watchlistbeAddolva
+var linkAddolva
+var noteFrissitve
+
 
 async function checkWishlist(id) {
     var amiMegy = {
@@ -216,6 +227,10 @@ async function checkWishlist(id) {
         if (response.ok) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    var date = new Date(result.dataVissza[i].added_at); 
+                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    wishlistbeAddolva = localDate
+
                     return true
                 }
             }
@@ -248,6 +263,10 @@ async function checkWatched(id) {
         if (response.ok) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    var date = new Date(result.dataVissza[i].added_at); 
+                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    watchlistbeAddolva = localDate
+
                     return true
                 }
             }
@@ -258,6 +277,79 @@ async function checkWatched(id) {
         console.error(e)
     }
 }
+
+
+
+
+async function checkLink(id) {
+    var amiMegy = {
+        user_id: JSON.parse(localStorage.user).user_id,
+        tipus: "movie"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getLinks`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(i in result.dataVissza) {
+                if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    var date = new Date(result.dataVissza[i].added_at); 
+                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    linkAddolva = localDate
+
+                    return result.dataVissza[i].link_url
+                }
+            }
+
+            return false
+        }
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+
+
+
+async function checkNote(id) {
+    var amiMegy = {
+        user_id: JSON.parse(localStorage.user).user_id,
+        tipus: "movie"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getNotes`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(i in result.dataVissza) {
+                if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    var date = new Date(result.dataVissza[i].added_at); 
+                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    noteFrissitve = localDate
+
+                    return result.dataVissza[i].note
+                }
+            }
+
+            return false
+        }
+    } catch(e) {
+        console.error(e)
+    }
+}
+
 
 
 
@@ -276,10 +368,12 @@ const watchedtext = document.getElementById("watchedtext")
 
 const link = document.getElementById("link")  //link input, ennek .value
 const linkbutton = document.getElementById("linkbutton")
+const sajaturl = document.getElementById("sajaturl")
 const note = document.getElementById("note")  // note input, kell a .valueja
 const notebutton = document.getElementById("notebutton")
-const id = parseInt((window.location.pathname.split("/")[2]), 10)
 
+const id = parseInt((window.location.pathname.split("/")[2]), 10)
+const datumok = document.getElementById("datumok")
 
 
 //megnézni megnézte e vagy wishlisten van e
@@ -290,6 +384,7 @@ async function wishlistManage() {
         wishlist.innerHTML = '<i class="bi bi-bookmark-dash-fill"></i>'
         wishlisttext.innerHTML = "Kivétel a kívánságlistából"
         document.body.style.backgroundColor = "var(--wishlisted)"
+        datumok.innerHTML += ` | Kívánságlistához adva: ${wishlistbeAddolva} | `
 
         wishlist.dataset.do = "remove"
     } else {
@@ -311,6 +406,7 @@ async function watchedManage() {
         watched.innerHTML = '<i class="bi bi-file-excel-fill"></i>'
         watchedtext.innerHTML = "Jelölés nem megnézettnek"
         document.body.style.backgroundColor = "var(--watched)"
+        datumok.innerHTML += ` | Megnézve: ${watchlistbeAddolva} | `
 
         watched.dataset.do = "remove"
     } else {
@@ -322,6 +418,41 @@ async function watchedManage() {
 }
 
 watchedManage()
+
+
+
+
+async function linkManage() {
+    var haslink = await checkLink(id)
+
+    if (haslink) {
+        sajaturl.href = haslink
+        sajaturl.innerHTML = '<span class="bold">Saját link</span>'
+        linkbutton.innerHTML = "Link változtatása"
+        datumok.innerHTML += ` | Link adva: ${linkAddolva} | `
+    } else {
+        sajaturl.innerHTML = ""
+    }
+}
+
+linkManage()
+
+
+
+
+async function noteManage() {
+    var hasnote = await checkNote(id)
+
+    if (hasnote) {
+        sajatnote.innerHTML = hasnote
+        notebutton.innerHTML = "Jegyzet változtatása"
+        datumok.innerHTML += ` | Jegyzet frissítve: ${noteFrissitve} | `
+    } else {
+        sajatnote.innerHTML = ""
+    }
+}
+
+noteManage()
 
 
 
@@ -446,7 +577,6 @@ watched.onclick = async() => {
             console.log("Error:", e)
         }
     }
-    
 
 }
 
@@ -454,6 +584,84 @@ watched.onclick = async() => {
 
 
 
+linkbutton.onclick = async() => {
+
+    if (link.value.length > 0) {
+        const pattern = /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+[^\s]*$/i;
+        
+        if (pattern.test(link.value)) {
+            try {
+                var details = {
+                    user_id: JSON.parse(localStorage.user).user_id,
+                    media_id: id,
+                    media_type: "movie",
+                    link_url: link.value
+                }
+            
+                const response = await fetch(`${location.origin}/changeLink`, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(details)
+                })
+            
+                const result = await response.json()
+            
+                notify(result.message, result.type)
+            
+                if(result.type == "success") {
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 2000);
+                }
+            } catch(e) {
+                console.log("Error:", e)
+            }
+        } else {
+            notify("Helytelen URL", "error")
+        }
+    } else {
+        notify("Írj be valamit előtte", "error")
+    }
+
+}
+
+
+
+
+notebutton.onclick = async() => {
+
+    if (note.value.length > 0 && note.value != "Jegyzet") {
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "movie",
+                note: note.value
+            }
+        
+            const response = await fetch(`${location.origin}/changeNote`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+        
+            const result = await response.json()
+        
+            notify(result.message, result.type)
+        
+            if(result.type == "success") {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+    } else {
+        notify("Írj be valamit előtte", "error")
+    }
+
+}
 
 
 

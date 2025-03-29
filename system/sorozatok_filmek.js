@@ -294,7 +294,7 @@ app.post("/getWatched", async (req, res) => {
 
     if(tipus == "movie") {
         try {
-            const wishlistbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+            const watchedbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -304,7 +304,7 @@ app.post("/getWatched", async (req, res) => {
                         for(i in result) {
                             dataVissza.push({
                                 media_id: result[i].movie_id,
-                                added_at: result[i].added_at
+                                added_at: result[i].watched_at
                             })
                         }
 
@@ -321,3 +321,199 @@ app.post("/getWatched", async (req, res) => {
         }
     }
 });
+
+
+
+
+
+
+//---------------------------------------------------------------------------Linkek------------------------------
+
+app.post("/changeLink", async (req, res) => {
+    const { user_id, media_id, media_type, link_url } = req.body;
+
+    if (media_type == "movie") {
+        try {
+
+            const linkekbeUser = await db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                if (!err) {
+                    if (result.length == 0) {
+                        //oksa, nincs benne a linkekbe, mehet bele
+    
+                        try {
+                            const addUser = db.query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
+        
+                            const newUserRow = db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.length == 1) {
+                                        //oksa, benne van
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+                    } else {
+                        //UPDATE ha már van
+                        try {
+
+                            const updatedUserRow = db.query("UPDATE user_links SET link_url = ? WHERE movie_id = ?", [link_url, media_id], function (err, result) {
+                                if(err) throw err;
+                                
+                                if (result.affectedRows > 0) {
+                                    res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+
+                        } catch(e) {console.log(e)}
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+});
+
+
+
+
+app.post("/getLinks", async (req, res) => {
+    const {user_id, tipus} = req.body
+
+    if(tipus == "movie") {
+        try {
+            const linkekbeUser = db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+                if (!err) {
+                    if (result.length != 0) {
+                        //oksa benne van legalább 1
+
+                        var dataVissza = []
+
+                        for(i in result) {
+                            dataVissza.push({
+                                media_id: result[i].movie_id,
+                                added_at: result[i].added_at,
+                                link_url: result[i].link_url
+                            })
+                        }
+
+                        res.status(200).json({ dataVissza });
+                    } else {
+                        res.status(401).json({ message: "Nincs a linkek között semmi", type: "error"})
+                    }
+                } else {
+                    res.status(401).json({ message: "Hiba", type: "error"})
+                }
+            });
+        } catch(e) {
+            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+        }
+    }
+});
+
+
+
+
+
+
+//---------------------------------------------------------------------------Noteok------------------------------
+
+app.post("/changeNote", async (req, res) => {
+    const { user_id, media_id, media_type, note } = req.body;
+
+    if (media_type == "movie") {
+        try {
+
+            const noteokbaUser = await db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                if (!err) {
+                    if (result.length == 0) {
+                        //oksa, nincs benne a noteokba, mehet bele
+    
+                        try {
+                            const addUser = db.query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
+        
+                            const newUserRow = db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                if (!err) {
+                                    if (result.length == 1) {
+                                        //oksa, benne van
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+                        } catch(e) {console.log(e)}
+                    } else {
+                        //UPDATE ha már van
+                        try {
+
+                            const updatedUserRow = db.query("UPDATE user_notes SET note = ? WHERE movie_id = ?", [note, media_id], function (err, result) {
+                                if(err) throw err;
+                                
+                                if (result.affectedRows > 0) {
+                                    res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                } else {
+                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                }
+                            });
+
+                        } catch(e) {console.log(e)}
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+});
+
+
+
+
+app.post("/getNotes", async (req, res) => {
+    const {user_id, tipus} = req.body
+
+    if(tipus == "movie") {
+        try {
+            const noteokbaUser = db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+                if (!err) {
+                    if (result.length != 0) {
+                        //oksa benne van legalább 1
+
+                        var dataVissza = []
+
+                        for(i in result) {
+                            dataVissza.push({
+                                media_id: result[i].movie_id,
+                                added_at: result[i].updated_at,
+                                note: result[i].note
+                            })
+                        }
+
+                        res.status(200).json({ dataVissza });
+                    } else {
+                        res.status(401).json({ message: "Nincs a jegyzetek között semmi", type: "error"})
+                    }
+                } else {
+                    res.status(401).json({ message: "Hiba", type: "error"})
+                }
+            });
+        } catch(e) {
+            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+        }
+    }
+});
+
+

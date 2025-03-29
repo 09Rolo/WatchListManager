@@ -143,6 +143,7 @@
                     <div class="felso">
                         <h2 id="cim" class="underline_hover"></h2>
                         <hr>
+                        <p id="datumok"></p>
                         <p id="sajatnote"></p><br>
                         <p id="leiras"></p>
                     </div>
@@ -154,31 +155,36 @@
                         </div>
 
                         <p id="releasedate"></p>
+                        <p id="originallang"></p>
                         <p id="budget"></p>
                         <p id="status"></p>
                         <a href="https://www.imdb.com/title/" target="_blank" rel="noopener noreferrer" id="imdblink">IMDB Link</a>
                         <br>
-                        <a href="" target="_blank" rel="noopener noreferrer"></a> <!--<span class="bold">Saját link</span>-->
+                        <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a> <!--<span class="bold">Saját link</span>-->
 
                         
                         <div id="inputactions">
-                            <div id="wishlistcontainer">
-                                <p id="wishlisttext">Kívánságlistára</p>
-                                <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
-                            </div>
-        
-                            <div id="watchedcontainer">
-                                <p id="watchedtext">Megnézettnek jelölés</p>
-                                <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check-fill"></i></button>
+                            <div class="gombok">
+                                <div id="wishlistcontainer">
+                                    <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
+                                    <p id="wishlisttext">Kívánságlistára</p>
+                                </div>
+                            
+                                <div id="watchedcontainer">
+                                    <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check-fill"></i></button>
+                                    <p id="watchedtext">Megnézettnek jelölés</p>
+                                </div>
                             </div>
 
-                            <div class="bevitel">
-                                <input type="text" name="link" id="link" placeholder="Link">
-                                <button id="linkbutton">Link hozzáadása</button>
-                            </div>
-                            <div class="bevitel">
-                                <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
-                                <button id="notebutton">Jegyzet hozzáadása</button>
+                            <div class="inputok">
+                                <div class="bevitel">
+                                    <input type="text" name="link" id="link" placeholder="Link">
+                                    <button id="linkbutton">Link hozzáadása</button>
+                                </div>
+                                <div class="bevitel">
+                                    <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
+                                    <button id="notebutton">Jegyzet hozzáadása</button>
+                                </div>
                             </div>
                         </div>
 
