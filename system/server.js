@@ -43,6 +43,10 @@ app.get('/film/:section?/:section?', async(req, res) => {
 app.get('/sorozat/:section?/:section?', async(req, res) => {
   res.sendFile(path.join(__dirname, "web", "sorozat.html"));
 });
+
+app.get('/u/:section?/:section?', async(req, res) => {
+  res.sendFile(path.join(__dirname, "web", "user.html"));
+});
 //-------------------------------------------------------
 
 

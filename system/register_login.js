@@ -37,20 +37,30 @@ app.post("/register", async (req, res) => {
         const userRow = await db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
             if (!err) {
                 if (result.length == 0) {
-                    //mehet be
-                    const addUser = db.query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", [username, email, hashedPassword])
-                    
-                    const newUserRow = db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
-                        if (!err) {
-                            if (result.length == 1) {
-                                //oksa, benne van
-                                res.status(201).json({ message: "Sikeres regisztráció!", type: "success", user: result[0] });
-                                
-                            } else {
-                                res.status(500).json({ message: "Jelentkezz be!", type: "error", error: "Server speed error?" });
+                    try {
+                        const unamecheck = db.query("SELECT * FROM users WHERE username = ?", [username], function (err, result) {
+                            if (!err) {
+                                if (result.length == 0) {
+                                    //mehet be
+                                    const addUser = db.query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", [username, email, hashedPassword])
+
+                                    const newUserRow = db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+                                        if (!err) {
+                                            if (result.length == 1) {
+                                                //oksa, benne van
+                                                res.status(201).json({ message: "Sikeres regisztráció!", type: "success", user: result[0] });
+
+                                            } else {
+                                                res.status(500).json({ message: "Jelentkezz be!", type: "error", error: "Server speed error?" });
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    res.status(500).json({ message: "Már létezik ilyen ember", type: "error", error: "Már létezik ilyen ember" });
+                                }
                             }
-                        }
-                    });
+                        })
+                    } catch(e) {console.log(e)}
                 } else {
                     res.status(500).json({ message: "Már létezik ilyen ember", type: "error", error: "Már létezik ilyen ember" });
                 }
