@@ -50,3 +50,4 @@ IF /I "!START_OPTION!"=="i" (
 
 echo ✅ Keszen is volnank!
 pause
+
