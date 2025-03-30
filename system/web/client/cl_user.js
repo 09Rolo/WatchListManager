@@ -222,6 +222,17 @@ function ratingColor(rating) {
 }
 
 
+function GiveHrefToAdatlapButton() {
+    var adatlapB = document.getElementsByClassName("adatlap-button")
+
+    Array.from(adatlapB).forEach(el => {
+        el.href = `${window.location.origin}/film/${el.id}`
+    })
+    
+}
+
+
+
 
 
 const movies_list = document.getElementById("movies_list")
@@ -262,5 +273,7 @@ async function displayFilmek() {
             `
         }
     }
+
+    GiveHrefToAdatlapButton()
 }
 
