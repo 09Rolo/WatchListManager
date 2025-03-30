@@ -11,8 +11,10 @@
     --red-theme: rgb(100, 0, 0);
     --red-underline: rgb(250, 30, 30);
 
-    --wishlisted: rgba(0, 34, 55, 0.4);
-    --watched: rgba(0, 54, 27, 0.4);
+    --wishlisted: rgba(0, 34, 55, 0.6);
+    --watched: rgba(0, 54, 27, 0.6);
+    --wishlisted-old: rgba(0, 34, 55, 0.4);
+    --watched-old: rgba(0, 54, 27, 0.4);
 
 
     --scroll: 0;

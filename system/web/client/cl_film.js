@@ -9,6 +9,7 @@ const menu_logout_button = document.getElementById("menu_logout_button")
 
 
 var dataAdded = false
+var belepesnelNote
 
 
 window.onload = async () => {
@@ -447,6 +448,9 @@ async function noteManage() {
         sajatnote.innerHTML = hasnote
         notebutton.innerHTML = "Jegyzet változtatása"
         datumok.innerHTML += ` | Jegyzet frissítve: ${noteFrissitve} | `
+
+        belepesnelNote = hasnote
+        note.value = hasnote
     } else {
         sajatnote.innerHTML = ""
     }
@@ -630,7 +634,7 @@ linkbutton.onclick = async() => {
 
 notebutton.onclick = async() => {
 
-    if (note.value.length > 0 && note.value != "Jegyzet") {
+    if (note.value.length > 0 && note.value != "Jegyzet" && note.value != belepesnelNote) {
         try {
             var details = {
                 user_id: JSON.parse(localStorage.user).user_id,

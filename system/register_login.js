@@ -20,8 +20,9 @@ app.post("/register", async (req, res) => {
     }
 
     // Username and password length validation
-    if (username.length < 3 || username.length > 20) {
-        return res.status(400).json({ message: "A felhasználónévnek 3 és 20 karakter között kell lennie", type: "error" });
+    const usernameRegex = /^[a-zA-Z0-9._áéíóöőúüűÁÉÍÓÖŐÚÜŰ]{3,15}$/;
+    if (!username.test(usernameRegex)) {
+        return res.status(400).json({ message: "A felhasználónévnek 3 és 15 karakter között kell lennie, space nélkül. Illetve csak . és _ használható", type: "error" });
     }
     if (password.length < 6) {
         return res.status(400).json({ message: "A jelszónak legalább 6 karakter hosszúnak kell lennie", type: "error" });
@@ -144,4 +145,27 @@ const verifyToken = (req, res, next) => {
 //verify
 app.get("/verify", verifyToken, (req, res) => { //ez viszont kell ez a get
     res.json({ message: `${req.user.username}`, type: "info" });  //ez csak van ha kellene később
+});
+
+
+
+
+//get userid
+app.post("/getUserID", async (req, res) => {
+    const { username } = req.body;
+
+    try {
+        const user = db.query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
+            if (!err) {
+                if (result.length == 0) {
+                    res.status(401).json({ message: "Hiba", type: "error" })
+                } else {
+                    res.status(200).json({ message: "siker", type: "success", user_id: result[0].user_id });
+                }
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Szerver hiba!", type: "error", error: "Szerver hiba!" });
+    }
 });

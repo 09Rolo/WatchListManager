@@ -255,7 +255,7 @@
     border-bottom-right-radius: 10px;
     
     height: fit-content;
-    max-height: 400px;
+    max-height: 350px;
     overflow-y: auto;
 
     opacity: 0;

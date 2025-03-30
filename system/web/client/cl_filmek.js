@@ -188,7 +188,7 @@ searchbar.addEventListener("input", async (e) => {
           }
 
           if (sajat_movies_list.innerHTML == "") {
-            sajat_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
+            sajat_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
 
             if (search.length == 0) {
                 fillSajatMovies()
@@ -290,7 +290,12 @@ getWishlisted()
 ///DBből, ha all az indexelhet akkor mehet
 
 async function fillSajatMovies() {
-    sajat_movies_list.innerHTML = ""
+
+    if (wishlistedMovies.length > 0 || watchedMovies.length > 0) {
+        sajat_movies_list.innerHTML = ""
+    } else {
+        sajat_movies_list.innerHTML = '<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>'
+    }
 
 
     for(i in wishlistedMovies) {
@@ -361,4 +366,4 @@ async function fillSajatMovies() {
 
 setTimeout(() => {
     fillSajatMovies()
-}, 1000);
+}, 2000);
