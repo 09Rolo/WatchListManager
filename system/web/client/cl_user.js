@@ -234,10 +234,26 @@ function GiveHrefToAdatlapButton() {
 
 
 
-
-const movies_list = document.getElementById("movies_list")
 var language = 'hu'
 
+function manageLang() {
+    const sectionParts = window.location.pathname.split("/")
+    const section = sectionParts[3]
+
+    if (section && section == "hu") {
+        language = "hu"
+    } else if (section && section == "en") {
+        language = "en"
+    }
+}
+
+manageLang()
+
+
+
+
+
+const movies_list = document.getElementById("movies_list")
 
 async function displayFilmek() {
     if (wishlistedMovies.length > 0) {

@@ -78,10 +78,9 @@ const searchbar = document.getElementById("searchbar")
 var search = ""
 var language = 'hu'
 
-searchbar.addEventListener("input", async (e) => {
-    search = e.target.value
 
 
+function manageLang() {
     const sectionParts = window.location.pathname.split("/")
     const section = sectionParts[2]
 
@@ -90,7 +89,15 @@ searchbar.addEventListener("input", async (e) => {
     } else if (section && section == "en") {
         language = "en"
     }
+}
 
+manageLang()
+
+
+
+
+searchbar.addEventListener("input", async (e) => {
+    search = e.target.value
 
     try {
         const getData = await fetch(`https://api.themoviedb.org/3/search/movie?query=${search}&api_key=${API_KEY}&language=${language}`)
