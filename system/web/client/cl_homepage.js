@@ -117,8 +117,10 @@ function SwitchToInfo() {
     filmek.classList.remove("active");
 
     info.style.height = "50vh"
-    sorozatok.style.height = "100px"
-    filmek.style.height = "100px"
+    sorozatok.style.minHeight = "100px"
+    sorozatok.style.height = "20vh"
+    filmek.style.minHeight = "100px"
+    filmek.style.height = "20vh"
     
 
     //sorozatok nagy nem, filmek nagy nem, sorozatok kicsi igen, filmek kicsi igen, infó kicsi nem, infó nagy igen
@@ -144,9 +146,11 @@ function SwitchToSorozatok() {
     info.classList.remove("active");
     filmek.classList.remove("active");
 
-    info.style.height = "100px"
+    info.style.minHeight = "100px"
+    info.style.height = "20vh"
     sorozatok.style.height = "50vh"
-    filmek.style.height = "100px"
+    filmek.style.minHeight = "100px"
+    filmek.style.height = "20vh"
 
 
     //sorozatok nagy igen, filmek nagy nem, sorozatok kicsi nem, filmek kicsi igen, infó kicsi igen, infó nagy nem
@@ -173,8 +177,10 @@ function SwitchToFilmek() {
     info.classList.remove("active");
     sorozatok.classList.remove("active");
 
-    info.style.height = "100px"
-    sorozatok.style.height = "100px"
+    info.style.minHeight = "100px"
+    info.style.height = "20vh"
+    sorozatok.style.minHeight = "100px"
+    sorozatok.style.height = "20vh"
     filmek.style.height = "50vh"
 
     
