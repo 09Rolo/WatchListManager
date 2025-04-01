@@ -21,7 +21,7 @@ app.post("/register", async (req, res) => {
 
     // Username and password length validation
     const usernameRegex = /^[a-zA-Z0-9._áéíóöőúüűÁÉÍÓÖŐÚÜŰ]{3,15}$/;
-    if (!username.test(usernameRegex)) {
+    if (!usernameRegex.test(username)) {
         return res.status(400).json({ message: "A felhasználónévnek 3 és 15 karakter között kell lennie, space nélkül. Illetve csak . és _ használható", type: "error" });
     }
     if (password.length < 6) {
