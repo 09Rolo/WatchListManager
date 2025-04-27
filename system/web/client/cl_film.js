@@ -30,7 +30,6 @@ window.onload = async () => {
 
 
 var API_KEY = ""
-var BASE_URL = ""
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
