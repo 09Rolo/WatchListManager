@@ -726,7 +726,13 @@ notebutton.onclick = async() => {
 }, 100); // Check every 100ms
 
 
+var selectedEpisodes = []
+
+
+
 async function changeSeason(btn) {
+    selectedEpisodes = []
+
     season_num = btn.innerHTML
     
     season_buttons = document.getElementsByClassName("season")
@@ -766,14 +772,14 @@ function loadSeasonData(s) {
             <div id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</div>
         </div>
 
-        <div class="row">
+        <div class="row kozeprow">
             <div id="episodes" class="col-md-7 col-10">
                 
             </div>
             
-            <div id="poster" class="col-md-4 col-10">
-                <img src="https://image.tmdb.org/t/p/original${poster}" id="fadedimg" class="img-fluid">
-                <img src="https://image.tmdb.org/t/p/original${poster}" id="posterimg" class="img-fluid">
+            <div id="evadposter" class="col-md-4 col-10">
+                <img src="https://image.tmdb.org/t/p/original${poster}" id="evadfadedimg" class="img-fluid">
+                <img src="https://image.tmdb.org/t/p/original${poster}" id="evadposterimg" class="img-fluid">
             </div>
         </div>
     `
@@ -786,18 +792,17 @@ function loadSeasonData(s) {
         var hossz = 0
         
         if (toHoursAndMinutes(ep.runtime)["hours"] != 0) {
-            var hossz = `<p id="hossz"><span class="bold">${toHoursAndMinutes(ep.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc(${ep.runtime}perc))</p>`
+            var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc(${ep.runtime}perc)`
         } else {
-            var hossz = `<p id="hossz"><span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc)</p>`
+            var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc`
         }
 
         episodes_container.innerHTML += `
-            <div class="episode">
+            <div class="episode" id="${ep.episode_number}" onclick="selectEpisode(this)">
                 <div class="data">
                     <p class="ep_num">${ep.episode_number}.</p>
                     <p>${ep.name}</p>
-                    <p>(${ep.air_date},</p>
-                    ${hossz}
+                    <p>(${ep.air_date}, ${hossz})</p>
                     <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
                 </div>
                 <div class="overview">
@@ -808,4 +813,29 @@ function loadSeasonData(s) {
         `
     }
     
+}
+
+
+
+function selectEpisode(melyik) {
+    console.log(selectedEpisodes, melyik.id)
+    let found = false
+
+    for (let i = 0; i < selectedEpisodes.length; i++) {
+        const element = selectedEpisodes[i];
+
+        if (element == melyik.id) {
+            found = true
+            selectedEpisodes.splice(i, 1)
+            break
+        }
+        
+    }
+
+    if (found) {
+        melyik.classList.remove("selected")
+    } else {
+        melyik.classList.add("selected")
+        selectedEpisodes.push(melyik.id)
+    }
 }
