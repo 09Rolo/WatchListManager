@@ -728,6 +728,15 @@ notebutton.onclick = async() => {
 
 async function changeSeason(btn) {
     season_num = btn.innerHTML
+    
+    season_buttons = document.getElementsByClassName("season")
+    Array.prototype.forEach.call(season_buttons, function(ele) {
+        ele.style.backgroundColor = "rgba(0,0,0,0.4"
+        ele.style.borderColor = "var(--red-underline)"
+    });
+
+    btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
+    btn.style.borderColor = "rgb(0, 255, 0)"
 
     const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
     const season = await getData_seasons.json()
@@ -751,10 +760,10 @@ function loadSeasonData(s) {
 
     container.innerHTML = `
         <div class="infok">
-            <p>${name}</p>
+            <h3>${name}</h3>
+            <h5>(${date})</h5>
             <p>${overview}</p>
-            <p>${date}</p>
-            <p id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</p>
+            <div id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</div>
         </div>
 
         <div class="row">
@@ -770,13 +779,32 @@ function loadSeasonData(s) {
     `
 
     const episodes_container = document.getElementById("episodes")
+    episodes_container.innerHTML = ""
 
     for (let episode = 0; episode < episodes.length; episode++) {
         let ep = episodes[episode]
+        var hossz = 0
+        
+        if (toHoursAndMinutes(ep.runtime)["hours"] != 0) {
+            var hossz = `<p id="hossz"><span class="bold">${toHoursAndMinutes(ep.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc(${ep.runtime}perc))</p>`
+        } else {
+            var hossz = `<p id="hossz"><span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc)</p>`
+        }
 
         episodes_container.innerHTML += `
-        ${ep.episode_number}. ${ep.name} (${ep.air_date}, ${ep.runtime} perc, ${ep.vote_average}) 
-            <br>
+            <div class="episode">
+                <div class="data">
+                    <p class="ep_num">${ep.episode_number}.</p>
+                    <p>${ep.name}</p>
+                    <p>(${ep.air_date},</p>
+                    ${hossz}
+                    <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
+                </div>
+                <div class="overview">
+                    <p>${ep.overview}</p>
+                </div>
+            </div>
+        
         `
     }
     
