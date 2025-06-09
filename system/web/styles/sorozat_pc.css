@@ -234,3 +234,54 @@ body {
 #datumok {
     font-size: small;
 }
+
+
+
+
+
+
+/*évadok, epizódok*/
+
+.general {
+    width: fit-content;
+    margin: 10px auto;
+    border: 2px solid var(--red-theme);
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.general p {
+    margin: 5px;
+    font-weight: bolder;
+}
+
+.general p span {
+    font-weight: normal;
+}
+
+
+#seasonlist {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    max-width: 95%;
+    width: fit-content;
+    margin-bottom: 20px;
+}
+
+.season {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1.4px solid var(--red-underline);
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+#seasonpage {
+    max-width: 95%;
+    margin: auto;
+}

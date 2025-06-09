@@ -132,9 +132,9 @@ function getGenres(genres) {
 
 
 
+const id = window.location.pathname.split("/")[2]
 
 async function getData() {
-    const id = window.location.pathname.split("/")[2]
 
     const getData = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=${language}`)
 
@@ -165,7 +165,7 @@ async function getData() {
                     <div class="rowba">
                         <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
                         <!--<p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>-->
-                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average}</p>
+                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
                     </div>
 
                     <p id="releasedate">Időtartam: <span class="bold">${idotartam}</span></p>
@@ -208,6 +208,41 @@ async function getData() {
                 <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="posterimg" class="img-fluid">
             </div>
         `
+
+        
+        
+        const masodikresz = document.getElementById("masodikresz")
+        masodikresz.innerHTML = `
+                <div class="general">
+                    <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
+                    <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
+                </div>
+
+                <div id="seasonlist">
+                    
+                </div>
+
+                <div id="seasonpage">
+
+                </div>
+        `
+
+        const seasonlist = document.getElementById("seasonlist")
+
+        
+        for (let season = 0; season < adatok.seasons.length; season++) {
+            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
+            const seasonok = await getData_seasons.json()
+
+            console.log(seasonok)
+            seasonlist.innerHTML += `
+                <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
+            `
+        }
+        
+
+        
+
 
         dataAdded = true
 
@@ -689,3 +724,60 @@ notebutton.onclick = async() => {
 
     }
 }, 100); // Check every 100ms
+
+
+async function changeSeason(btn) {
+    season_num = btn.innerHTML
+
+    const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
+    const season = await getData_seasons.json()
+
+    loadSeasonData(season)
+}
+
+
+
+function loadSeasonData(s) {
+    const container = document.getElementById("seasonpage")
+
+    let date = s.air_date
+    let name = s.name
+    let episodes = s.episodes
+    let overview = s.overview
+    let poster = s.poster_path
+    let num = s.season_number
+    let rating = s.vote_average
+
+
+    container.innerHTML = `
+        <div class="infok">
+            <p>${name}</p>
+            <p>${overview}</p>
+            <p>${date}</p>
+            <p id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</p>
+        </div>
+
+        <div class="row">
+            <div id="episodes" class="col-md-7 col-10">
+                
+            </div>
+            
+            <div id="poster" class="col-md-4 col-10">
+                <img src="https://image.tmdb.org/t/p/original${poster}" id="fadedimg" class="img-fluid">
+                <img src="https://image.tmdb.org/t/p/original${poster}" id="posterimg" class="img-fluid">
+            </div>
+        </div>
+    `
+
+    const episodes_container = document.getElementById("episodes")
+
+    for (let episode = 0; episode < episodes.length; episode++) {
+        let ep = episodes[episode]
+
+        episodes_container.innerHTML += `
+        ${ep.episode_number}. ${ep.name} (${ep.air_date}, ${ep.runtime} perc, ${ep.vote_average}) 
+            <br>
+        `
+    }
+    
+}

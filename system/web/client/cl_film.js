@@ -150,7 +150,7 @@ async function getData() {
                     <div class="rowba">
                         <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
                         <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
-                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average}</p>
+                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
                     </div>
 
                     <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
