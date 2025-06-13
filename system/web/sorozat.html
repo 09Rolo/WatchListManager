@@ -131,6 +131,15 @@
         <div class="navbarfixmarginja"></div>
 
 
+        <div id="loadingparent" style="display: none;">
+            <div class="loadingcucc">
+                <span class="loader"></span>
+                <h5>Kérlek várj egy kicsit ...</h5>
+                <p>(Ne töltsd újra az oldalt)</p>
+            </div>
+        </div>
+
+
         <!--Többi ide-->
         <div class="main">
             <div class="resz row" id="elsoresz">
@@ -166,8 +175,8 @@
                                 </div>
                             
                                 <div id="watchedcontainer">
-                                    <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check-fill"></i></button>
-                                    <p id="watchedtext">Megnézettnek jelölés</p>
+                                    <button id="watched" title="Az összes rész megnézettnek jelölése"><i class="bi bi-file-check-fill"></i></button>
+                                    <p id="watchedtext">Jelölés befejezettnek</p>
                                 </div>
                             </div>
 
@@ -221,10 +230,17 @@
                                     <p>2025.06.09</p>
                                     <p>48 perc</p>
                                     <div class="ertekeles">9.9</div>
+                                    <button class="overviewButton" onclick="showOverview(this)">Áttekintés</button>
                                 </div>
                                 <div class="overview">
                                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo aperiam ipsum molestias blanditiis eligendi distinctio laudantium reiciendis, eaque, velit nemo tempora alias fuga eveniet est optio, necessitatibus nihil quae. Fuga?</p>
                                 </div>
+                            </div>
+
+                            <hr>
+                            <div class="buttons" id="kezelobtns" style="display: none;">
+                                <button onclick="addEpsToWatched()">Jelölés megnézettnek</button>
+                                <button onclick="removeEpsFromWatched()">Jelölés nem megnézettnek</button>
                             </div>
     
                         </div>

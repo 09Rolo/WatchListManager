@@ -41,4 +41,9 @@
     .episode {
         width: 100% !important;
     }
+
+    .episode .overview {
+        font-size: small;
+    }
+
 }

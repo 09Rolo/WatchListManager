@@ -371,7 +371,7 @@ body {
     padding-right: 25px;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
@@ -381,14 +381,27 @@ body {
 }
 
 
-.episode .overview { /*valamit majd csinálok vele popupba kellene*/
-    position: fixed;
-    width: fit-content;
-    max-width: 90% !important;
-    top: 40%;
-    margin: auto;
-    display: none; /*valamit majd csinálok vele popupba kellene*/
+.overviewButton {
+    margin: 10px;
+    padding: 5px;
+    font-size: small;
+    border-radius: 20px;
+    border: 1px solid var(--red-underline);
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
 }
+
+.overviewButton:hover {
+    scale: 1.1;
+    transition: 0.3s;
+}
+
+.episode .overview { /*valamit majd csinálok vele*/
+    display: none;
+
+    margin: 5px;
+}
+
 
 .episode .data {
     display: flex;
@@ -429,6 +442,160 @@ body {
     font-size: larger;
 }
 
-.selected {
-    background-color: rgba(0, 40, 0, 0.4);
+
+#episodes hr {
+    width: 95% !important;
+    color: var(--red-theme);
+    border: 1px solid var(--red-underline);
+    background-color: var(--red-theme);
+    margin-top: 50px;
 }
+
+#episodes .buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    max-width: 99%;
+}
+
+.buttons button {
+    margin: 10px 40px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: 0.3s;
+    border: 2px solid black;
+
+
+    background-color: rgba(0, 100, 0, 0.5);
+}
+.buttons button:last-of-type {
+    background-color: rgba(100,0,0,0.5);
+}
+
+.buttons button:first-of-type:hover {
+    scale: 1.1;
+    background-color: rgba(0, 170, 0, 0.7);
+    transition: 0.3s;
+}
+.buttons button:last-of-type:hover {
+    scale: 1.1;
+    background-color: rgba(170, 0, 0, 0.7);
+    transition: 0.3s;
+}
+
+
+
+.selected {
+    background-color: rgba(32, 70, 32, 0.6) !important;
+}
+
+.selected * {
+    border-color: var(--red-underline) !important;
+}
+
+.watched {
+    /*background-color: rgba(34, 197, 94, 0.6);*/
+    background-color: rgba(21, 93, 55, 0.3);
+    border-color: rgb(49, 86, 24);
+}
+
+.watched * {
+    border-color: white;
+}
+
+.watched .ep_num {
+    border-color: rgb(51, 14, 14);
+}
+
+
+
+
+
+#loadingparent {
+    /*display: none; /*ez lesz jsel változtatva*/
+
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    
+    width: 100vw !important;
+    height: 100vh !important;
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    
+    z-index: 9999 !important;
+
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#loadingparent * {
+    width: fit-content;
+    margin: auto;
+}
+
+.loadingcucc {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+
+.loader {
+    position: relative;
+
+    left: 15%;
+
+    width: 144px !important;
+    height: 144px !important;
+    border: 5px dotted #FFF;
+    border-style: solid solid dotted dotted;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    animation: rotation 2s linear infinite;
+}
+
+.loader::after {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 5px dotted #FF3D00;
+  border-style: solid solid dotted;
+  width: 110px !important;
+  height: 110px !important;
+  border-radius: 50%;
+  animation: rotationBack 1s linear infinite;
+  transform-origin: center center;
+}
+      
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+} 

@@ -16,6 +16,9 @@
     --wishlisted-old: rgba(0, 34, 55, 0.4);
     --watched-old: rgba(0, 54, 27, 0.4);
 
+    --watched-series: rgba(0, 42, 20, 0.4);
+    --started-series: rgba(143, 142, 83, 0.1);
+
 
     --scroll: 0;
     --scroll-deg-right: 0;

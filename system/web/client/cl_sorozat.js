@@ -31,6 +31,9 @@ window.onload = async () => {
 
 var API_KEY = ""
 
+var allEpisodes = []
+
+
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
     menu_login_register.style.display = "none"
@@ -185,8 +188,8 @@ async function getData() {
                             </div>
         
                             <div id="watchedcontainer">
-                                <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
-                                <p id="watchedtext">Megnézettnek jelölés</p>
+                                <button id="watched" title="Az összes rész megnézettnek jelölése"><i class="bi bi-file-check"></i></button>
+                                <p id="watchedtext">Jelölés befejezettnek</p>
                             </div>
                         </div>
 
@@ -230,14 +233,39 @@ async function getData() {
         const seasonlist = document.getElementById("seasonlist")
 
         
-        for (let season = 0; season < adatok.seasons.length; season++) {
-            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
-            const seasonok = await getData_seasons.json()
+        if (adatok.seasons[0].season_number == 1) {
+            for (let season = 1; season < adatok.seasons.length + 1; season++) {
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
+                const seasonok = await getData_seasons.json()
 
-            console.log(seasonok)
-            seasonlist.innerHTML += `
-                <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
-            `
+                console.log(seasonok)
+                seasonlist.innerHTML += `
+                    <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
+                `
+
+
+                for (let eps = 0; eps < seasonok.episodes.length; eps++) {
+                    allEpisodes.push(seasonok.episodes[eps].id)
+                }
+                
+            }
+        } else {
+            for (let season = 0; season < adatok.seasons.length; season++) {
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
+                const seasonok = await getData_seasons.json()
+
+                console.log(seasonok)
+                seasonlist.innerHTML += `
+                    <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
+                `
+
+                if (season > 0) { //extrákat nem számolja bele az összes epizódnál, ezért nem kellene, hogy pl 62/62-t néztél meg és még mindig "nem láttad" az egészet
+                    for (let eps = 0; eps < seasonok.episodes.length; eps++) {
+                        allEpisodes.push(seasonok.episodes[eps].id)
+                    }
+                }
+                
+            }
         }
         
 
@@ -254,9 +282,12 @@ async function getData() {
 
 //------------------------------------------------------Backend cuccok---------------------------------------------
 var wishlistbeAddolva
-var watchlistbeAddolva
+var watchlistbeAddolvaEloszor
+var watchlistbeAddolvaUtoljara
 var linkAddolva
 var noteFrissitve
+
+var episodesWatched = []
 
 
 async function checkWishlist(id) {
@@ -310,21 +341,51 @@ async function checkWatched(id) {
     
         const result = await response.json()
     
+
+        let voltmar = false
+
         if (response.ok) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+                    if (!voltmar) {
+                        voltmar = true
+                    }
+
+
                     var date = new Date(result.dataVissza[i].added_at); 
                     var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
-                    watchlistbeAddolva = localDate
 
-                    return true
+                    if (watchlistbeAddolvaEloszor == undefined || watchlistbeAddolvaEloszor > localDate) {
+                        watchlistbeAddolvaEloszor = localDate
+                    }
+
+                    if (watchlistbeAddolvaUtoljara == undefined || watchlistbeAddolvaUtoljara < localDate) {
+                        watchlistbeAddolvaUtoljara = localDate
+                    }
+                    
+
+                    
+                    episodesWatched.push(result.dataVissza[i].episode_id)
                 }
             }
 
-            return false
+            if (voltmar) {
+                if (allEpisodes.every(el => episodesWatched.includes(el))) {
+                    return "vegig"
+                } else {
+                    return "elkezdte"
+                }
+                
+            } else {
+                return "nem"
+            }
+
+        } else {
+            return "nem"
         }
     } catch(e) {
         console.error(e)
+        return "nem"
     }
 }
 
@@ -452,18 +513,28 @@ wishlistManage()
 async function watchedManage() {
     var isWatched = await checkWatched(id)
 
-    if (isWatched) {
+    if (isWatched == "vegig") {
         watched.innerHTML = '<i class="bi bi-file-excel-fill"></i>'
-        watchedtext.innerHTML = "Jelölés nem megnézettnek"
-        document.body.style.backgroundColor = "var(--watched)"
-        datumok.innerHTML += ` | Megnézve: ${watchlistbeAddolva} | `
+        watchedtext.innerHTML = "Jelölés nem befejezettnek"
+        document.body.style.backgroundColor = "var(--watched-series)"
+        datumok.innerHTML += `| Elkezdve: ${watchlistbeAddolvaEloszor} | | Megnézve: ${watchlistbeAddolvaUtoljara} | `
 
-        watched.dataset.do = "remove"
-    } else {
+        watched.dataset.do = "removeall"
+
+    } else if(isWatched == "nem") {
         watched.innerHTML = '<i class="bi bi-file-check-fill"></i>'
-        watchedtext.innerHTML = "Jelölés megnézettnek"
+        watchedtext.innerHTML = "Jelölés befejezettnek"
 
-        watched.dataset.do = "add"
+        watched.dataset.do = "addall"
+
+    } else if (isWatched == "elkezdte") {
+        watched.innerHTML = '<i class="bi bi-file-check-fill"></i>'
+        watchedtext.innerHTML = "Jelölés befejezettnek"
+        document.body.style.backgroundColor = "var(--started-series)"
+        datumok.innerHTML += ` | Elkezdve: ${watchlistbeAddolvaEloszor} | `
+
+        watched.dataset.do = "addall"
+
     }
 }
 
@@ -576,56 +647,24 @@ wishlist.onclick = async() => {
 
 watched.onclick = async() => {
 
-    if (watched.dataset.do == "add") {
+
+    if (watched.dataset.do == "addall") {
         try {
-            var details = {
-                user_id: JSON.parse(localStorage.user).user_id,
-                media_id: id,
-                media_type: "tv"
-            }
-    
-            const response = await fetch(`${location.origin}/addWatched`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(details)
-            })
-    
-            const result = await response.json()
-    
-            notify(result.message, result.type)
-    
-            if(result.type == "success") {
-                setTimeout(() => {
-                    window.location.reload()
-                }, 2000);
-            }
+            //
+            selectedEpisodes = allEpisodes
+
+            console.log(selectedEpisodes)
+            addEpsToWatched()
         } catch(e) {
             console.log("Error:", e)
         }
 
-    } else if(watched.dataset.do == "remove") {
+    } else if(watched.dataset.do == "removeall") {
         try {
-            var details = {
-                user_id: JSON.parse(localStorage.user).user_id,
-                media_id: id,
-                media_type: "tv"
-            }
-    
-            const response = await fetch(`${location.origin}/removeWatched`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(details)
-            })
-    
-            const result = await response.json()
-    
-            notify(result.message, result.type)
-    
-            if(result.type == "success") {
-                setTimeout(() => {
-                    window.location.reload()
-                }, 2000);
-            }
+            //
+            selectedEpisodes = allEpisodes
+
+            removeEpsFromWatched()
         } catch(e) {
             console.log("Error:", e)
         }
@@ -726,18 +765,25 @@ notebutton.onclick = async() => {
 }, 100); // Check every 100ms
 
 
+
+/*----------------------------------------------------------------------------------------- Seasonok / Epizódok /*----------------------------------------------------------------------------------------- */
+
 var selectedEpisodes = []
 
 
 
 async function changeSeason(btn) {
+    if (selectedEpisodes.length > 0) {
+        notify("Az összes kiválasztás törlődött", "info")
+    }
+
     selectedEpisodes = []
 
     season_num = btn.innerHTML
     
     season_buttons = document.getElementsByClassName("season")
     Array.prototype.forEach.call(season_buttons, function(ele) {
-        ele.style.backgroundColor = "rgba(0,0,0,0.4"
+        ele.style.backgroundColor = "rgba(0,0,0,0.4)"
         ele.style.borderColor = "var(--red-underline)"
     });
 
@@ -798,12 +844,13 @@ function loadSeasonData(s) {
         }
 
         episodes_container.innerHTML += `
-            <div class="episode" id="${ep.episode_number}" onclick="selectEpisode(this)">
+            <div class="episode" id="${ep.id}" onclick="selectEpisode(this)">
                 <div class="data">
                     <p class="ep_num">${ep.episode_number}.</p>
                     <p>${ep.name}</p>
                     <p>(${ep.air_date}, ${hossz})</p>
                     <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
+                    <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
                 </div>
                 <div class="overview">
                     <p>${ep.overview}</p>
@@ -812,13 +859,64 @@ function loadSeasonData(s) {
         
         `
     }
-    
+
+    episodes_container.innerHTML += `
+        <hr>
+        <div class="buttons" id="kezelobtns" style="display: none;">
+            <button onclick="addEpsToWatched()">Jelölés megnézettnek</button>
+            <button onclick="removeEpsFromWatched()">Jelölés nem megnézettnek</button>
+        </div>
+    `
+
+
+    let ListedEpisodes = document.getElementsByClassName("episode")
+
+    Array.prototype.forEach.call(ListedEpisodes, function(ep) {
+        if (episodesWatched.includes(parseInt(ep.id, 10))) {
+            ep.classList.add("watched")
+        }
+    });
+
+
+    container.scrollIntoView({ behavior: 'smooth' });
+
 }
 
 
 
+function showOverview(parent) {
+
+    setTimeout(() => {
+        for (let i = 0; i < selectedEpisodes.length; i++) {
+            const element = selectedEpisodes[i];
+        
+            //console.log(element, parent.id)
+            if (element == parent.id) {
+                selectedEpisodes.splice(i, 1)
+                parent.classList.remove("selected")
+                break
+            }
+        
+        }
+
+
+        let overview = parent.getElementsByClassName("overview")[0]
+
+        if (overview.style.display == " " || overview.style.display == "" || overview.style.display == "none") {
+            overview.style.display = "block"
+        } else {
+            overview.style.display = "none"
+        }
+        
+    }, 100);
+
+}
+
+
+
+
 function selectEpisode(melyik) {
-    console.log(selectedEpisodes, melyik.id)
+    //console.log(selectedEpisodes, melyik.id)
     let found = false
 
     for (let i = 0; i < selectedEpisodes.length; i++) {
@@ -838,4 +936,110 @@ function selectEpisode(melyik) {
         melyik.classList.add("selected")
         selectedEpisodes.push(melyik.id)
     }
+
+
+    let kezeloButtons = document.getElementById("kezelobtns") 
+
+    if (selectedEpisodes.length > 0) {
+        kezeloButtons.style.display = "flex"
+    } else {
+        kezeloButtons.style.display = "none"
+    }
+
+
+    setTimeout(() => { //mert az áttekintés miatt buglik
+        if (selectedEpisodes.length > 0) {
+            kezeloButtons.style.display = "flex"
+        } else {
+            kezeloButtons.style.display = "none"
+        }
+    }, 200);
+}
+
+
+
+//adás/vevés
+
+async function addEpsToWatched() {
+    let loadingparent = document.getElementById("loadingparent")
+    loadingparent.style.display = "flex"
+
+
+    for (let i = 0; i < selectedEpisodes.length; i++) {
+        const ep = selectedEpisodes[i];
+
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "tv",
+                ep_id: ep,
+            }
+    
+            const response = await fetch(`${location.origin}/addWatched`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+    
+            const result = await response.json()
+    
+            //notify(result.message, result.type)
+    
+            if(result.type == "success") {
+                console.log("Siker")
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+
+    }
+
+    //it meg reload max egy kis timeouttal, nem is kell a loadingot eltűntetni akkor
+    setTimeout(() => {
+        window.location.reload()
+    }, 1000);
+}
+
+
+
+async function removeEpsFromWatched() {
+    let loadingparent = document.getElementById("loadingparent")
+    loadingparent.style.display = "flex"
+
+
+    for (let i = 0; i < selectedEpisodes.length; i++) {
+        const ep = selectedEpisodes[i];
+        
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "tv",
+                ep_id: ep,
+            }
+        
+            const response = await fetch(`${location.origin}/removeWatched`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+        
+            const result = await response.json()
+        
+            //notify(result.message, result.type)
+        
+            if(result.type == "success") {
+                console.log("Siker")
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+    
+    }
+    
+    //it meg reload max egy kis timeouttal, nem is kell a loadingot eltűntetni akkor
+    setTimeout(() => {
+        window.location.reload()
+    }, 1000);
 }
