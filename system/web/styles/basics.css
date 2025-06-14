@@ -18,6 +18,7 @@
 
     --watched-series: rgba(0, 42, 20, 0.4);
     --started-series: rgba(143, 142, 83, 0.1);
+    --started-series-lathatobb-bg: rgba(143, 142, 83, 0.6);
 
 
     --scroll: 0;
@@ -80,7 +81,7 @@ body {
 
 
 
-.cant_select {
+.cant_select, img {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
@@ -142,10 +143,6 @@ body {
     from {width: 100%;}
     to {width: 0px;}
 }
-
-
-
-
 
 
 

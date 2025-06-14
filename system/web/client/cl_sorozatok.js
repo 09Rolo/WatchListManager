@@ -9,6 +9,7 @@ const menu_logout_button = document.getElementById("menu_logout_button")
 
 var watchedSeries = []
 var wishlistedSeries = []
+var partiallWatched = []
 
 
 window.onload = async () => {
@@ -51,6 +52,8 @@ async function loggedIn() {
     
         if (response.ok) {
             API_KEY = result.apiKey
+
+            getPartiallyWatched()
         } else {
             notify("Hiba történt az API-al", "error")
         }
@@ -323,6 +326,86 @@ getWishlisted()
 
 
 
+
+
+async function getPartiallyWatched() {
+    var allEpisodes = 0
+    var watchedEpisodes = 0
+
+    for (let ids = 0; ids < watchedSeries.length; ids++) {
+        const elem = watchedSeries[ids];
+
+
+        const getData = await fetch(`https://api.themoviedb.org/3/tv/${elem}?api_key=${API_KEY}&language=${language}`)
+
+        const adatok = await getData.json()
+        if (adatok) {
+            for (let seasons = 1; seasons < adatok.seasons.length; seasons++) {
+                const element = adatok.seasons[seasons];
+
+                allEpisodes += element.episode_count
+            }
+            
+
+
+            var amiMegy = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                tipus: "tv"
+            }
+
+            try {
+                const response = await fetch(`${location.origin}/getWatched`, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(amiMegy)
+                })
+            
+                const result = await response.json()
+            
+                if (response.ok) {
+                    
+                    for(i in result.dataVissza) {
+                        if (result.dataVissza[i].media_id == elem) {
+                            watchedEpisodes += 1
+                        }
+                    }
+                }
+            } catch(e) {
+                console.error(e)
+            }
+
+
+            for (let s = 0; s < watchedSeries.length; s++) {
+                const element = watchedSeries[s];
+                
+                if (element == elem) {
+                    if (watchedEpisodes >= allEpisodes) {
+
+                    } else {
+                        console.log(s)
+                        partiallWatched.push(elem)
+                    }
+                }
+            }
+
+
+
+            allEpisodes = 0
+            watchedEpisodes = 0
+        }
+
+    }
+
+    watchedSeries = watchedSeries.filter(item => !partiallWatched.includes(item))
+
+}
+
+
+
+
+
+
+
 ///DBből, ha all az indexelhet akkor mehet
 
 async function fillSajatSeries() {
@@ -331,6 +414,72 @@ async function fillSajatSeries() {
         sajat_series_list.innerHTML = ""
     } else {
         sajat_series_list.innerHTML = '<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>'
+    }
+
+
+
+
+    for(i in partiallWatched) {
+        const getData = await fetch(`https://api.themoviedb.org/3/tv/${partiallWatched[i]}?api_key=${API_KEY}&language=${language}`)
+        const adatok = await getData.json()
+        
+        if (adatok) {
+            console.log(adatok);
+            
+            var cardColor = "var(--started-series-lathatobb-bg)"
+    
+            sajat_series_list.innerHTML += `
+                <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
+                    <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                    <div class="imgkeret">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><b>${adatok.name}</b></h5>
+                        <i class="bi bi-journal-arrow-up showtexticon"></i>
+                        <p class="card-text">${adatok.overview}</p>
+                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                        <p class="rating" style="color: ${ratingColor(adatok.vote_average)};">${Math.round(adatok.vote_average * 100) / 100}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">Megjelenés: ${adatok.first_air_date}</small>
+                    </div>
+                </div>
+            `
+        }
+    }
+
+
+
+
+    for(i in wishlistedSeries) {
+        const getData = await fetch(`https://api.themoviedb.org/3/tv/${wishlistedSeries[i]}?api_key=${API_KEY}&language=${language}`)
+        const adatok = await getData.json()
+        
+        if (adatok) {
+            console.log(adatok);
+            
+            var cardColor = "var(--wishlisted)"
+    
+            sajat_series_list.innerHTML += `
+                <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
+                    <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                    <div class="imgkeret">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><b>${adatok.name}</b></h5>
+                        <i class="bi bi-journal-arrow-up showtexticon"></i>
+                        <p class="card-text">${adatok.overview}</p>
+                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                        <p class="rating" style="color: ${ratingColor(adatok.vote_average)};">${Math.round(adatok.vote_average * 100) / 100}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">Megjelenés: ${adatok.first_air_date}</small>
+                    </div>
+                </div>
+            `
+        }
     }
 
 
@@ -365,37 +514,6 @@ async function fillSajatSeries() {
         }
     }
 
-
-
-    for(i in wishlistedSeries) {
-        const getData = await fetch(`https://api.themoviedb.org/3/tv/${wishlistedSeries[i]}?api_key=${API_KEY}&language=${language}`)
-        const adatok = await getData.json()
-        
-        if (adatok) {
-            console.log(adatok);
-            
-            var cardColor = "var(--wishlisted)"
-    
-            sajat_series_list.innerHTML += `
-                <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
-                    <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
-                    <div class="imgkeret">
-                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><b>${adatok.name}</b></h5>
-                        <i class="bi bi-journal-arrow-up showtexticon"></i>
-                        <p class="card-text">${adatok.overview}</p>
-                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button">Adatlap</a>
-                        <p class="rating" style="color: ${ratingColor(adatok.vote_average)};">${Math.round(adatok.vote_average * 100) / 100}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-body-secondary">Megjelenés: ${adatok.first_air_date}</small>
-                    </div>
-                </div>
-            `
-        }
-    }
     
 
     GiveHrefToAdatlapButton()

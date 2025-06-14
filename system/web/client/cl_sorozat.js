@@ -10,6 +10,7 @@ const menu_logout_button = document.getElementById("menu_logout_button")
 
 var dataAdded = false
 var belepesnelNote
+var seasonokSzama = 0
 
 
 window.onload = async () => {
@@ -143,7 +144,7 @@ async function getData() {
 
     const adatok = await getData.json()
     if (adatok) {
-        console.log(adatok)
+        //console.log(adatok)
 
         if (adatok.last_air_date && adatok.status == "Ended") {
             var idotartam = adatok.first_air_date + "-től | " + adatok.last_air_date + "-ig"
@@ -216,9 +217,10 @@ async function getData() {
         
         const masodikresz = document.getElementById("masodikresz")
         masodikresz.innerHTML = `
-                <div class="general">
-                    <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
-                    <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
+                <div class="general" id="general">
+                <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
+                <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
+                <hr>
                 </div>
 
                 <div id="seasonlist">
@@ -233,12 +235,14 @@ async function getData() {
         const seasonlist = document.getElementById("seasonlist")
 
         
+        seasonokSzama = adatok.seasons.length
+
         if (adatok.seasons[0].season_number == 1) {
             for (let season = 1; season < adatok.seasons.length + 1; season++) {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
 
-                console.log(seasonok)
+                //console.log(seasonok)
                 seasonlist.innerHTML += `
                     <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
                 `
@@ -254,7 +258,7 @@ async function getData() {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
 
-                console.log(seasonok)
+                //console.log(seasonok)
                 seasonlist.innerHTML += `
                     <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
                 `
@@ -327,6 +331,11 @@ async function checkWishlist(id) {
 
 
 async function checkWatched(id) {
+    var lastEpisodeWatched
+    var eloszorBasicDate
+    var utoljaraBasicDate
+
+
     var amiMegy = {
         user_id: JSON.parse(localStorage.user).user_id,
         tipus: "tv"
@@ -355,12 +364,16 @@ async function checkWatched(id) {
                     var date = new Date(result.dataVissza[i].added_at); 
                     var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
 
-                    if (watchlistbeAddolvaEloszor == undefined || watchlistbeAddolvaEloszor > localDate) {
+                    if (eloszorBasicDate == undefined || eloszorBasicDate > date) {
+                        eloszorBasicDate = date
                         watchlistbeAddolvaEloszor = localDate
                     }
 
-                    if (watchlistbeAddolvaUtoljara == undefined || watchlistbeAddolvaUtoljara < localDate) {
+                    if (utoljaraBasicDate == undefined || utoljaraBasicDate < date) {
+                        utoljaraBasicDate = date
                         watchlistbeAddolvaUtoljara = localDate
+
+                        lastEpisodeWatched = result.dataVissza[i].episode_id
                     }
                     
 
@@ -368,6 +381,16 @@ async function checkWatched(id) {
                     episodesWatched.push(result.dataVissza[i].episode_id)
                 }
             }
+
+            
+            var generalcucc = document.getElementById("general")
+            generalcucc.innerHTML += `
+                <p id="num_of_seen"><span>Látott epizódok száma:</span> ${episodesWatched.length}</p>
+            `
+
+            fillInLastWatched(lastEpisodeWatched)
+            console.log(watchlistbeAddolvaUtoljara)
+
 
             if (voltmar) {
                 if (allEpisodes.every(el => episodesWatched.includes(el))) {
@@ -790,10 +813,14 @@ async function changeSeason(btn) {
     btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
     btn.style.borderColor = "rgb(0, 255, 0)"
 
-    const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
-    const season = await getData_seasons.json()
+    try {
+        const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
+        const season = await getData_seasons.json()
 
-    loadSeasonData(season)
+        loadSeasonData(season)
+    } catch (e) {
+        console.error(e)
+    }
 }
 
 
@@ -1043,3 +1070,23 @@ async function removeEpsFromWatched() {
         window.location.reload()
     }, 1000);
 }
+
+
+
+async function fillInLastWatched(ep_id) {
+    for (let i = 0; i < seasonokSzama; i++) {
+        const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${API_KEY}&language=${language}`)
+        const season = await getData_seasons.json()
+        
+        for (let s = 0; s < season.episodes.length; s++) {
+            if (season.episodes[s].id == ep_id) {
+                console.log(season.episodes[s])
+
+                var generalcucc = document.getElementById("general")
+                generalcucc.innerHTML += `
+                    <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
+                `
+            }
+        }
+    }
+} 
