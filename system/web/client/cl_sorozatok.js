@@ -190,6 +190,25 @@ searchbar.addEventListener("input", async (e) => {
 
           GiveHrefToAdatlapButton()
 
+
+          setTimeout(() => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    observer.unobserve(img);
+                  }
+                });
+            });
+              
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                observer.observe(img);
+            });
+        }, 100);
+
+
+
           if (searched_series_list.innerHTML == "") {
             searched_series_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
           }
