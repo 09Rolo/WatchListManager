@@ -484,7 +484,7 @@ wishlist.onclick = async() => {
             if(result.type == "success") {
                 setTimeout(() => {
                     window.location.reload()
-                }, 2000);
+                }, 1000);
             }
         } catch(e) {
             console.log("Error:", e)
@@ -510,7 +510,7 @@ wishlist.onclick = async() => {
             if(result.type == "success") {
                 setTimeout(() => {
                     window.location.reload()
-                }, 2000);
+                }, 1000);
             }
         } catch(e) {
             console.log("Error:", e)
@@ -547,7 +547,7 @@ watched.onclick = async() => {
             if(result.type == "success") {
                 setTimeout(() => {
                     window.location.reload()
-                }, 2000);
+                }, 1000);
             }
         } catch(e) {
             console.log("Error:", e)
@@ -574,7 +574,7 @@ watched.onclick = async() => {
             if(result.type == "success") {
                 setTimeout(() => {
                     window.location.reload()
-                }, 2000);
+                }, 1000);
             }
         } catch(e) {
             console.log("Error:", e)
@@ -614,7 +614,7 @@ linkbutton.onclick = async() => {
                 if(result.type == "success") {
                     setTimeout(() => {
                         window.location.reload()
-                    }, 2000);
+                    }, 1000);
                 }
             } catch(e) {
                 console.log("Error:", e)
@@ -655,7 +655,7 @@ notebutton.onclick = async() => {
             if(result.type == "success") {
                 setTimeout(() => {
                     window.location.reload()
-                }, 2000);
+                }, 1000);
             }
         } catch(e) {
             console.log("Error:", e)
