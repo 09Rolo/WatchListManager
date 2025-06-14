@@ -261,10 +261,13 @@
     opacity: 0;
     transform: translateY(50%);
 
+    pointer-events: none;
+
     transition: all 0.3s ease-in-out;
 }
 
 .card:hover .card-text {
+    pointer-events: all;
     background-color: rgba(20, 20, 20, 0.9);
     transform: translateY(0);
     opacity: 1;

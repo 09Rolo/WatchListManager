@@ -121,9 +121,9 @@ searchbar.addEventListener("input", async (e) => {
 
                     sajat_movies_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                            <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="bluredimg" alt="poszter">
+                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                             <div class="imgkeret">
-                                <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="film poszter">
+                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title"><b>${el.title}</b></h5>
@@ -147,9 +147,9 @@ searchbar.addEventListener("input", async (e) => {
 
                     sajat_movies_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                            <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="bluredimg" alt="poszter">
+                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                             <div class="imgkeret">
-                                <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="film poszter">
+                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title"><b>${el.title}</b></h5>
@@ -169,9 +169,9 @@ searchbar.addEventListener("input", async (e) => {
 
             searched_movies_list.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                    <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="bluredimg" alt="poszter">
+                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img src="https://image.tmdb.org/t/p/w500${el.poster_path}" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title"><b>${el.title}</b></h5>
@@ -316,9 +316,9 @@ async function fillSajatMovies() {
     
             sajat_movies_list.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
-                    <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="bluredimg" alt="poszter">
+                    <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
@@ -347,9 +347,9 @@ async function fillSajatMovies() {
     
             sajat_movies_list.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
-                    <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="bluredimg" alt="poszter">
+                    <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
@@ -367,6 +367,23 @@ async function fillSajatMovies() {
     }
 
     GiveHrefToAdatlapButton()
+
+
+    setTimeout(() => {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                observer.unobserve(img);
+              }
+            });
+        });
+          
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            observer.observe(img);
+        });
+    }, 100);
 
 }
 
