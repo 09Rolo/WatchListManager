@@ -96,8 +96,41 @@ manageLang()
 
 
 
-searchbar.addEventListener("input", async (e) => {
-    search = e.target.value
+function debounce(func) {
+    let delay = 300
+
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+}
+
+
+
+
+
+searchbar.onkeydown = function(e) {
+    if (e.keyCode == 13) {
+        e.preventDefault()
+    }
+}
+
+
+searchbar.addEventListener("input", debounce((e) => {
+    searching(e.target.value)
+}))
+
+window.addEventListener("pageshow", (event) => {
+    searching(searchbar.value)
+})
+
+
+
+async function searching(tartalom) {
+    search = tartalom
 
     try {
         const getData = await fetch(`https://api.themoviedb.org/3/search/movie?query=${search}&api_key=${API_KEY}&language=${language}`)
@@ -105,7 +138,7 @@ searchbar.addEventListener("input", async (e) => {
     
         if (adatok.results) {
           const sortedMovies = adatok.results.sort((a, b) => b.popularity - a.popularity);
-          console.log(sortedMovies);
+          //console.log(sortedMovies);
 
           searched_movies_list.innerHTML = ""
           sajat_movies_list.innerHTML = ""
@@ -195,11 +228,14 @@ searchbar.addEventListener("input", async (e) => {
           setTimeout(() => {
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
-                  if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    observer.unobserve(img);
-                  }
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        //observer.unobserve(img);
+                    } else {
+                        const img = entry.target;
+                        img.src = "./imgs/placeholder.png";
+                    }
                 });
             });
               
@@ -228,7 +264,7 @@ searchbar.addEventListener("input", async (e) => {
     }
     
 
-})
+}
 
 
 
@@ -331,7 +367,7 @@ async function fillSajatMovies() {
         const adatok = await getData.json()
         
         if (adatok) {
-            console.log(adatok);
+            //console.log(adatok);
             
             var cardColor = "var(--wishlisted)"
     
@@ -362,7 +398,7 @@ async function fillSajatMovies() {
         const adatok = await getData.json()
         
         if (adatok) {
-            console.log(adatok);
+            //console.log(adatok);
             
             var cardColor = "var(--watched)"
     
@@ -393,11 +429,14 @@ async function fillSajatMovies() {
     setTimeout(() => {
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                observer.unobserve(img);
-              }
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    //observer.unobserve(img);
+                } else {
+                    const img = entry.target;
+                    img.src = "./imgs/placeholder.png";
+                }
             });
         });
           

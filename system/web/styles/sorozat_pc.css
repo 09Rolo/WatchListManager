@@ -78,6 +78,16 @@ body {
     width: fit-content;
 }
 
+#releasedate {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#releasedate span {
+    margin-left: 5px;
+}
+
 
 .adatok .also .rowba {
     display: flex;

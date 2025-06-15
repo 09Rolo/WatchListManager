@@ -846,7 +846,7 @@ function loadSeasonData(s) {
         </div>
 
         <div class="row kozeprow">
-            <div id="episodes" class="col-md-7 col-10">
+            <div id="episodes" class="col-md-7 col-12">
                 
             </div>
             
