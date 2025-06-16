@@ -66,14 +66,14 @@
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <div id="menu_language">
                                         <li>
-                                            <a class="dropdown-item" href="./hu" id="menu_language_hu">
+                                            <p class="dropdown-item" onclick="changeLang('hu')" id="menu_language_hu">
                                                 Magyar
-                                            </a>
+                                            </p>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="./en" id="menu_language_en">
+                                            <p class="dropdown-item" onclick="changeLang('en')" id="menu_language_en">
                                                 Angol
-                                            </a>
+                                            </p>
                                         </li>
                                     </div>
                                 </ul>
@@ -142,6 +142,17 @@
                 <h5>Saját link</h5>
                 <p id="sajaturl" class="underline_hover"></p><br>
                 <button id="copyurl">Másolás</button>
+            </div>
+
+
+            <div class="nyelvkuki box">
+                <h5>Megjelenítési nyelv</h5>
+
+                <div id="valaszto">
+                    <p id="magyar" onclick="changeCookieLang('hu')">Magyar</p>
+                    <p>/</p>
+                    <p id="angol" onclick="changeCookieLang('en')">Angol</p>
+                </div>
             </div>
 
             <div class="helpbox box">

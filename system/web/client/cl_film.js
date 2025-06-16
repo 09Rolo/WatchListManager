@@ -115,14 +115,25 @@ menu_language_hu.href = `/film/${section}/hu`
 menu_language_en.href = `/film/${section}/en`
 
 
-const langsection = sectionParts[3]
-var language = "hu"
+var language = 'hu'
 
-if (langsection && langsection == "hu") {
-    language = "hu"
-} else if (langsection && langsection == "en") {
-    language = "en"
+function manageLang() {
+    const sectionParts = window.location.pathname.split("/")
+    const section = sectionParts[3]
+
+    if (section && section == "hu") {
+        language = "hu"
+    } else if (section && section == "en") {
+        language = "en"
+    }
+
+
+    if (getLanguageCookie() != null && !section) {
+        language = getLanguageCookie()
+    }
 }
+
+manageLang()
 
 
 

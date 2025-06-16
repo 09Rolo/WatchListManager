@@ -383,3 +383,18 @@ needtypeElements.forEach((el) => {needtypeObserver.observe(el)})
 //-------------------------------------------------------------------------------
 
 
+
+
+//----------------------------------------------------Kuki
+
+function setLanguageCookie(language) {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 100); // Set to expire in 100 years
+    document.cookie = `language=${encodeURIComponent(language)}; expires=${date.toUTCString()}; path=/`;
+}
+
+
+function getLanguageCookie() {
+    const match = document.cookie.match(/(?:^|; )language=([^;]*)/);
+    return match ? decodeURIComponent(match[1]) : null;
+}

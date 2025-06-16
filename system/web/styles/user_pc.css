@@ -75,6 +75,38 @@
 
 
 
+#valaszto {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    padding: 5px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    transition: 0.5s all;
+
+    background: linear-gradient(90deg,rgba(255, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 60%); /*jssel váltani erre: linear-gradient(90deg,rgba(0, 0, 0, 1) 40%, rgba(255, 0, 0, 1) 100%);*/
+}
+
+#valaszto p {
+    margin: 0px;
+}
+
+
+#magyar, #angol {
+
+    transition: 0.3s;
+}
+#magyar:hover, #angol:hover {
+    font-size: larger;
+    font-weight: bolder;
+    transition: 0.3s;
+}
+
+
+
 .inline_a {
     text-decoration: none;
     color: var(--red-underline);

@@ -86,14 +86,27 @@ menu_language_hu.href = `/sorozat/${section}/hu`
 menu_language_en.href = `/sorozat/${section}/en`
 
 
-const langsection = sectionParts[3]
-var language = "hu"
 
-if (langsection && langsection == "hu") {
-    language = "hu"
-} else if (langsection && langsection == "en") {
-    language = "en"
+
+var language = 'hu'
+
+function manageLang() {
+    const sectionParts = window.location.pathname.split("/")
+    const section = sectionParts[3]
+
+    if (section && section == "hu") {
+        language = "hu"
+    } else if (section && section == "en") {
+        language = "en"
+    }
+
+
+    if (getLanguageCookie() != null && !section) {
+        language = getLanguageCookie()
+    }
 }
+
+manageLang()
 
 
 
@@ -369,7 +382,7 @@ async function checkWatched(id) {
                         watchlistbeAddolvaEloszor = localDate
                     }
 
-                    if (utoljaraBasicDate == undefined || utoljaraBasicDate < date) {
+                    if (utoljaraBasicDate == undefined || utoljaraBasicDate <= date) {
                         utoljaraBasicDate = date
                         watchlistbeAddolvaUtoljara = localDate
 
@@ -389,7 +402,7 @@ async function checkWatched(id) {
             `
 
             fillInLastWatched(lastEpisodeWatched)
-            console.log(watchlistbeAddolvaUtoljara)
+            //console.log(watchlistbeAddolvaUtoljara)
 
 
             if (voltmar) {
@@ -676,7 +689,7 @@ watched.onclick = async() => {
             //
             selectedEpisodes = allEpisodes
 
-            console.log(selectedEpisodes)
+            //console.log(selectedEpisodes)
             addEpsToWatched()
         } catch(e) {
             console.log("Error:", e)
@@ -1080,7 +1093,7 @@ async function fillInLastWatched(ep_id) {
         
         for (let s = 0; s < season.episodes.length; s++) {
             if (season.episodes[s].id == ep_id) {
-                console.log(season.episodes[s])
+                //console.log(season.episodes[s])
 
                 var generalcucc = document.getElementById("general")
                 generalcucc.innerHTML += `

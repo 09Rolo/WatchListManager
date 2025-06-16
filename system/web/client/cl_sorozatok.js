@@ -92,6 +92,11 @@ function manageLang() {
     } else if (section && section == "en") {
         language = "en"
     }
+
+    
+    if (getLanguageCookie() != null && !section) {
+        language = getLanguageCookie()
+    }
 }
 
 manageLang()

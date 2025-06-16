@@ -26,20 +26,20 @@ app.post("/addWishlist", async (req, res) => {
     if (media_type == "movie") {
         try {
 
-            const watchedbeUser = await db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+            const watchedbeUser = db.getConnection().query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a watchedben
                         try {
-                            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 0) {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
+                                            const addUser = db.getConnection().query("INSERT INTO user_wishlist (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
                         
-                                            const newUserRow = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                            const newUserRow = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                                 if (!err) {
                                                     if (result.length == 1) {
                                                         //oksa, benne van
@@ -76,20 +76,20 @@ app.post("/addWishlist", async (req, res) => {
     if (media_type == "tv") {
         try {
 
-            const watchedbeUser = await db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+            const watchedbeUser = db.getConnection().query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a watchedben
                         try {
-                            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 0) {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, series_id) VALUES (?, ?)", [user_id, media_id])
+                                            const addUser = db.getConnection().query("INSERT INTO user_wishlist (user_id, series_id) VALUES (?, ?)", [user_id, media_id])
                         
-                                            const newUserRow = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                            const newUserRow = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                                                 if (!err) {
                                                     if (result.length == 1) {
                                                         //oksa, benne van
@@ -132,13 +132,13 @@ app.post("/removeWishlist", async (req, res) => {
 
     if (media_type == "movie") {
         try {
-            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa, benne van
                         
                         try {
-                            const deleteFromWishlist = db.query("DELETE FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const deleteFromWishlist = db.getConnection().query("DELETE FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
@@ -166,13 +166,13 @@ app.post("/removeWishlist", async (req, res) => {
 
     if (media_type == "tv") {
         try {
-            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa, benne van
                         
                         try {
-                            const deleteFromWishlist = db.query("DELETE FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                            const deleteFromWishlist = db.getConnection().query("DELETE FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
@@ -207,7 +207,7 @@ app.post("/getWishlist", async (req, res) => {
 
     if(tipus == "movie") {
         try {
-            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -237,7 +237,7 @@ app.post("/getWishlist", async (req, res) => {
 
     if(tipus == "tv") {
         try {
-            const wishlistbeUser = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
+            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -281,20 +281,20 @@ app.post("/addWatched", async (req, res) => {
     if (media_type == "movie") {
         try {
 
-            const wishlistbeUser = await db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a wishlistben
                         try {
-                            const watchlistbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const watchlistbeUser = db.getConnection().query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 0) {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
+                                            const addUser = db.getConnection().query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
                         
-                                            const newUserRow = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                            const newUserRow = db.getConnection().query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                                 if (!err) {
                                                     if (result.length == 1) {
                                                         //oksa, benne van
@@ -319,14 +319,14 @@ app.post("/addWatched", async (req, res) => {
                     } else {
                         
                         try {
-                            const deleteFromWishlist = db.query("DELETE FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const deleteFromWishlist = db.getConnection().query("DELETE FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
+                                            const addUser = db.getConnection().query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
                         
-                                            const newUserRow = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                            const newUserRow = db.getConnection().query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                                 if (!err) {
                                                     if (result.length == 1) {
                                                         //oksa, benne van
@@ -362,20 +362,20 @@ app.post("/addWatched", async (req, res) => {
     if (media_type == "tv") {
         try {
 
-            const wishlistbeUser = await db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+            const wishlistbeUser = db.getConnection().query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a wishlistben
                         try {
-                            const watchlistbeUser = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+                            const watchlistbeUser = db.getConnection().query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 0) {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id])
+                                            const addUser = db.getConnection().query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id])
                         
-                                            const newUserRow = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+                                            const newUserRow = db.getConnection().query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
                                                 if (!err) {
                                                     if (result.length == 1) {
                                                         //oksa, benne van
@@ -400,14 +400,14 @@ app.post("/addWatched", async (req, res) => {
                     } else {
                         
                         try {
-                            const deleteFromWishlist = db.query("DELETE FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                            const deleteFromWishlist = db.getConnection().query("DELETE FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id])
+                                            const addUser = db.getConnection().query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id])
                         
-                                            const newUserRow = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+                                            const newUserRow = db.getConnection().query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
                                                 if (!err) {
                                                     if (result.length == 1) {
                                                         //oksa, benne van
@@ -448,13 +448,13 @@ app.post("/removeWatched", async (req, res) => {
 
     if (media_type == "movie") {
         try {
-            const wachedbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+            const wachedbeUser = db.getConnection().query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa, benne van
                         
                         try {
-                            const deleteFromWatched = db.query("DELETE FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const deleteFromWatched = db.getConnection().query("DELETE FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
@@ -483,13 +483,13 @@ app.post("/removeWatched", async (req, res) => {
 
     if (media_type == "tv") {
         try {
-            const wachedbeUser = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+            const wachedbeUser = db.getConnection().query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa, benne van
                         
                         try {
-                            const deleteFromWatched = db.query("DELETE FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+                            const deleteFromWatched = db.getConnection().query("DELETE FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
@@ -524,7 +524,7 @@ app.post("/getWatched", async (req, res) => {
 
     if(tipus == "movie") {
         try {
-            const watchedbeUser = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+            const watchedbeUser = db.getConnection().query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -554,7 +554,7 @@ app.post("/getWatched", async (req, res) => {
 
     if(tipus == "tv") {
         try {
-            const watchedbeUser = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
+            const watchedbeUser = db.getConnection().query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -596,15 +596,15 @@ app.post("/changeLink", async (req, res) => {
     if (media_type == "movie") {
         try {
 
-            const linkekbeUser = await db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+            const linkekbeUser = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a linkekbe, mehet bele
     
                         try {
-                            const addUser = db.query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
+                            const addUser = db.getConnection().query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
         
-                            const newUserRow = db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const newUserRow = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 1) {
                                         //oksa, benne van
@@ -621,7 +621,7 @@ app.post("/changeLink", async (req, res) => {
                         //UPDATE ha már van
                         try {
 
-                            const updatedUserRow = db.query("UPDATE user_links SET link_url = ? WHERE movie_id = ?", [link_url, media_id], function (err, result) {
+                            const updatedUserRow = db.getConnection().query("UPDATE user_links SET link_url = ? WHERE movie_id = ?", [link_url, media_id], function (err, result) {
                                 if(err) throw err;
                                 
                                 if (result.affectedRows > 0) {
@@ -646,15 +646,15 @@ app.post("/changeLink", async (req, res) => {
     if (media_type == "tv") {
         try {
 
-            const linkekbeUser = await db.query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+            const linkekbeUser = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a linkekbe, mehet bele
     
                         try {
-                            const addUser = db.query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
+                            const addUser = db.getConnection().query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
         
-                            const newUserRow = db.query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                            const newUserRow = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 1) {
                                         //oksa, benne van
@@ -671,7 +671,7 @@ app.post("/changeLink", async (req, res) => {
                         //UPDATE ha már van
                         try {
 
-                            const updatedUserRow = db.query("UPDATE user_links SET link_url = ? WHERE series_id = ?", [link_url, media_id], function (err, result) {
+                            const updatedUserRow = db.getConnection().query("UPDATE user_links SET link_url = ? WHERE series_id = ?", [link_url, media_id], function (err, result) {
                                 if(err) throw err;
                                 
                                 if (result.affectedRows > 0) {
@@ -701,7 +701,7 @@ app.post("/getLinks", async (req, res) => {
 
     if(tipus == "movie") {
         try {
-            const linkekbeUser = db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+            const linkekbeUser = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -733,7 +733,7 @@ app.post("/getLinks", async (req, res) => {
 
     if(tipus == "tv") {
         try {
-            const linkekbeUser = db.query("SELECT * FROM user_links WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
+            const linkekbeUser = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -775,15 +775,15 @@ app.post("/changeNote", async (req, res) => {
     if (media_type == "movie") {
         try {
 
-            const noteokbaUser = await db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+            const noteokbaUser = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a noteokba, mehet bele
     
                         try {
-                            const addUser = db.query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
+                            const addUser = db.getConnection().query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
         
-                            const newUserRow = db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                            const newUserRow = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 1) {
                                         //oksa, benne van
@@ -800,7 +800,7 @@ app.post("/changeNote", async (req, res) => {
                         //UPDATE ha már van
                         try {
 
-                            const updatedUserRow = db.query("UPDATE user_notes SET note = ? WHERE movie_id = ?", [note, media_id], function (err, result) {
+                            const updatedUserRow = db.getConnection().query("UPDATE user_notes SET note = ? WHERE movie_id = ?", [note, media_id], function (err, result) {
                                 if(err) throw err;
                                 
                                 if (result.affectedRows > 0) {
@@ -825,15 +825,15 @@ app.post("/changeNote", async (req, res) => {
     if (media_type == "tv") {
         try {
 
-            const noteokbaUser = await db.query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+            const noteokbaUser = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a noteokba, mehet bele
     
                         try {
-                            const addUser = db.query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
+                            const addUser = db.getConnection().query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
         
-                            const newUserRow = db.query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                            const newUserRow = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
                                 if (!err) {
                                     if (result.length == 1) {
                                         //oksa, benne van
@@ -850,7 +850,7 @@ app.post("/changeNote", async (req, res) => {
                         //UPDATE ha már van
                         try {
 
-                            const updatedUserRow = db.query("UPDATE user_notes SET note = ? WHERE series_id = ?", [note, media_id], function (err, result) {
+                            const updatedUserRow = db.getConnection().query("UPDATE user_notes SET note = ? WHERE series_id = ?", [note, media_id], function (err, result) {
                                 if(err) throw err;
                                 
                                 if (result.affectedRows > 0) {
@@ -880,7 +880,7 @@ app.post("/getNotes", async (req, res) => {
 
     if(tipus == "movie") {
         try {
-            const noteokbaUser = db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
+            const noteokbaUser = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1
@@ -912,7 +912,7 @@ app.post("/getNotes", async (req, res) => {
 
     if(tipus == "tv") {
         try {
-            const noteokbaUser = db.query("SELECT * FROM user_notes WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
+            const noteokbaUser = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND series_id IS NOT NULL", [user_id], function (err, result) {
                 if (!err) {
                     if (result.length != 0) {
                         //oksa benne van legalább 1

@@ -234,6 +234,39 @@ function GiveHrefToAdatlapButton() {
 
 
 
+function changeLang(what) {
+    const sectionParts = window.location.pathname.split("/")
+
+    if (sectionParts[3]) {
+        window.location.href = window.location.origin + "/" + sectionParts[1] + "/" + sectionParts[2] + "/" + what
+    } else {
+        window.location.href = window.location.href + "/" + what 
+    }
+}
+
+
+
+function changeCookieLang(what) {
+    setLanguageCookie(what)
+    window.location.reload()
+}
+
+
+
+function adjustSwitcherToLang() {
+    const valaszto = document.getElementById("valaszto")
+
+    if (getLanguageCookie() != null) {
+        if (getLanguageCookie() == "en") {
+            valaszto.style.background = "linear-gradient(90deg,rgba(0, 0, 0, 1) 40%, rgba(255, 0, 0, 1) 100%)"
+        }
+    }
+}
+
+adjustSwitcherToLang()
+
+
+
 var language = 'hu'
 
 function manageLang() {
@@ -244,6 +277,11 @@ function manageLang() {
         language = "hu"
     } else if (section && section == "en") {
         language = "en"
+    }
+
+
+    if (getLanguageCookie() != null && !section) {
+        language = getLanguageCookie()
     }
 }
 

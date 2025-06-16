@@ -35,17 +35,17 @@ app.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
 
-        const userRow = await db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+        const userRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     try {
-                        const unamecheck = db.query("SELECT * FROM users WHERE username = ?", [username], function (err, result) {
+                        const unamecheck = db.getConnection().query("SELECT * FROM users WHERE username = ?", [username], function (err, result) {
                             if (!err) {
                                 if (result.length == 0) {
                                     //mehet be
-                                    const addUser = db.query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", [username, email, hashedPassword])
+                                    const addUser = db.getConnection().query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", [username, email, hashedPassword])
 
-                                    const newUserRow = db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+                                    const newUserRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
                                         if (!err) {
                                             if (result.length == 1) {
                                                 //oksa, benne van
@@ -95,7 +95,7 @@ app.post("/login", async (req, res) => {
     try {
         //Check if user exists
 
-        const user = db.query("SELECT * FROM users WHERE email = ?", [email], async function (err, result) {
+        const user = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "Helytelen adatok", type: "error" })
@@ -155,7 +155,7 @@ app.post("/getUserID", async (req, res) => {
     const { username } = req.body;
 
     try {
-        const user = db.query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
+        const user = db.getConnection().query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "Hiba", type: "error" })
