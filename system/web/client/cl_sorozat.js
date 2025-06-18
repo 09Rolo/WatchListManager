@@ -362,7 +362,7 @@ async function getData() {
 
             var max_eps = 0
 
-            for (let season = 1; season < adatok.seasons.length; season++) {
+            for (let season = 0; season < adatok.seasons.length; season++) {
                 if (adatok.seasons[season].episode_count > max_eps) {
                     max_eps = adatok.seasons[season].episode_count
                 }
@@ -378,7 +378,10 @@ async function getData() {
             }
 
 
-
+            table_seasons.innerHTML += `
+                <th>Special</th>
+                <th></th>
+            `
 
             for (let season = 0; season < adatok.seasons.length; season++) {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
@@ -411,9 +414,65 @@ async function getData() {
                         }
                     }
 
+                } else {
+                    var szamokVoltak = []
+
+                    for (let i = 0; i < max_eps; i++) {
+                        if (seasonok.episodes[i] && seasonok.episodes[i].episode_number == i+1) { //faszért van olyan, hogy kimarad random egy rész??? Breaking Bad Specialsnál 7. után a 9. jön  :(
+
+                            if (!szamokVoltak.includes(seasonok.episodes[i].episode_number)) {
+                                szamokVoltak.push(seasonok.episodes[i].episode_number)
+
+                                document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
+                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                    <td></td>
+                                `
+                            }
+                        } else if(seasonok.episodes[i] && seasonok.episodes[i].episode_number != i+1) {
+
+                            if (!szamokVoltak.includes(seasonok.episodes[i].episode_number)) {
+                                szamokVoltak.push(seasonok.episodes[i].episode_number)
+
+                                document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
+                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                    <td></td>
+                                `
+                            }
+                        } else {
+
+                            if (!szamokVoltak.includes(i+1)) {
+                                szamokVoltak.push(i+1)
+
+                                document.getElementById(`t_e${i+1}`).innerHTML += `
+                                    <td></td>
+                                    <td></td>
+                                `
+                            }
+                        }
+                    }
+
+
+                    var max_eps_arrayed = []
+
+                    for (let cucc = 1; cucc < max_eps+1; cucc++) {
+                        max_eps_arrayed.push(cucc)
+                    }
+
+                    var kimaradtSzamok = max_eps_arrayed.filter(val => !szamokVoltak.includes(val));
+
+                    for (let sz = 0; sz < kimaradtSzamok.length; sz++) {
+                        const szam = kimaradtSzamok[sz];
+                        
+                        document.getElementById(`t_e${szam}`).innerHTML += `
+                            <td></td>
+                            <td></td>
+                        `
+                    }
+
                 }
                 
             }
+
         }
         
 
