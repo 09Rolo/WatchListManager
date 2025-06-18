@@ -211,17 +211,6 @@ async function getWishlisted() {
 
 
 
-function ratingColor(rating) {
-    if (rating >= 7.5) {
-        return "green"
-    } else if (rating >= 5) {
-        return "orange"
-    } else {
-        return "red"
-    }
-}
-
-
 function GiveHrefToAdatlapButton() {
     var adatlapB = document.getElementsByClassName("adatlap-button")
 
@@ -329,5 +318,7 @@ async function displayFilmek() {
     }
 
     GiveHrefToAdatlapButton()
+
+    setUpcomingErtekelesCucc()
 }
 

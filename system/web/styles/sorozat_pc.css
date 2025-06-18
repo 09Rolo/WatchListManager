@@ -66,6 +66,7 @@ body {
     width: fit-content;
     color: var(--red-underline);
     transition: all 0.3s ease-in-out;
+    margin-bottom: 15px;
 }
 
 .adatok a:hover {
@@ -280,7 +281,7 @@ body {
     margin: auto;
     max-width: 95%;
     width: fit-content;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .season {
@@ -610,3 +611,145 @@ body {
     transform: rotate(-360deg);
   }
 } 
+
+
+
+
+
+
+#osszesito {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 100% !important;
+    padding: 10px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#osszesito_btn {
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--red-theme);
+    transition: 0.3s;
+}
+
+#osszesito_btn:hover {
+    font-size: large;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: 0.3s;
+}
+
+
+
+#tablazat {
+    width: fit-content;
+    max-width: 95% !important;
+    overflow-x: auto;
+    margin: auto;
+    font-size: medium;
+}
+
+
+#tablazat table {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+#tablazat table th, #tablazat table td {
+    color: black;
+    font-weight: 550;
+    padding: 2px 12px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#tablazat table td:first-child {
+    color: white;
+    font-weight: bolder;
+    text-align: right;
+    background-color: var(--bg-color);
+    padding: 3px 10px 3px 3px;
+    border-radius: 0px;
+
+
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+#tablazat table th {
+    color: white;
+
+    position: sticky;
+    top: 20px;
+    z-index: 2;
+}
+
+
+
+.szinek {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    max-width: 98% !important;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+}
+
+.magyarazat {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.magyarazat p {
+    margin: 0px;
+    margin-left: 15px;
+    font-weight: bolder;
+    font-size: large;
+}
+
+
+.szin {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+
+.szinek .magyarazat:nth-child(1) .szin {
+    background-color: var(--rating-awesome);
+}
+.szinek .magyarazat:nth-child(2) .szin {
+    background-color: var(--rating-great);
+}
+.szinek .magyarazat:nth-child(3) .szin {
+    background-color: var(--rating-good);
+}
+.szinek .magyarazat:nth-child(4) .szin {
+    background-color: var(--rating-regular);
+}
+.szinek .magyarazat:nth-child(5) .szin {
+    background-color: var(--rating-bad);
+}
+.szinek .magyarazat:nth-child(6) .szin {
+    background-color: var(--rating-garbage);
+}
+.szinek .magyarazat:nth-child(7) .szin {
+    background-color: var(--rating-upcoming);
+}
+

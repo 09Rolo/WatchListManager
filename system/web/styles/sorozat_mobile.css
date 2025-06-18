@@ -47,4 +47,8 @@
         font-size: small;
     }
 
+    .magyarazat p {
+        display: none;
+    }
+
 }

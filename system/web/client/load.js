@@ -398,3 +398,36 @@ function getLanguageCookie() {
     const match = document.cookie.match(/(?:^|; )language=([^;]*)/);
     return match ? decodeURIComponent(match[1]) : null;
 }
+
+
+
+//------------------------------------------------Rating cucc
+
+function ratingColor(rating) {
+    if (rating >= 8.8) {
+        return "var(--rating-awesome)"
+    } else if (rating >=7.8) {
+        return "var(--rating-great)"
+    } else if (rating >= 6.8) {
+        return "var(--rating-good)"
+    } else if (rating >= 5.4) {
+        return "var(--rating-regular)"
+    } else if (rating >= 3.8) {
+        return "var(--rating-bad)"
+    } else if (rating == 0) {
+        return "var(--rating-upcoming)"
+    } else {
+        return "var(--rating-garbage)"
+    }
+}
+
+
+function setUpcomingErtekelesCucc() {
+    setTimeout(() => {
+        document.querySelectorAll(".rating").forEach(rating => {
+            if (rating.style.backgroundColor == "var(--rating-upcoming)" || rating.style.color == "var(--rating-upcoming)") {
+                rating.innerHTML = "?"
+            }
+        })
+    }, 100);
+}

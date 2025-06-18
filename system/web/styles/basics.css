@@ -20,6 +20,14 @@
     --started-series: rgba(143, 142, 83, 0.1);
     --started-series-lathatobb-bg: rgba(143, 142, 83, 0.6);
 
+    --rating-awesome: rgb(24, 106, 59);
+    --rating-great: rgb(40, 180, 99);
+    --rating-good: rgb(244, 208, 63);
+    --rating-regular: rgb(243, 156, 18);
+    --rating-bad: rgb(231, 76, 60);
+    --rating-garbage: rgb(99, 57, 116);
+    --rating-upcoming: rgb(189, 189, 189);
+
 
     --scroll: 0;
     --scroll-deg-right: 0;

@@ -228,6 +228,8 @@ async function searching(tartalom) {
 
           GiveHrefToAdatlapButton()
 
+          setUpcomingErtekelesCucc()
+
 
 
           setTimeout(() => {
@@ -272,16 +274,6 @@ async function searching(tartalom) {
 }
 
 
-
-function ratingColor(rating) {
-    if (rating >= 7.5) {
-        return "green"
-    } else if (rating >= 5) {
-        return "orange"
-    } else {
-        return "red"
-    }
-}
 
 
 function GiveHrefToAdatlapButton() {
@@ -429,6 +421,8 @@ async function fillSajatMovies() {
     }
 
     GiveHrefToAdatlapButton()
+
+    setUpcomingErtekelesCucc()
 
 
     setTimeout(() => {

@@ -163,6 +163,7 @@
                         <p id="budget"></p>
                         <p id="status"></p>
                         <a href="https://www.imdb.com/title/" target="_blank" rel="noopener noreferrer" id="imdblink">IMDB Link</a>
+                        <a href="https://www.google.com/search?q=imdb+hehe" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
                         <br>
                         <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a> <!--<span class="bold">Saját link</span>-->
 
@@ -207,6 +208,88 @@
                 <div class="general">
                     <p id="num_of_s"><span>Évadok száma:</span> 5</p>
                     <p id="num_of_e"><span>Epzódok száma:</span> 62</p>
+                </div>
+
+                <div id="osszesito">
+                    <button id="osszesito_btn" onclick="showTable()">Összesítő táblázat</button>
+
+                    <div class="szinek" id="szinek" style="display: none;">
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Tökéletes</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Kiváló</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Jó</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Átlagos</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Rossz</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Szemét</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Nincs adat</div>
+                        </div>
+                    </div>
+
+                    <div id="tablazat" style="display: none">
+
+                        <table>
+                            <thead>
+                                <tr id="table_seasons">
+                                    <th></th>
+                                    <th>S1</th>
+                                    <th>S2</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>E1</td>
+                                    <td>9.1</td>
+                                    <td>8.9</td>
+                                </tr>
+                                <tr>
+                                    <td>E2</td>
+                                    <td>9.1</td>
+                                    <td>8.9</td>
+                                </tr>
+                                <tr>
+                                    <td>E3</td>
+                                    <td>9.1</td>
+                                    <td>8.9</td>
+                                </tr>
+                                <tr>
+                                    <td>E4</td>
+                                    <td>9.1</td>
+                                    <td>8.9</td>
+                                </tr>
+                                <tr>
+                                    <td>E5</td>
+                                    <td>9.1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
 
                 <div id="seasonlist">

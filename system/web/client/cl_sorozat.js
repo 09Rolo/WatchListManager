@@ -121,16 +121,6 @@ function toHoursAndMinutes(totalMinutes) {
 }
 
 
-function ratingColor(rating) {
-    if (rating >= 7.5) {
-        return "green"
-    } else if (rating >= 5) {
-        return "orange"
-    } else {
-        return "red"
-    }
-}
-
 
 function getGenres(genres) {
     var katok = ""
@@ -190,6 +180,7 @@ async function getData() {
                     <!--<p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>-->
                     <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
                     <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">Hivatalos oldala</span></a>
+                    <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
                     <br>
                     <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
 
@@ -231,10 +222,69 @@ async function getData() {
         const masodikresz = document.getElementById("masodikresz")
         masodikresz.innerHTML = `
                 <div class="general" id="general">
-                <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
-                <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
-                <hr>
+                    <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
+                    <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
+                    <hr>
                 </div>
+
+
+                <div id="osszesito">
+                    <button id="osszesito_btn" onclick="showTable()">Összesítő táblázat</button>
+
+
+                    <div class="szinek" id="szinek" style="display: none;">
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Tökéletes</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Kiváló</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Jó</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Átlagos</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Rossz</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Szemét</div>
+                            <p>|</p>
+                        </div>
+                        <div class="magyarazat">
+                            <div class="szin"></div>
+                            <div class="szinnev">Nincs adat</div>
+                        </div>
+                    </div>
+
+
+                    <div id="tablazat" style="display: none">
+                        <table class="cant_select">
+                            <thead>
+                                <tr id="table_seasons">
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_episodes">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
 
                 <div id="seasonlist">
                     
@@ -249,8 +299,32 @@ async function getData() {
 
         
         seasonokSzama = adatok.seasons.length
+        
+
+        const table_seasons = document.getElementById("table_seasons")
+        const table_episodes = document.getElementById("table_episodes")
 
         if (adatok.seasons[0].season_number == 1) {
+
+            var max_eps = 0
+
+            for (let season = 0; season < adatok.seasons.length; season++) {
+
+                if (adatok.seasons[season].episode_count > max_eps) {
+                    max_eps = adatok.seasons[season].episode_count
+                }
+            }
+
+            console.log(max_eps)
+
+            for (let ep = 0; ep < max_eps; ep++) {
+                table_episodes.innerHTML += `
+                    <tr id="t_e${ep+1}">
+                        <td>E${ep+1}.</td>
+                    </tr>
+                `
+            }
+
             for (let season = 1; season < adatok.seasons.length + 1; season++) {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
@@ -261,12 +335,51 @@ async function getData() {
                 `
 
 
+                table_seasons.innerHTML += `
+                    <th>S${season}</th>
+                `
+
                 for (let eps = 0; eps < seasonok.episodes.length; eps++) {
                     allEpisodes.push(seasonok.episodes[eps].id)
                 }
+
+
+                for (let i = 0; i < max_eps; i++) {
+                    if (seasonok.episodes[i]) {
+                        document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
+                            <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                        `
+                    } else {
+                        document.getElementById(`t_e${i+1}`).innerHTML += `
+                            <td></td>
+                        `
+                    }
+                }
+
                 
             }
         } else {
+
+            var max_eps = 0
+
+            for (let season = 1; season < adatok.seasons.length; season++) {
+                if (adatok.seasons[season].episode_count > max_eps) {
+                    max_eps = adatok.seasons[season].episode_count
+                }
+            }
+
+
+            for (let ep = 0; ep < max_eps; ep++) {
+                table_episodes.innerHTML += `
+                    <tr id="t_e${ep+1}">
+                        <td>E${ep+1}.</td>
+                    </tr>
+                `
+            }
+
+
+
+
             for (let season = 0; season < adatok.seasons.length; season++) {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
@@ -277,9 +390,27 @@ async function getData() {
                 `
 
                 if (season > 0) { //extrákat nem számolja bele az összes epizódnál, ezért nem kellene, hogy pl 62/62-t néztél meg és még mindig "nem láttad" az egészet
+                    table_seasons.innerHTML += `
+                        <th>S${season}</th>
+                    `
+
                     for (let eps = 0; eps < seasonok.episodes.length; eps++) {
                         allEpisodes.push(seasonok.episodes[eps].id)
                     }
+
+
+                    for (let i = 0; i < max_eps; i++) {
+                        if (seasonok.episodes[i]) {
+                            document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
+                                <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                            `
+                        } else {
+                            document.getElementById(`t_e${i+1}`).innerHTML += `
+                                <td></td>
+                            `
+                        }
+                    }
+
                 }
                 
             }
@@ -287,7 +418,9 @@ async function getData() {
         
 
         
-
+        setErtekelesColors()
+        setUpcomingErtekelesCucc()
+        startDragFigyeles()
 
         dataAdded = true
 
@@ -849,7 +982,6 @@ function loadSeasonData(s) {
     let num = s.season_number
     let rating = s.vote_average
 
-
     container.innerHTML = `
         <div class="infok">
             <h3>${name}</h3>
@@ -917,6 +1049,7 @@ function loadSeasonData(s) {
         }
     });
 
+    setUpcomingErtekelesCucc()
 
     container.scrollIntoView({ behavior: 'smooth' });
 
@@ -1087,19 +1220,108 @@ async function removeEpsFromWatched() {
 
 
 async function fillInLastWatched(ep_id) {
-    for (let i = 0; i < seasonokSzama; i++) {
-        const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${API_KEY}&language=${language}`)
-        const season = await getData_seasons.json()
-        
-        for (let s = 0; s < season.episodes.length; s++) {
-            if (season.episodes[s].id == ep_id) {
-                //console.log(season.episodes[s])
+    var missed = false
+    var marLetezik = false
 
-                var generalcucc = document.getElementById("general")
-                generalcucc.innerHTML += `
-                    <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
-                `
+    for (let i = 0; i < seasonokSzama; i++) {
+        try {
+            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${API_KEY}&language=${language}`)
+            const season = await getData_seasons.json()
+            
+            for (let s = 0; s < season.episodes.length; s++) {
+                if (season.episodes[s].id == ep_id) {
+
+                    var generalcucc = document.getElementById("general")
+                    generalcucc.innerHTML += `
+                        <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
+                    `
+                    marLetezik = true
+                }
+            }
+        } catch(e) {
+            missed = true
+        }
+    }
+
+
+    if (missed && !marLetezik) {
+        for (let i = 1; i < seasonokSzama+1; i++) {
+            try {
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${i}?api_key=${API_KEY}&language=${language}`)
+                const season = await getData_seasons.json()
+                
+                for (let s = 0; s < season.episodes.length; s++) {
+                    if (season.episodes[s].id == ep_id) {
+    
+                        var generalcucc = document.getElementById("general")
+                        generalcucc.innerHTML += `
+                            <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
+                        `
+                    }
+                }
+            } catch(e) {
+                missed = true
             }
         }
     }
 } 
+
+
+
+function showTable() {
+    const table = document.getElementById("tablazat")
+    const szinek = document.getElementById("szinek")
+
+    if (table.style.display == "none" || table.style.display == "") {
+        table.style.display = "flex"
+        szinek.style.display = "flex"
+    } else {
+        table.style.display = "none"
+        szinek.style.display = "none"
+    }
+}
+
+
+
+function setErtekelesColors() {
+    document.querySelectorAll("td").forEach(td => {
+        if (td.style.backgroundColor == "var(--rating-awesome)" || td.style.backgroundColor == "var(--rating-bad)" || td.style.backgroundColor == "var(--rating-garbage)") {
+            td.style.color = "white"
+        }
+
+        if (td.style.backgroundColor == "var(--rating-upcoming)") {
+            td.innerHTML = "?"
+        }
+    })
+}
+
+
+function startDragFigyeles() {
+    const table = document.getElementById("tablazat")
+    var isDown = false
+    var startX
+    var scrollLeft
+
+
+    table.addEventListener("mousedown", (e) => {
+        isDown = true
+        startX = e.pageX - table.offsetLeft;
+        scrollLeft = table.scrollLeft;
+    })
+
+    table.addEventListener("mouseleave", (e) => {
+        isDown = false
+    })
+    table.addEventListener("mouseup", (e) => {
+        isDown = false
+    })
+
+    table.addEventListener('mousemove', (e) => {
+        if(!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - table.offsetLeft;
+        const walk = (x - startX) * 1; //scroll-speed
+        table.scrollLeft = scrollLeft - walk;
+        console.log(walk);
+    });
+}
