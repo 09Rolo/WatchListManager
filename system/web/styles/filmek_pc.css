@@ -50,6 +50,10 @@
 }
 
 
+#main a {
+    margin: auto;
+}
+
 #main h2 {
     margin: auto;
     margin-bottom: 50px;

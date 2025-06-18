@@ -308,14 +308,17 @@ async function getData() {
 
             var max_eps = 0
 
-            for (let season = 0; season < adatok.seasons.length; season++) {
 
-                if (adatok.seasons[season].episode_count > max_eps) {
-                    max_eps = adatok.seasons[season].episode_count
+            for (let season = 1; season < adatok.seasons.length + 1; season++) {
+
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
+                const seasonok = await getData_seasons.json()
+
+                if (seasonok.episodes[seasonok.episodes.length - 1].episode_number > max_eps) {  //faszom, ha kimarad egy rész, vagyis szar a számozás akkor nagyobb lesz a szám mint az ep_count :(((
+                    max_eps = seasonok.episodes[seasonok.episodes.length - 1].episode_number
                 }
             }
 
-            console.log(max_eps)
 
             for (let ep = 0; ep < max_eps; ep++) {
                 table_episodes.innerHTML += `
@@ -324,6 +327,7 @@ async function getData() {
                     </tr>
                 `
             }
+
 
             for (let season = 1; season < adatok.seasons.length + 1; season++) {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
@@ -362,9 +366,22 @@ async function getData() {
 
             var max_eps = 0
 
+
+            table_seasons.innerHTML += `
+                <th>Special</th>
+                <th></th>
+            `
+
+
             for (let season = 0; season < adatok.seasons.length; season++) {
-                if (adatok.seasons[season].episode_count > max_eps) {
-                    max_eps = adatok.seasons[season].episode_count
+
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
+                const seasonok = await getData_seasons.json()
+                
+                if (seasonok.episodes[seasonok.episodes.length - 1]) {
+                    if (seasonok.episodes[seasonok.episodes.length - 1].episode_number > max_eps) {  //faszom, ha kimarad egy rész, vagyis szar a számozás akkor nagyobb lesz a szám mint az ep_count :(((
+                        max_eps = seasonok.episodes[seasonok.episodes.length - 1].episode_number
+                    }
                 }
             }
 
@@ -376,14 +393,11 @@ async function getData() {
                     </tr>
                 `
             }
+            
 
-
-            table_seasons.innerHTML += `
-                <th>Special</th>
-                <th></th>
-            `
-
+        
             for (let season = 0; season < adatok.seasons.length; season++) {
+
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
 

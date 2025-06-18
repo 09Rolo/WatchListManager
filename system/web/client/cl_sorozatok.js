@@ -181,6 +181,34 @@ async function searching(tartalom) {
                 }
             }
 
+
+            for(i in partiallWatched) {
+                if (partiallWatched[i] == el.id) {
+                    //sajátba is
+                    cardColor = "var(--started-series-lathatobb-bg)"
+
+                    sajat_series_list.innerHTML += `
+                        <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
+                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                            <div class="imgkeret">
+                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><b>${el.name}</b></h5>
+                                <i class="bi bi-journal-arrow-up showtexticon"></i>
+                                <p class="card-text">${el.overview}</p>
+                                <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                                <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
+                            </div>
+                        </div>
+                    `
+                }
+            }
+
+
             for(i in wishlistedSeries) {
                 if (wishlistedSeries[i] == el.id) {
                     //sajátba is
@@ -443,7 +471,7 @@ async function getPartiallyWatched() {
 
 async function fillSajatSeries() {
 
-    if (wishlistedSeries.length > 0 || watchedSeries.length > 0) {
+    if (wishlistedSeries.length > 0 || watchedSeries.length > 0 || partiallWatched.length > 0) {
         sajat_series_list.innerHTML = ""
     } else {
         sajat_series_list.innerHTML = '<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>'
