@@ -42,7 +42,7 @@ body {
     position: absolute;
     z-index: -1;
     filter: blur(15px);
-    border-radius: 20%;
+    border-radius: 20px;
     max-height: calc(100vh - 10vh);
 }
 

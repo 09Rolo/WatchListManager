@@ -999,13 +999,16 @@ notebutton.onclick = async() => {
 
 
 
+note.addEventListener("focusin", (e) => {
+    note.innerHTML = ""
+    note.placeholder = "Jegyzet"
+})
 
 
 
 
     }
 }, 100); // Check every 100ms
-
 
 
 /*----------------------------------------------------------------------------------------- Seasonok / Epizódok /*----------------------------------------------------------------------------------------- */
@@ -1015,30 +1018,44 @@ var selectedEpisodes = []
 
 
 async function changeSeason(btn) {
+
     if (selectedEpisodes.length > 0) {
         notify("Az összes kiválasztás törlődött", "info")
     }
-
-    selectedEpisodes = []
-
-    season_num = btn.innerHTML
     
-    season_buttons = document.getElementsByClassName("season")
-    Array.prototype.forEach.call(season_buttons, function(ele) {
-        ele.style.backgroundColor = "rgba(0,0,0,0.4)"
-        ele.style.borderColor = "var(--red-underline)"
-    });
+    selectedEpisodes = []
+    
+    
+    if (btn.style.borderColor != "rgb(0, 255, 0)") {
+        season_num = btn.innerHTML
+        
+        season_buttons = document.getElementsByClassName("season")
+        Array.prototype.forEach.call(season_buttons, function(ele) {
+            ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+            ele.style.borderColor = "var(--red-underline)"
+        });
+    
+        btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
+        btn.style.borderColor = "rgb(0, 255, 0)"
+    
+        try {
+            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
+            const season = await getData_seasons.json()
+    
+            loadSeasonData(season)
+        } catch (e) {
+            console.error(e)
+        }
+    } else {
+        season_buttons = document.getElementsByClassName("season")
+        Array.prototype.forEach.call(season_buttons, function(ele) {
+            ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+            ele.style.borderColor = "var(--red-underline)"
+        });
 
-    btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
-    btn.style.borderColor = "rgb(0, 255, 0)"
+        const container = document.getElementById("seasonpage")
 
-    try {
-        const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
-        const season = await getData_seasons.json()
-
-        loadSeasonData(season)
-    } catch (e) {
-        console.error(e)
+        container.innerHTML = ""
     }
 }
 

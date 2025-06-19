@@ -212,9 +212,9 @@
 .bluredimg {
     position: absolute;
     top: 0;
-    left: -7%;
+    left: -8%;
     height: 430px;
-    border-radius: 20%;
+    border-radius: 15px;
 
     filter: blur(15px);
     z-index: -1;

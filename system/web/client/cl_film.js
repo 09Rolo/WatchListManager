@@ -671,6 +671,10 @@ notebutton.onclick = async() => {
 
 
 
+note.addEventListener("focusin", (e) => {
+    note.innerHTML = ""
+    note.placeholder = "Jegyzet"
+})
 
 
 
