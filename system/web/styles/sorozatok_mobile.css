@@ -1,0 +1,26 @@
+
+@media screen and (max-width: 1100px) {
+    .searchbar {
+        min-width: 400px !important;
+        max-width: 400px !important;
+        width: 400px !important;
+    }
+
+    .searchbar:focus {
+        max-width: 70vw !important;
+        width: 70vw !important;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .searchbar {
+        min-width: 250px !important;
+        max-width: 250px !important;
+        width: 250px !important;
+    }
+
+    .searchbar:focus {
+        max-width: 80vw !important;
+        width: 80vw !important;
+    }
+}

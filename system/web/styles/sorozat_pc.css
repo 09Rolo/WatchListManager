@@ -503,11 +503,14 @@ body {
 
 
 .selected {
-    background-color: rgba(32, 70, 32, 0.6) !important;
+    /*background-color: rgba(32, 70, 32, 0.6) !important;*/
+    background-color: rgba(0, 120, 100, 0.5) !important; /* Turquoise */
+    box-shadow: 0 0 12px rgba(0, 215, 165, 0.4) !important;
+    border-color: rgba(0, 255, 60, 0.5) !important;
 }
 
 .selected * {
-    border-color: var(--red-underline) !important;
+    border-color: rgba(255, 0, 0, 0.5) !important;
 }
 
 .watched {
@@ -753,3 +756,14 @@ body {
     background-color: var(--rating-upcoming);
 }
 
+
+.bg-dark {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    max-width: 70vw !important;
+    
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    margin-top: 5px !important;
+    border-radius: 20px !important;
+}

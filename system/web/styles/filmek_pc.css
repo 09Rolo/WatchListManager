@@ -8,7 +8,7 @@
 
     margin: auto;
 
-    background: rgba(0,0,0, 0.6);
+    background: rgba(0,0,0, 0.75);
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.803);
@@ -22,16 +22,26 @@
 }
 
 .searchbar {
-    min-width: 200px;
-    max-width: 450px;
+    min-width: 400px;
+    max-width: 400px;
+    width: 400px;
+
+    margin-bottom: 30px;
 
     width: 50vw;
-    transition: 0.3s;
+    transition: 1s all;
+
+    border-radius: 25px;
+    border: 2px solid var(--red-theme);
+    padding: 10px;
+    background-color: rgba(0,0,0, 0.8);
+
 }
 
 .searchbar:focus {
-    width: 80vw;
-    transition: 0.3s;
+    max-width: 40vw;
+    width: 40vw;
+    transition: 1s all;
 }
 
 
@@ -303,4 +313,16 @@
     background-color: rgba(0, 0, 0, 0.7);
 
     font-weight: bolder;
+}
+
+
+.bg-dark {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    max-width: 70vw !important;
+    
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    margin-top: 5px !important;
+    border-radius: 20px !important;
 }

@@ -189,7 +189,7 @@ async function searching(tartalom) {
                             <div class="imgkeret">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
-                            <div class="card-body">
+                            <div class="card-body card-body-wishlisted">
                                 <h5 class="card-title"><b>${el.title}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
@@ -211,7 +211,7 @@ async function searching(tartalom) {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body card-body-watched">
                         <h5 class="card-title"><b>${el.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${el.overview}</p>
@@ -374,7 +374,7 @@ async function fillSajatMovies() {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body card-body-wishlisted">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>
@@ -405,7 +405,7 @@ async function fillSajatMovies() {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body card-body-watched">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>

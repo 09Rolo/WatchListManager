@@ -302,7 +302,7 @@ async function displayFilmek() {
                     <div class="imgkeret">
                         <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body card-body-wishlisted">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>

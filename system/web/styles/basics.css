@@ -276,6 +276,9 @@ body {
 }
 
 
+button, button *, a, a * {
+    color: var(--color);
+}
 
 
 @media screen and (min-width: 650px) {
@@ -427,4 +430,28 @@ body {
     .cursor, .cursor-border {
         display: none !important;
     }
+}
+
+
+
+
+
+/*Coloring cuccok*/
+
+/*CARDS*/
+.card-body {
+    background-color: rgba(28, 28, 30, 0.9); /* Dark charcoal */
+    color: rgba(255, 255, 255, 0.87); /* Slightly faded white */ 
+}
+
+.card-body-watched_partially {
+    background-color: transparent;
+}
+
+.card-body-watched {
+    background-color: transparent;
+}
+
+.card-body-wishlisted {
+    background-color: transparent;
 }

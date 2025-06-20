@@ -246,3 +246,15 @@ body {
 #datumok {
     font-size: small;
 }
+
+
+.bg-dark {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    max-width: 70vw !important;
+    
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    margin-top: 5px !important;
+    border-radius: 20px !important;
+}
