@@ -39,6 +39,23 @@
     }
 
 
+    #poster #posterimg {
+        max-width: calc(100vw - 20vw) !important;
+    }
+
+    #poster #fadedimg {
+        max-height: calc(100vh - 10vh);
+        max-width: calc(100vw - 10vw) !important;
+        scale: 1;
+        margin-top: 0px;
+    }
+
+
+    #leiras, #sajatnote, #datumok {
+        text-align: center;
+    }
+
+
     .episode {
         width: 100% !important;
     }
@@ -51,4 +68,32 @@
         display: none;
     }
 
+}
+
+
+
+@media screen and (max-width: 888px) {
+    .bottominteractions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #linkbox {
+        width: 100% !important;
+    }
+
+    #inputactions {
+        width: 100% !important;
+    }
+}
+
+
+@media screen and (max-width: 1350px) {
+    #progressionbox {
+        justify-content: center;
+    }
+
+    .progression {
+        margin-top: 0px;
+    }
 }

@@ -33,6 +33,11 @@ window.onload = async () => {
 var API_KEY = ""
 
 var allEpisodes = []
+var allEpisodes_jsonok = []
+var sumMinutes = 0
+var watchedMinutes = 0
+
+var episodesWatched = []
 
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
@@ -170,42 +175,63 @@ async function getData() {
                 </div>
                 <div class="also">
                     <div class="rowba">
-                        <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
-                        <!--<p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>-->
-                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
-                    </div>
-
-                    <p id="releasedate">Időtartam: <span class="bold">${idotartam}</span></p>
-                    <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
-                    <!--<p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>-->
-                    <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
-                    <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">Hivatalos oldala</span></a>
-                    <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
-                    <br>
-                    <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
-
-                        
-                    <div id="inputactions">
-                        <div class="gombok">
-                            <div id="wishlistcontainer">
-                                <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
-                                <p id="wishlisttext">Kívánságlistára</p>
-                            </div>
-        
-                            <div id="watchedcontainer">
-                                <button id="watched" title="Az összes rész megnézettnek jelölése"><i class="bi bi-file-check"></i></button>
-                                <p id="watchedtext">Jelölés befejezettnek</p>
+                        <div class="elsoszekcio">
+                            <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
+                            <p id="releasedate">Futamidő: <span class="bold">${idotartam}</span></p>
+                            
+                            <div class="egybe">
+                                <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
+                                <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
                             </div>
                         </div>
+                        <div class="masodikszekcio">
+                            <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
+                        </div>
+                    </div>
 
-                        <div class="inputok">
-                            <div class="bevitel">
-                                <input type="text" name="link" id="link" placeholder="Link">
-                                <button id="linkbutton">Link hozzáadása</button>
+                    <div class="bottominteractions">
+                        <div id="linkbox" class="cant_select">
+                            <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
+                            <hr>
+                            <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">Hivatalos oldala</span></a>
+                            <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
+                            
+                            <hr>
+                            <a href="https://moviedrive.hu/filmek/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
+                            <a href="https://mozisarok.hu/search/${adatok.name}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
+                            <a href="https://ww.yesmovies.ag/search.html?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
+                            <a href="https://donkey.to/media/search?query=${adatok.name}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
+                            
+                            <hr>
+                            <a href="https://animedrive.hu/search/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Animedrive.hu</a>
+                            <a href="https://9animetv.to/search?keyword=${adatok.name}" target="_blank" rel="noopener noreferrer">9Animetv.to <span class="kisbetus">Angol</span></a>
+                            <a href="https://magyaranime.eu/web/kereso/" target="_blank" rel="noopener noreferrer">Magyaranime.eu</a>
+
+                            
+                        </div>
+
+                        <div id="inputactions" class="cant_select">
+                            <div class="gombok">
+                                <div id="wishlistcontainer">
+                                    <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
+                                    <p id="wishlisttext">Kívánságlistára</p>
+                                </div>
+
+                                <div id="watchedcontainer">
+                                    <button id="watched" title="Az összes rész megnézettnek jelölése"><i class="bi bi-file-check"></i></button>
+                                    <p id="watchedtext">Jelölés befejezettnek</p>
+                                </div>
                             </div>
-                            <div class="bevitel">
-                                <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
-                                <button id="notebutton">Jegyzet hozzáadása</button>
+
+                            <div class="inputok">
+                                <div class="bevitel">
+                                    <input type="text" name="link" id="link" placeholder="Link">
+                                    <button id="linkbutton">Link hozzáadása</button>
+                                </div>
+                                <div class="bevitel">
+                                    <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
+                                    <button id="notebutton">Jegyzet hozzáadása</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -224,7 +250,37 @@ async function getData() {
                 <div class="general" id="general">
                     <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
                     <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
-                    <hr>
+                </div>
+
+
+                <div id="progressionbox">
+                    <!--
+                    <div class="progression">
+                        <div class="progress">
+                            <div class="bar" data-max="62"></div>
+                            <div class="fill" data-value="40"></div>
+                        </div>
+                        
+                        <div class="label">
+                            <p class="progression_current">40</p>
+                            <p class="progression_label">Epizódok</p>
+                            <p class="progression_max">62</p>
+                        </div>
+                    </div>
+
+                    <div class="progression">
+                        <div class="progress">
+                            <div class="bar" data-max="1600"></div>
+                            <div class="fill" data-value="2480"></div>
+                        </div>
+                        
+                        <div class="label">
+                            <p class="progression_current">1600</p>
+                            <p class="progression_label">Perc vagy óra és akkor más a max p</p>
+                            <p class="progression_max">2480</p>
+                        </div>
+                    </div>
+                    -->
                 </div>
 
 
@@ -345,13 +401,17 @@ async function getData() {
 
                 for (let eps = 0; eps < seasonok.episodes.length; eps++) {
                     allEpisodes.push(seasonok.episodes[eps].id)
+                    allEpisodes_jsonok.push(seasonok.episodes[eps])
+                    sumMinutes += seasonok.episodes[eps].runtime
                 }
 
 
                 for (let i = 0; i < max_eps; i++) {
                     if (seasonok.episodes[i]) {
+                        
+
                         document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                            <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                            <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                         `
                     } else {
                         document.getElementById(`t_e${i+1}`).innerHTML += `
@@ -413,13 +473,16 @@ async function getData() {
 
                     for (let eps = 0; eps < seasonok.episodes.length; eps++) {
                         allEpisodes.push(seasonok.episodes[eps].id)
+                        allEpisodes_jsonok.push(seasonok.episodes[eps])
+                        sumMinutes += seasonok.episodes[eps].runtime
                     }
 
 
                     for (let i = 0; i < max_eps; i++) {
                         if (seasonok.episodes[i]) {
+
                             document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                                <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                             `
                         } else {
                             document.getElementById(`t_e${i+1}`).innerHTML += `
@@ -435,20 +498,23 @@ async function getData() {
                         if (seasonok.episodes[i] && seasonok.episodes[i].episode_number == i+1) { //faszért van olyan, hogy kimarad random egy rész??? Breaking Bad Specialsnál 7. után a 9. jön  :(
 
                             if (!szamokVoltak.includes(seasonok.episodes[i].episode_number)) {
+
+
                                 szamokVoltak.push(seasonok.episodes[i].episode_number)
 
                                 document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                                     <td></td>
                                 `
                             }
                         } else if(seasonok.episodes[i] && seasonok.episodes[i].episode_number != i+1) {
 
                             if (!szamokVoltak.includes(seasonok.episodes[i].episode_number)) {
+
                                 szamokVoltak.push(seasonok.episodes[i].episode_number)
 
                                 document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                                     <td></td>
                                 `
                             }
@@ -489,14 +555,37 @@ async function getData() {
 
         }
         
-
         
+
         setErtekelesColors()
         setUpcomingErtekelesCucc()
         startDragFigyeles()
 
         dataAdded = true
 
+
+        var atlaghossz = Math.floor(sumMinutes / allEpisodes.length)
+        var ahossz_h = toHoursAndMinutes(atlaghossz).hours
+        var ahossz_m = toHoursAndMinutes(atlaghossz).minutes
+
+        if (ahossz_h != 0) {
+            if (ahossz_m != 0) {
+                var ahossztext = ahossz_h + " óra " + ahossz_m + " perc"
+            } else {
+                var ahossztext = ahossz_h + " óra"
+            }
+        } else {
+            if (ahossz_m != 0) {
+                var ahossztext = ahossz_m + " perc"
+            } else {
+                var ahossztext = "0"
+            }
+        }
+        
+
+        document.getElementById("general").innerHTML += `
+            <p id="num_of_mins"><span>Átlag hossz:</span> ${ahossztext}</p>
+        `
     }
 
 }
@@ -509,8 +598,6 @@ var watchlistbeAddolvaEloszor
 var watchlistbeAddolvaUtoljara
 var linkAddolva
 var noteFrissitve
-
-var episodesWatched = []
 
 
 async function checkWishlist(id) {
@@ -603,12 +690,15 @@ async function checkWatched(id) {
 
             
             var generalcucc = document.getElementById("general")
-            generalcucc.innerHTML += `
-                <p id="num_of_seen"><span>Látott epizódok száma:</span> ${episodesWatched.length}</p>
-            `
+            //generalcucc.innerHTML += `
+            //    <p id="num_of_seen"><span>Látott epizódok száma:</span> ${episodesWatched.length}</p>
+            //`
 
             fillInLastWatched(lastEpisodeWatched)
             //console.log(watchlistbeAddolvaUtoljara)
+            progressBars(episodesWatched.length, allEpisodes.length, "Látott epizódok")
+
+            checkWatchedMinutes()
 
 
             if (voltmar) {
@@ -1005,6 +1095,10 @@ note.addEventListener("focusin", (e) => {
 })
 
 
+document.getElementById("cim").addEventListener("click", (e) => {
+    document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
+})
+
 
 
     }
@@ -1017,45 +1111,121 @@ var selectedEpisodes = []
 
 
 
-async function changeSeason(btn) {
+async function changeSeason(btn, seasonnum, eptoselect) {
 
-    if (selectedEpisodes.length > 0) {
-        notify("Az összes kiválasztás törlődött", "info")
-    }
-    
-    selectedEpisodes = []
-    
-    
-    if (btn.style.borderColor != "rgb(0, 255, 0)") {
-        season_num = btn.innerHTML
-        
+    if (seasonnum) {
+        var canDoIt = false
+        var haveToClearSelection = true
+
         season_buttons = document.getElementsByClassName("season")
         Array.prototype.forEach.call(season_buttons, function(ele) {
-            ele.style.backgroundColor = "rgba(0,0,0,0.4)"
-            ele.style.borderColor = "var(--red-underline)"
+
+
+            if (ele.style.backgroundColor == "rgba(0, 255, 0, 0.6)" && ele.innerHTML == seasonnum) {
+                haveToClearSelection = false
+
+                setTimeout(() => {
+                    var episode_divs = document.querySelectorAll(".episode")
+
+                    episode_divs.forEach(epdiv => {
+                        if (epdiv.id == eptoselect) {
+                            selectEpisode(epdiv)
+                        }
+                    });
+                }, 1000);
+
+
+            } else if(ele.style.backgroundColor != "rgba(0, 255, 0, 0.6)" && ele.innerHTML == seasonnum) {
+                haveToClearSelection = true
+
+                season_num = seasonnum
+                ele.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
+                ele.style.borderColor = "rgb(0, 255, 0)"
+
+
+                setTimeout(() => {
+                    var episode_divs = document.querySelectorAll(".episode")
+
+                    episode_divs.forEach(epdiv => {
+                        if (epdiv.id == eptoselect) {
+                            selectEpisode(epdiv)
+                        }
+                    });
+                }, 1000);
+
+
+                canDoIt = true
+            } else {
+                ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+                ele.style.borderColor = "var(--red-underline)"
+            }
+            
         });
+
     
-        btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
-        btn.style.borderColor = "rgb(0, 255, 0)"
-    
-        try {
-            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
-            const season = await getData_seasons.json()
-    
-            loadSeasonData(season)
-        } catch (e) {
-            console.error(e)
+
+        if (haveToClearSelection) {
+            if (selectedEpisodes.length > 0) {
+                notify("Az összes kiválasztás törlődött", "info")
+            }
+
+            selectedEpisodes = []
         }
+
+
+        if(canDoIt) {
+            try {
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
+                const season = await getData_seasons.json()
+                
+                loadSeasonData(season)
+            } catch (e) {
+                console.error(e)
+            }
+        }
+
+
     } else {
-        season_buttons = document.getElementsByClassName("season")
-        Array.prototype.forEach.call(season_buttons, function(ele) {
-            ele.style.backgroundColor = "rgba(0,0,0,0.4)"
-            ele.style.borderColor = "var(--red-underline)"
-        });
 
-        const container = document.getElementById("seasonpage")
+        if (selectedEpisodes.length > 0) {
+            notify("Az összes kiválasztás törlődött", "info")
+        }
 
-        container.innerHTML = ""
+        selectedEpisodes = []
+
+
+        if (btn.style.borderColor != "rgb(0, 255, 0)") {
+            season_num = btn.innerHTML
+
+            season_buttons = document.getElementsByClassName("season")
+            Array.prototype.forEach.call(season_buttons, function(ele) {
+                ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+                ele.style.borderColor = "var(--red-underline)"
+            });
+        
+            btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
+            btn.style.borderColor = "rgb(0, 255, 0)"
+        
+            try {
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
+                const season = await getData_seasons.json()
+            
+                loadSeasonData(season)
+            } catch (e) {
+                console.error(e)
+            }
+        } else {
+            season_buttons = document.getElementsByClassName("season")
+            Array.prototype.forEach.call(season_buttons, function(ele) {
+                ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+                ele.style.borderColor = "var(--red-underline)"
+            });
+
+            const container = document.getElementById("seasonpage")
+
+            container.innerHTML = ""
+        }
+
     }
 }
 
@@ -1106,7 +1276,7 @@ function loadSeasonData(s) {
         }
 
         episodes_container.innerHTML += `
-            <div class="episode" id="${ep.id}" onclick="selectEpisode(this)">
+            <div class="episode hidden" id="${ep.id}" onclick="selectEpisode(this)">
                 <div class="data">
                     <p class="ep_num">${ep.episode_number}.</p>
                     <p>${ep.name}</p>
@@ -1140,6 +1310,7 @@ function loadSeasonData(s) {
     });
 
     setUpcomingErtekelesCucc()
+    startEpsObserver()
 
     container.scrollIntoView({ behavior: 'smooth' });
 
@@ -1231,30 +1402,45 @@ async function addEpsToWatched() {
     for (let i = 0; i < selectedEpisodes.length; i++) {
         const ep = selectedEpisodes[i];
 
-        try {
-            var details = {
-                user_id: JSON.parse(localStorage.user).user_id,
-                media_id: id,
-                media_type: "tv",
-                ep_id: ep,
+
+        for (let jsoni = 0; jsoni < allEpisodes_jsonok.length; jsoni++) {
+            const json = allEpisodes_jsonok[jsoni];
+            
+            if (json.id == ep) {
+                var epDate = new Date(json.air_date)
+                var currDate = new Date()
+                
+                if (currDate > epDate) {
+                    try {
+                        var details = {
+                            user_id: JSON.parse(localStorage.user).user_id,
+                            media_id: id,
+                            media_type: "tv",
+                            ep_id: ep,
+                        }
+                    
+                        const response = await fetch(`${location.origin}/addWatched`, {
+                            method: "POST",
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(details)
+                        })
+                    
+                        const result = await response.json()
+                    
+                        //notify(result.message, result.type)
+                    
+                        if(result.type == "success") {
+                            console.log("Siker")
+                        }
+                    } catch(e) {
+                        console.log("Error:", e)
+                    }
+                }
             }
-    
-            const response = await fetch(`${location.origin}/addWatched`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(details)
-            })
-    
-            const result = await response.json()
-    
-            //notify(result.message, result.type)
-    
-            if(result.type == "success") {
-                console.log("Siker")
-            }
-        } catch(e) {
-            console.log("Error:", e)
         }
+
+
+
 
     }
 
@@ -1323,6 +1509,7 @@ async function fillInLastWatched(ep_id) {
 
                     var generalcucc = document.getElementById("general")
                     generalcucc.innerHTML += `
+                        <hr>
                         <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
                     `
                     marLetezik = true
@@ -1345,6 +1532,7 @@ async function fillInLastWatched(ep_id) {
     
                         var generalcucc = document.getElementById("general")
                         generalcucc.innerHTML += `
+                            <hr>
                             <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
                         `
                     }
@@ -1414,4 +1602,199 @@ function startDragFigyeles() {
         table.scrollLeft = scrollLeft - walk;
         console.log(walk);
     });
+}
+
+
+
+var progressbarokadva = false
+
+async function checkWatchedMinutes() {
+    const getData = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=${language}`)
+
+    const adatok = await getData.json()
+    if (adatok) {
+
+        for (let seasoni = 1; seasoni < adatok.seasons.length; seasoni++) {
+            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${seasoni}?api_key=${API_KEY}&language=${language}`)
+            const season = await getData_seasons.json()
+        
+            for (let eps = 0; eps < season.episodes.length; eps++) {
+                if (episodesWatched.includes(season.episodes[eps].id)) {
+                
+                    watchedMinutes += season.episodes[eps].runtime
+                }
+            }
+        }
+        
+    }
+
+
+    progressBars(watchedMinutes, sumMinutes, "Eltöltött órák")
+
+    progressbarokadva = true
+    
+    setTimeout(() => {
+        startBarObserver()
+    }, 1000);
+}
+
+
+async function progressBars(current, max, title) {
+    const progressionBox = document.getElementById("progressionbox")
+
+    if (title == "Eltöltött órák") {
+        var currtime_h = toHoursAndMinutes(current).hours
+        var currtime_m = toHoursAndMinutes(current).minutes
+
+        if (currtime_h != 0) {
+            if (currtime_m != 0) {
+                var currtext = currtime_h + " óra " + currtime_m + " perc"
+            } else {
+                var currtext = currtime_h + " óra"
+            }
+        } else {
+            if (currtime_m != 0) {
+                var currtext = currtime_m + " perc"
+            } else {
+                var currtext = "0"
+            }
+        }
+        
+
+        var maxtime_h = toHoursAndMinutes(max).hours
+        var maxtime_m = toHoursAndMinutes(max).minutes
+
+        if (maxtime_h != 0) {
+            if (maxtime_m != 0) {
+                var maxtext = maxtime_h + " óra " + maxtime_m + " perc"
+            } else {
+                var maxtext = maxtime_h + " óra"
+            }
+        } else {
+            if (maxtime_m != 0) {
+                var maxtext = maxtime_m + " perc"
+            } else {
+                var maxtext = "0"
+            }
+        }
+
+
+        progressionBox.innerHTML += `
+            <div class="progression">
+                <div class="progress" data-max="${max}" data-value="${current}">
+                    <div class="circle">
+                        <svg viewBox="0 0 100 50" class="arc" preserveAspectRatio="xMidYMid meet">
+                            <path class="bg" d="M 10 50 A 40 40 0 0 1 90 50" />
+                            <path class="fg" d="M 10 50 A 40 40 0 0 1 90 50" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="label">
+                    <p class="progression_current">${currtext}</p>
+                    <p class="progression_label">${title}</p>
+                    <p class="progression_max">${maxtext}</p>
+                </div>
+            </div>
+        `
+    } else {
+        progressionBox.innerHTML += `
+            <div class="progression">
+                <div class="progress" data-max="${max}" data-value="${current}">
+                    <div class="circle">
+                        <svg viewBox="0 0 100 50" class="arc" preserveAspectRatio="xMidYMid meet">
+                            <path class="bg" d="M 10 50 A 40 40 0 0 1 90 50" />
+                            <path class="fg" d="M 10 50 A 40 40 0 0 1 90 50" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="label">
+                    <p class="progression_current">${current}</p>
+                    <p class="progression_label">${title}</p>
+                    <p class="progression_max">${max}</p>
+                </div>
+            </div>
+        `
+    }
+
+    
+}
+
+
+
+function startBarObserver() {
+
+    const bar_observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+           if (entry.isIntersecting) {
+
+                setTimeout(() => {
+                    const progress = entry.target;
+                
+                    const circle = progress.querySelector(".fg");
+                    const max = parseInt(progress.dataset.max);
+                    const current = parseInt(progress.dataset.value);
+
+
+                    const percentage = Math.min(current / max, 1); // clamp to 1 max
+                    const fullLength = 126; // Half-circle path length
+                    const offset = fullLength - (fullLength * percentage);
+
+                    circle.style.strokeDashoffset = offset;
+
+                    if (percentage == 1) {
+                        circle.style.animation = "coloring 3s infinite ease-in-out"
+
+                    } else if (percentage <= 0.25) {
+                        console.log(percentage)
+                        circle.style.stroke = "rgb(134, 224, 61)"
+                    } else if (percentage <= 0.5) {
+                        circle.style.stroke = "rgb(217, 206, 131)"
+                    } else if (percentage <= 0.75) {
+                        circle.style.stroke = "rgb(202, 133, 53)"
+                    } else if (percentage < 1) {
+                        circle.style.stroke = "rgb(169, 19, 19)"
+                    }
+                }, 500);
+
+                bar_observer.unobserve(entry.target)
+            }
+        });
+    });
+
+
+    document.querySelectorAll('.progress').forEach(progress => {
+        bar_observer.observe(progress);
+    });
+}
+
+
+
+function startEpsObserver() {
+    const ep_observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+
+                setTimeout(() => {
+                    const ep = entry.target
+
+                    ep.classList.add("show")
+                    ep_observer.unobserve(entry.target)
+                }, 150);
+
+            }
+        })
+    })
+
+    document.querySelectorAll('.episode').forEach(ep => {
+        ep_observer.observe(ep);
+    });
+}
+
+
+
+
+function clickedInTable(snum, epid) {
+    changeSeason("", snum, epid)
 }

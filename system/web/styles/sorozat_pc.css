@@ -5,7 +5,7 @@ body {
 
 .navbarfixmarginja {
     width: 100%;
-    height: 100px;
+    height: 80px;
 }
 
 .bold {
@@ -23,11 +23,11 @@ body {
 #poster {
     margin: 20px;
     margin-top: 0px;
-    overflow: hidden;
+    overflow: hidden !important;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -36,6 +36,7 @@ body {
     border: 2px solid black;
 
     max-height: calc(100vh - 20vh);
+    margin-top: 30px;
 }
 
 #poster #fadedimg {
@@ -43,10 +44,19 @@ body {
     z-index: -1;
     filter: blur(15px);
     border-radius: 20px;
-    max-height: calc(100vh - 10vh);
+    max-height: calc(100vh - 20vh);
+    max-width: 35vw;
+    scale: 1.1;
+
+    margin-top: 30px;
 }
 
 
+
+h2 {
+    font-size: 2.3em;
+    margin: 0;
+}
 
 
 .adatok {
@@ -75,6 +85,7 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
+
 .adatok .also > p {
     width: fit-content;
 }
@@ -94,7 +105,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     margin-bottom: 25px;
     padding: 5px 10px;
@@ -107,7 +118,28 @@ body {
 
 .adatok .also .rowba p {
     padding: 0;
-    margin: 2.5px 30px;
+    margin: 7px 10px;
+}
+
+
+.elsoszekcio {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.masodikszekcio {
+    display: flex;
+    justify-content: center;
+}
+
+
+.egybe {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .rating {
@@ -126,18 +158,81 @@ body {
 
 
 
+.bottominteractions {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-content: flex-start;
+    flex-wrap: nowrap;
+
+    height: auto;
+
+    gap: 40px 40px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.bottominteractions hr {
+    width: 100%;
+    background-color: white;
+    border-color: white;
+    margin-top: 0;
+}
+
+
+#linkbox {
+    min-width: 200px !important;
+    max-width: 350px;
+    width: 30%;
+
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px 10px;
+    margin: 0;
+
+    text-align: center;
+
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#sajaturl {
+    font-size: 1.3rem;
+}
+
+.kisbetus {
+    font-size: .8rem;
+    font-style: italic;
+    color: gray;
+}
+.kisbetus::before {
+    content: "(";
+}
+.kisbetus::after {
+    content: ")";
+}
+
+
+
 
 #inputactions {
-    width: 100%;
-    margin: auto;
+    min-width: 250px !important;
+    width: 60%;
+    
+    height: auto;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 25px;
-    margin-bottom: 20px;
+    
     padding: 10px 10px;
+    margin: 0;
 
     text-align: center;
 
@@ -345,6 +440,7 @@ body {
     filter: blur(15px);
     border-radius: 20px;
     max-height: calc(100vh - 10vh);
+    max-width: 35vw;
 }
 
 
@@ -630,7 +726,7 @@ body {
     max-width: 100% !important;
     padding: 10px;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 30px;
 }
 
@@ -758,12 +854,131 @@ body {
 
 
 .bg-dark {
-    background-color: rgba(0, 0, 0, 0.85) !important;
-    max-width: 70vw !important;
+    max-width: 80vw !important;
     
     margin-left: auto !important;
     margin-right: auto !important;
-
+    
     margin-top: 5px !important;
     border-radius: 20px !important;
+    
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+
+.offcanvas-backdrop {
+    width: 200vw !important;
+    height: 200vh !important;
+    left: -100px !important;
+}
+
+
+
+
+
+#progressionbox {
+    width: 70vw;
+    margin: auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 50px 50px;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+.progression {
+    width: 300px;
+    height: fit-content;
+    margin-top: -150px;
+    text-align: center;
+    font-family: sans-serif;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    border: 2px solid rgb(0, 101, 87);
+}
+
+
+.progress {
+    position: relative;
+    height: 150px;
+    margin-bottom: 10px;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.circle {
+    width: 100%;
+    height: 100%;
+}
+
+.arc {
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* Removed the flip here */
+}
+
+.arc path {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+}
+
+.bg {
+    stroke: #515151;
+}
+
+.fg {
+    stroke: #3dc385;
+    stroke-dasharray: 126;
+    stroke-dashoffset: 126;
+    transition: stroke-dashoffset 1.5s ease;
+}
+
+@keyframes coloring {
+  0%   { stroke: rgb(0, 255, 162); }
+  50%  { stroke: rgb(30, 255, 0); }
+  100% { stroke: rgb(0, 255, 162); }
+} 
+
+
+.label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    
+}
+
+.progression_current {
+    font-weight: bold;
+    width: 20%;
+    margin-left: 20px;
+    text-align: left;
+}
+
+.progression_max {
+    font-weight: bold;
+    width: 20%;
+    margin-right: 20px;
+    text-align: right;
+}
+
+.progression_label {
+    width: 50%;
+    text-align: center;
+    font-style: italic;
+    color: #858585;
+    margin-top: -130px;
 }

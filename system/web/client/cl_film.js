@@ -127,6 +127,11 @@ manageLang()
 
 
 
+
+//<a href="https://hdmozi.hu/?s=${adatok.name}" target="_blank" rel="noopener noreferrer">HDMozi.hu</a>
+//https://filminvazio.cc/?s=
+
+
 async function getData() {
     const id = window.location.pathname.split("/")[2]
 
@@ -149,41 +154,60 @@ async function getData() {
                 </div>
                 <div class="also">
                     <div class="rowba">
-                        <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
-                        <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
-                        <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
+                        <div class="elsoszekcio">
+                            <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
+                            <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
+                            <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
+                            <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
+                            <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
+                            <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
+                        </div>
+                        <div class="masodikszekcio">
+                            <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
+                        </div>
                     </div>
 
-                    <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
-                    <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
-                    <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
-                    <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
-                    <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
-                    <br>
-                    <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
 
-                        
-                    <div id="inputactions">
-                        <div class="gombok">
-                            <div id="wishlistcontainer">
-                                <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
-                                <p id="wishlisttext">Kívánságlistára</p>
-                            </div>
-        
-                            <div id="watchedcontainer">
-                                <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
-                                <p id="watchedtext">Megnézettnek jelölés</p>
-                            </div>
+                    <div class="bottominteractions">
+                        <div id="linkbox" class="cant_select">
+                            <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
+                            <hr>
+                            <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
+                            <a href="https://www.google.com/search?q=imdb+${adatok.title}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
+                            
+                            <hr>
+                            <a href="https://moviedrive.hu/filmek/?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
+                            <a href="https://mozisarok.hu/search/${adatok.title}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
+                            <a href="https://hdmozi.hu/?s=${adatok.name}" target="_blank" rel="noopener noreferrer">HDMozi.hu</a>
+                            <a href="https://filminvazio.cc/?s=${adatok.name}" target="_blank" rel="noopener noreferrer">FilmInvazio.cc</a>
+                            <a href="https://ww.yesmovies.ag/search.html?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
+                            <a href="https://donkey.to/media/search?query=${adatok.title}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
+
                         </div>
 
-                        <div class="inputok">
-                            <div class="bevitel">
-                                <input type="text" name="link" id="link" placeholder="Link">
-                                <button id="linkbutton">Link hozzáadása</button>
+                        
+                        <div id="inputactions" class="cant_select">
+                            <div class="gombok">
+                                <div id="wishlistcontainer">
+                                    <button id="wishlist" title="Kívánságlistára"><i class="bi bi-bookmark-plus-fill"></i></button>
+                                    <p id="wishlisttext">Kívánságlistára</p>
+                                </div>
+
+                                <div id="watchedcontainer">
+                                    <button id="watched" title="Megnézettnek jelölés"><i class="bi bi-file-check"></i></button>
+                                    <p id="watchedtext">Megnézettnek jelölés</p>
+                                </div>
                             </div>
-                            <div class="bevitel">
-                                <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
-                                <button id="notebutton">Jegyzet hozzáadása</button>
+
+                            <div class="inputok">
+                                <div class="bevitel">
+                                    <input type="text" name="link" id="link" placeholder="Link">
+                                    <button id="linkbutton">Link hozzáadása</button>
+                                </div>
+                                <div class="bevitel">
+                                    <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
+                                    <button id="notebutton">Jegyzet hozzáadása</button>
+                                </div>
                             </div>
                         </div>
                     </div>

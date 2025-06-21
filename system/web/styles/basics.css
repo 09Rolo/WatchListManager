@@ -435,6 +435,44 @@ button, button *, a, a * {
 
 
 
+@media screen and (max-width: 767px) {
+    .offcanvas {
+        margin: 30px;
+        padding: 10px;
+    }
+}
+
+
+.offcanvas {
+    max-height: 90vh !important;
+    height: max-content !important;
+    max-width: 100vw !important;
+    width: max-content !important;
+
+    border-radius: 20px;
+    border: 2px solid var(--red-theme) !important;
+
+    background-color: rgb(20, 20, 20);
+
+    transition: 0.3s all !important;
+}
+
+
+.hidden {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateX(-100%);
+    transition: all 1s;
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateX(0%);
+    transition: all 1s;
+}
+
+
 
 /*Coloring cuccok*/
 

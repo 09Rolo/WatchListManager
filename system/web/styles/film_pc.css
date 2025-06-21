@@ -5,7 +5,7 @@ body {
 
 .navbarfixmarginja {
     width: 100%;
-    height: 100px;
+    height: 80px;
 }
 
 .bold {
@@ -23,11 +23,11 @@ body {
 #poster {
     margin: 20px;
     margin-top: 0px;
-    overflow: hidden;
+    overflow: hidden !important;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -36,6 +36,7 @@ body {
     border: 2px solid black;
 
     max-height: calc(100vh - 20vh);
+    margin-top: 30px;
 }
 
 #poster #fadedimg {
@@ -43,14 +44,25 @@ body {
     z-index: -1;
     filter: blur(15px);
     border-radius: 20px;
-    max-height: calc(100vh - 10vh);
+    max-height: calc(100vh - 20vh);
+    max-width: 35vw;
+    scale: 1.1;
+
+    margin-top: 30px;
+}
+
+
+
+h2 {
+    font-size: 2.3em;
+    margin: 0;
 }
 
 
 
 
 .adatok {
-    padding: 25px;
+    /*padding: 25px;*/
     height: fit-content;
 }
 
@@ -74,6 +86,7 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
+
 .adatok .also > p {
     width: fit-content;
 }
@@ -95,7 +108,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     margin-bottom: 25px;
     padding: 5px 10px;
@@ -108,8 +121,30 @@ body {
 
 .adatok .also .rowba p {
     padding: 0;
-    margin: 2.5px 30px;
+    margin: 7px 10px;
 }
+
+
+.elsoszekcio {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.masodikszekcio {
+    display: flex;
+    justify-content: center;
+}
+
+
+.egybe {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 
 .rating {
     margin: 0 5px 0 5px;
@@ -128,17 +163,41 @@ body {
 
 
 
-#inputactions {
+.bottominteractions {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-content: flex-start;
+    flex-wrap: nowrap;
+
+    height: auto;
+
+    gap: 40px 40px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.bottominteractions hr {
     width: 100%;
-    margin: auto;
+    background-color: white;
+    border-color: white;
+    margin-top: 0;
+}
+
+
+#linkbox {
+    min-width: 200px !important;
+    max-width: 350px;
+    width: 30%;
+
+    height: fit-content;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 25px;
-    margin-bottom: 20px;
+    align-items: center;
+
     padding: 10px 10px;
+    margin: 0;
 
     text-align: center;
 
@@ -147,6 +206,48 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+#linkbox a {
+    margin-bottom: 10px;
+}
+
+#sajaturl {
+    font-size: 1.3rem;
+}
+
+.kisbetus {
+    font-size: .8rem;
+    font-style: italic;
+    color: gray;
+}
+.kisbetus::before {
+    content: "(";
+}
+.kisbetus::after {
+    content: ")";
+}
+
+
+
+#inputactions {
+    min-width: 250px !important;
+    width: 60%;
+    
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    
+    padding: 10px 10px;
+    margin: 0;
+
+    text-align: center;
+
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
 
 
@@ -249,12 +350,23 @@ body {
 
 
 .bg-dark {
-    background-color: rgba(0, 0, 0, 0.85) !important;
-    max-width: 70vw !important;
+    max-width: 80vw !important;
     
     margin-left: auto !important;
     margin-right: auto !important;
-
+    
     margin-top: 5px !important;
     border-radius: 20px !important;
+    
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+.offcanvas-backdrop {
+    width: 200vw !important;
+    height: 200vh !important;
+    left: -100px !important;
 }
