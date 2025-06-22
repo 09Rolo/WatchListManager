@@ -124,7 +124,7 @@ switchToRegister.onclick = () => {
 }
 
 function SwitchToLogin() {
-    if (screen.width >= 660) {
+    if (window.innerWidth >= 660) {
         registerSide.style.width = "35%"
         loginSide.style.width = "65%"
 
@@ -183,7 +183,7 @@ function SwitchToLogin() {
 }
 
 function SwitchToRegister() {
-    if (screen.width >= 660) {
+    if (window.innerWidth >= 660) {
         registerSide.style.width = "65%"
         loginSide.style.width = "35%"
 

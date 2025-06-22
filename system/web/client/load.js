@@ -13,6 +13,24 @@ function loaded() {
 }
 
 
+
+let lastActive = Date.now();
+
+document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) {
+        const now = Date.now();
+        const idleTime = now - lastActive;
+
+        if (idleTime > 300000) {
+            location.reload();
+        }
+    } else {
+        lastActive = Date.now();
+    }
+});
+
+
+
 //-------------------------------------------------------------------------------Kurzor
 function kurzor() {
     let body = document.querySelector("body")

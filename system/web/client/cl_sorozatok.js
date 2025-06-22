@@ -122,6 +122,7 @@ function debounce(func) {
 
 searchbar.onkeydown = function(e) {
     if (e.keyCode == 13) {
+        searchbar.blur()
         e.preventDefault()
     }
 }
@@ -154,11 +155,13 @@ async function searching(tartalom) {
           sortedSeries.forEach(el => {
         
             var cardColor = ""
+            var cardBodyClass = ""
 
             for(i in watchedSeries) {
                 if (watchedSeries[i] == el.id) {
                     //sajátba is
                     cardColor = "var(--watched)"
+                    cardBodyClass = "card-body-watched"
 
                     sajat_series_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
@@ -166,7 +169,7 @@ async function searching(tartalom) {
                             <div class="imgkeret">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
-                            <div class="card-body card-body-watched">
+                            <div class="card-body ${cardBodyClass}">
                                 <h5 class="card-title"><b>${el.name}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
@@ -186,6 +189,7 @@ async function searching(tartalom) {
                 if (partiallWatched[i] == el.id) {
                     //sajátba is
                     cardColor = "var(--started-series-lathatobb-bg)"
+                    cardBodyClass = "card-body-watched_partially"
 
                     sajat_series_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
@@ -193,7 +197,7 @@ async function searching(tartalom) {
                             <div class="imgkeret">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
-                            <div class="card-body card-body-watched_partially">
+                            <div class="card-body ${cardBodyClass}">
                                 <h5 class="card-title"><b>${el.name}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
@@ -213,6 +217,7 @@ async function searching(tartalom) {
                 if (wishlistedSeries[i] == el.id) {
                     //sajátba is
                     cardColor = "var(--wishlisted)"
+                    cardBodyClass = "card-body-wishlisted"
 
                     sajat_series_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
@@ -220,7 +225,7 @@ async function searching(tartalom) {
                             <div class="imgkeret">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
-                            <div class="card-body card-body-wishlisted">
+                            <div class="card-body ${cardBodyClass}">
                                 <h5 class="card-title"><b>${el.name}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
@@ -242,7 +247,7 @@ async function searching(tartalom) {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body ${cardBodyClass}">
                         <h5 class="card-title"><b>${el.name}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${el.overview}</p>

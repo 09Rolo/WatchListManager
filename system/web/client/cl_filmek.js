@@ -119,6 +119,7 @@ function debounce(func) {
 
 searchbar.onkeydown = function(e) {
     if (e.keyCode == 13) {
+        searchbar.blur()
         e.preventDefault()
     }
 }
@@ -151,11 +152,13 @@ async function searching(tartalom) {
           sortedMovies.forEach(el => {
         
             var cardColor = ""
+            var cardBodyClass = ""
 
             for(i in watchedMovies) {
                 if (watchedMovies[i] == el.id) {
                     //sajátba is
                     cardColor = "var(--watched)"
+                    cardBodyClass = "card-body-watched"
 
                     sajat_movies_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
@@ -163,7 +166,7 @@ async function searching(tartalom) {
                             <div class="imgkeret">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
-                            <div class="card-body">
+                            <div class="card-body ${cardBodyClass}">
                                 <h5 class="card-title"><b>${el.title}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
@@ -182,6 +185,7 @@ async function searching(tartalom) {
                 if (wishlistedMovies[i] == el.id) {
                     //sajátba is
                     cardColor = "var(--wishlisted)"
+                    cardBodyClass = "card-body-wishlisted"
 
                     sajat_movies_list.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
@@ -189,7 +193,7 @@ async function searching(tartalom) {
                             <div class="imgkeret">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                             </div>
-                            <div class="card-body card-body-wishlisted">
+                            <div class="card-body ${cardBodyClass}">
                                 <h5 class="card-title"><b>${el.title}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
@@ -211,7 +215,7 @@ async function searching(tartalom) {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body card-body-watched">
+                    <div class="card-body ${cardBodyClass}">
                         <h5 class="card-title"><b>${el.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${el.overview}</p>
@@ -367,6 +371,7 @@ async function fillSajatMovies() {
             //console.log(adatok);
             
             var cardColor = "var(--wishlisted)"
+            var cardBodyClass = "card-body-wishlisted"
     
             sajat_movies_list.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
@@ -374,7 +379,7 @@ async function fillSajatMovies() {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body card-body-wishlisted">
+                    <div class="card-body ${cardBodyClass}">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>
@@ -398,6 +403,7 @@ async function fillSajatMovies() {
             //console.log(adatok);
             
             var cardColor = "var(--watched)"
+            var cardBodyClass = "card-body-watched"
     
             sajat_movies_list.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
@@ -405,7 +411,7 @@ async function fillSajatMovies() {
                     <div class="imgkeret">
                         <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
-                    <div class="card-body card-body-watched">
+                    <div class="card-body ${cardBodyClass}">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>

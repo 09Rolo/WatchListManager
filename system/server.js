@@ -58,3 +58,12 @@ module.exports = app
 require("./db.js")
 require("./register_login.js")
 require("./sorozatok_filmek.js")
+
+
+
+
+//A végére kell rakni, eddig azért nem működött
+
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'web', '404.html'));
+});

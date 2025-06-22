@@ -114,21 +114,28 @@ body {
 }
 
 #videok_container h5 {
+    max-width: fit-content;
     font-size: 1.6em;
     text-decoration: underline;
+    text-align: left;
     margin: 20px;
 }
 
-#videok_container h5:first-of-type {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-#videok_container h5 span {
+#videok_container span {
+    position: sticky;
+    top: 0px !important;
+    right: 20px;
+    float: right;
+    width: fit-content;
+    font-size: 1.6rem;
     transition: 0.3s all;
+
+    z-index: 110 !important;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 5px;
+    border-radius: 20px;
 }
-#videok_container h5 span:hover {
+#videok_container span:hover {
     color: var(--red-theme);
     transition: 0.3s all;
 }
@@ -468,7 +475,7 @@ h2 {
 
 
 .bg-dark {
-    max-width: 80vw !important;
+    max-width: 85vw !important;
     
     margin-left: auto !important;
     margin-right: auto !important;
@@ -488,3 +495,9 @@ h2 {
     height: 200vh !important;
     left: -100px !important;
 }
+
+
+#videok_container a {
+    color: var(--red-underline);
+}
+

@@ -129,6 +129,8 @@ manageLang()
 
 
 
+var movieTitle = ""
+
 const id = window.location.pathname.split("/")[2]
 
 async function getData() {
@@ -137,7 +139,9 @@ async function getData() {
 
     const adatok = await getData.json()
     if (adatok) {
-        console.log(adatok)
+
+        movieTitle = adatok.title
+
         const elsoresz = document.getElementById("elsoresz")
         elsoresz.innerHTML = ""
 
@@ -171,7 +175,7 @@ async function getData() {
                             <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
                             <hr>
                             <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
-                            <a href="https://www.google.com/search?q=imdb+${adatok.title}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
+                            
                             
                             <hr>
                             <a href="https://moviedrive.hu/filmek/?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
@@ -187,7 +191,8 @@ async function getData() {
                                 <div class="bgpreventclickandfade"></div>
 
                                 <div id="videok_container" class="hidden">
-                                    <h5>Trailerek <span id="x_videok">X</span></h5>
+                                    <span id="x_videok">X</span>
+                                    <h5>Trailerek</h5>
                                     <div id="trailers_container"></div>
                                     <hr>
                                     <h5>Videók</h5>
@@ -487,6 +492,10 @@ async function noteManage() {
 
         belepesnelNote = hasnote
         note.value = hasnote
+
+        if ((hasnote.length / 50) > 3) {
+            note.rows = hasnote.length / 50
+        }
     } else {
         sajatnote.innerHTML = ""
     }
@@ -724,17 +733,26 @@ videokLoad_btn.addEventListener("click", (e) => {
     if (videok_container.style.opacity == "0" || videok_container.style.opacity == "") {
         document.querySelector(".bgpreventclickandfade").style.display = "flex"
 
-        videok_container.classList.add("show")
+        videok_container.classList.add("showing")
     } else {
         document.querySelector(".bgpreventclickandfade").style.display = "none"
 
-        videok_container.classList.remove("show")
+        videok_container.classList.remove("showing")
     }
 })
 
+
 x_videok.addEventListener("click", (e) => {
     document.querySelector(".bgpreventclickandfade").style.display = "none"
-    videok_container.classList.remove("show")
+    videok_container.classList.remove("showing")
+
+
+    var iframek = document.querySelectorAll("iframe")
+
+    iframek.forEach(iframe => {
+        console.log(iframe)
+        iframe.src = iframe.src
+    })
 })
 
 
@@ -830,10 +848,18 @@ async function putInVideok() {
 
         if (videos_container.innerHTML == "") {
             videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
+
+            videos_container.innerHTML += `
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">Videók keresése YouTube-on</a>
+            `
         }
 
         if (trailers_container.innerHTML == "") {
             trailers_container.innerHTML = `<p>Nincs elérhető trailer :(</p>`
+
+            trailers_container.innerHTML += `
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">Trailer keresése YouTube-on</a>
+            `
         }
     } catch(e) {
         console.error(e)
