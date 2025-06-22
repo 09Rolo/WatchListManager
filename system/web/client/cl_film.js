@@ -30,6 +30,7 @@ window.onload = async () => {
 
 
 var API_KEY = ""
+var GOOGLE_API = ""
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
@@ -52,6 +53,7 @@ async function loggedIn() {
     
         if (response.ok) {
             API_KEY = result.apiKey
+            GOOGLE_API = result.googleAPI
 
             getData()
         } else {
@@ -127,13 +129,9 @@ manageLang()
 
 
 
-
-//<a href="https://hdmozi.hu/?s=${adatok.name}" target="_blank" rel="noopener noreferrer">HDMozi.hu</a>
-//https://filminvazio.cc/?s=
-
+const id = window.location.pathname.split("/")[2]
 
 async function getData() {
-    const id = window.location.pathname.split("/")[2]
 
     const getData = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=${language}`)
 
@@ -183,6 +181,19 @@ async function getData() {
                             <a href="https://ww.yesmovies.ag/search.html?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
                             <a href="https://donkey.to/media/search?query=${adatok.title}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
 
+                            <hr>
+                            <div class="videok">
+                                <button id="videokLoad_btn">Videók mutatása</button>
+                                <div class="bgpreventclickandfade"></div>
+
+                                <div id="videok_container" class="hidden">
+                                    <h5>Trailerek <span id="x_videok">X</span></h5>
+                                    <div id="trailers_container"></div>
+                                    <hr>
+                                    <h5>Videók</h5>
+                                    <div id="videos_container"></div>
+                                </div>
+                            </div>
                         </div>
 
                         
@@ -702,5 +713,130 @@ note.addEventListener("focusin", (e) => {
 
 
 
+
+var videokLoad_btn = document.getElementById("videokLoad_btn")
+var x_videok = document.getElementById("x_videok")
+var videok_container = document.getElementById("videok_container")
+
+putInVideok()
+
+videokLoad_btn.addEventListener("click", (e) => {
+    if (videok_container.style.opacity == "0" || videok_container.style.opacity == "") {
+        document.querySelector(".bgpreventclickandfade").style.display = "flex"
+
+        videok_container.classList.add("show")
+    } else {
+        document.querySelector(".bgpreventclickandfade").style.display = "none"
+
+        videok_container.classList.remove("show")
+    }
+})
+
+x_videok.addEventListener("click", (e) => {
+    document.querySelector(".bgpreventclickandfade").style.display = "none"
+    videok_container.classList.remove("show")
+})
+
+
+
+
     }
 }, 100); // Check every 100ms
+
+
+
+
+
+async function putInVideok() {
+    var trailers_container = document.getElementById("trailers_container")
+    var videos_container = document.getElementById("videos_container")
+
+    try {
+        const videos_fetch = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`)
+        const vids_json = await videos_fetch.json()
+
+        if (vids_json) {
+            var vids = vids_json.results
+
+            for (let v = 0; v < vids.length; v++) {
+                const vid = vids[v];
+                
+                if (vid.type == "Trailer" && vid.site == "YouTube") {
+                    var Tkey = vid.key
+                    var YTURL = `https://www.youtube.com/embed/${Tkey}`
+
+                    const yt_api = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status&id=${Tkey}&key=${GOOGLE_API}`)
+                    const yt_api_json = await yt_api.json()
+
+                    var canPutInVid = false
+
+                    if(yt_api_json.items[0].contentDetails && yt_api_json.items[0].contentDetails.regionRestriction) {
+                        //console.log(yt_api_json.items[0].contentDetails.regionRestriction)
+
+                        if (yt_api_json.items[0].contentDetails.regionRestriction.allowed && !yt_api_json.items[0].contentDetails.regionRestriction.allowed.includes("HU")) {
+                            canPutInVid = false
+                        } else if (yt_api_json.items[0].contentDetails.regionRestriction.blocked && yt_api_json.items[0].contentDetails.regionRestriction.blocked.includes("HU")) {
+                            canPutInVid = false
+                        } else {
+                            canPutInVid = true
+                        }
+                    } else {
+                        canPutInVid = true
+                    }
+                    
+                    if (canPutInVid) {
+                        trailers_container.innerHTML += `
+                            <iframe width="445" height="250" src="${YTURL}" frameborder="0" allowfullscreen></iframe>
+                        `
+                    }
+
+                } else {
+                    
+                    console.log(vid)
+                    if (vid.site == "YouTube") {
+                        var Tkey = vid.key
+                        var YTURL = `https://www.youtube.com/embed/${Tkey}`
+
+                        const yt_api = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status&id=${Tkey}&key=${GOOGLE_API}`)
+                        const yt_api_json = await yt_api.json()
+
+                        var canPutInVid = false
+
+                        if(yt_api_json.items[0].contentDetails && yt_api_json.items[0].contentDetails.regionRestriction) {
+                            //console.log(yt_api_json.items[0].contentDetails.regionRestriction)
+
+                            if (yt_api_json.items[0].contentDetails.regionRestriction.allowed && !yt_api_json.items[0].contentDetails.regionRestriction.allowed.includes("HU")) {
+                                canPutInVid = false
+                            } else if (yt_api_json.items[0].contentDetails.regionRestriction.blocked && yt_api_json.items[0].contentDetails.regionRestriction.blocked.includes("HU")) {
+                                canPutInVid = false
+                            } else {
+                                canPutInVid = true
+                            }
+                        } else {
+                            canPutInVid = true
+                        }
+
+                        if (canPutInVid) {
+                            videos_container.innerHTML += `
+                                <iframe width="445" height="250" src="${YTURL}" frameborder="0" allowfullscreen></iframe>
+                            `
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        if (videos_container.innerHTML == "") {
+            videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
+        }
+
+        if (trailers_container.innerHTML == "") {
+            trailers_container.innerHTML = `<p>Nincs elérhető trailer :(</p>`
+        }
+    } catch(e) {
+        console.error(e)
+    }
+
+}

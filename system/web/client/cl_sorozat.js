@@ -31,6 +31,7 @@ window.onload = async () => {
 
 
 var API_KEY = ""
+var GOOGLE_API = ""
 
 var allEpisodes = []
 var allEpisodes_jsonok = []
@@ -61,6 +62,7 @@ async function loggedIn() {
     
         if (response.ok) {
             API_KEY = result.apiKey
+            GOOGLE_API = result.googleAPI
 
             getData()
         } else {
@@ -197,15 +199,20 @@ async function getData() {
                             <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
                             
                             <hr>
-                            <a href="https://moviedrive.hu/filmek/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
-                            <a href="https://mozisarok.hu/search/${adatok.name}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
-                            <a href="https://ww.yesmovies.ag/search.html?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
-                            <a href="https://donkey.to/media/search?query=${adatok.name}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
+                            <button id="collapse_button">Több link mutatása</button>
+                            <div id="collapse_links">
+                                
+                                <a href="https://moviedrive.hu/filmek/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
+                                <a href="https://mozisarok.hu/search/${adatok.name}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
+                                <a href="https://ww.yesmovies.ag/search.html?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
+                                <a href="https://donkey.to/media/search?query=${adatok.name}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
+
+                                <hr>
+                                <a href="https://animedrive.hu/search/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Animedrive.hu</a>
+                                <a href="https://9animetv.to/search?keyword=${adatok.name}" target="_blank" rel="noopener noreferrer">9Animetv.to <span class="kisbetus">Angol</span></a>
+                                <a href="https://magyaranime.eu/web/kereso/" target="_blank" rel="noopener noreferrer">Magyaranime.eu</a>
+                            </div>
                             
-                            <hr>
-                            <a href="https://animedrive.hu/search/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Animedrive.hu</a>
-                            <a href="https://9animetv.to/search?keyword=${adatok.name}" target="_blank" rel="noopener noreferrer">9Animetv.to <span class="kisbetus">Angol</span></a>
-                            <a href="https://magyaranime.eu/web/kereso/" target="_blank" rel="noopener noreferrer">Magyaranime.eu</a>
 
                             
                         </div>
@@ -240,6 +247,19 @@ async function getData() {
             <div id="poster" class="col-md-4 col-10">
                 <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="fadedimg" class="img-fluid">
                 <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="posterimg" class="img-fluid">
+
+                <div class="videok">
+                    <button id="videokLoad_btn">Videók mutatása</button>
+                    <div class="bgpreventclickandfade"></div>
+
+                    <div id="videok_container" class="hidden">
+                        <h5>Trailerek <span id="x_videok">X</span></h5>
+                        <div id="trailers_container"></div>
+                        <hr>
+                        <h5>Videók</h5>
+                        <div id="videos_container"></div>
+                    </div>
+                </div>
             </div>
         `
 
@@ -249,7 +269,7 @@ async function getData() {
         masodikresz.innerHTML = `
                 <div class="general" id="general">
                     <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
-                    <p id="num_of_e"><span>Epzódok száma:</span> ${adatok.number_of_episodes}</p>
+                    
                 </div>
 
 
@@ -564,7 +584,16 @@ async function getData() {
         dataAdded = true
 
 
-        var atlaghossz = Math.floor(sumMinutes / allEpisodes.length)
+        var nagyobb0percnel = 0
+
+        for (let jsoni = 0; jsoni < allEpisodes_jsonok.length; jsoni++) {
+            const json = allEpisodes_jsonok[jsoni];
+            if (json.runtime > 0) {
+                nagyobb0percnel += 1
+            }     
+        }
+
+        var atlaghossz = Math.floor(sumMinutes / nagyobb0percnel)
         var ahossz_h = toHoursAndMinutes(atlaghossz).hours
         var ahossz_m = toHoursAndMinutes(atlaghossz).minutes
 
@@ -584,6 +613,7 @@ async function getData() {
         
 
         document.getElementById("general").innerHTML += `
+            <p id="num_of_e"><span>Epizódok száma:</span> ${allEpisodes.length}</p>
             <p id="num_of_mins"><span>Átlag hossz:</span> ${ahossztext}</p>
         `
     }
@@ -1098,6 +1128,56 @@ note.addEventListener("focusin", (e) => {
 document.getElementById("cim").addEventListener("click", (e) => {
     document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
 })
+
+
+
+var collapse_button = document.getElementById("collapse_button")
+var collapse_links = document.getElementById("collapse_links")
+
+collapse_button.addEventListener("click", (e) => {
+    console.log(collapse_links.style.height)
+
+    if (collapse_links.style.height == "0px" || collapse_links.style.height == "") {
+
+        collapse_links.style.height = "100%"
+        collapse_button.innerHTML = "Kevesebb link mutatása"
+
+    } else {
+
+        collapse_links.style.height = "0px"
+        collapse_button.innerHTML = "Több link mutatása"
+
+    }
+})
+
+
+
+
+
+var videokLoad_btn = document.getElementById("videokLoad_btn")
+var x_videok = document.getElementById("x_videok")
+var videok_container = document.getElementById("videok_container")
+
+putInVideok()
+
+videokLoad_btn.addEventListener("click", (e) => {
+    if (videok_container.style.opacity == "0" || videok_container.style.opacity == "") {
+        document.querySelector(".bgpreventclickandfade").style.display = "flex"
+
+        videok_container.classList.add("show")
+    } else {
+        document.querySelector(".bgpreventclickandfade").style.display = "none"
+
+        videok_container.classList.remove("show")
+    }
+})
+
+x_videok.addEventListener("click", (e) => {
+    document.querySelector(".bgpreventclickandfade").style.display = "none"
+    videok_container.classList.remove("show")
+})
+
+
 
 
 
@@ -1748,13 +1828,13 @@ function startBarObserver() {
 
                     } else if (percentage <= 0.25) {
                         console.log(percentage)
-                        circle.style.stroke = "rgb(134, 224, 61)"
-                    } else if (percentage <= 0.5) {
-                        circle.style.stroke = "rgb(217, 206, 131)"
-                    } else if (percentage <= 0.75) {
-                        circle.style.stroke = "rgb(202, 133, 53)"
-                    } else if (percentage < 1) {
                         circle.style.stroke = "rgb(169, 19, 19)"
+                    } else if (percentage <= 0.5) {
+                        circle.style.stroke = "rgb(202, 133, 53)"
+                    } else if (percentage <= 0.75) {
+                        circle.style.stroke = "rgb(217, 206, 131)"
+                    } else if (percentage < 1) {
+                        circle.style.stroke = "rgb(134, 224, 61)"
                     }
                 }, 500);
 
@@ -1798,3 +1878,99 @@ function startEpsObserver() {
 function clickedInTable(snum, epid) {
     changeSeason("", snum, epid)
 }
+
+
+async function putInVideok() {
+    var trailers_container = document.getElementById("trailers_container")
+    var videos_container = document.getElementById("videos_container")
+
+    try {
+        const videos_fetch = await fetch(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${API_KEY}`)
+        const vids_json = await videos_fetch.json()
+
+        if (vids_json) {
+            var vids = vids_json.results
+
+            for (let v = 0; v < vids.length; v++) {
+                const vid = vids[v];
+                
+                if (vid.type == "Trailer" && vid.site == "YouTube") {
+                    var Tkey = vid.key
+                    var YTURL = `https://www.youtube.com/embed/${Tkey}`
+
+                    const yt_api = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status&id=${Tkey}&key=${GOOGLE_API}`)
+                    const yt_api_json = await yt_api.json()
+
+                    var canPutInVid = false
+
+                    if(yt_api_json.items[0].contentDetails && yt_api_json.items[0].contentDetails.regionRestriction) {
+                        //console.log(yt_api_json.items[0].contentDetails.regionRestriction)
+
+                        if (yt_api_json.items[0].contentDetails.regionRestriction.allowed && !yt_api_json.items[0].contentDetails.regionRestriction.allowed.includes("HU")) {
+                            canPutInVid = false
+                        } else if (yt_api_json.items[0].contentDetails.regionRestriction.blocked && yt_api_json.items[0].contentDetails.regionRestriction.blocked.includes("HU")) {
+                            canPutInVid = false
+                        } else {
+                            canPutInVid = true
+                        }
+                    } else {
+                        canPutInVid = true
+                    }
+                    
+                    if (canPutInVid) {
+                        trailers_container.innerHTML += `
+                            <iframe width="445" height="250" src="${YTURL}" frameborder="0" allowfullscreen></iframe>
+                        `
+                    }
+
+                } else {
+                    
+                    console.log(vid)
+                    if (vid.site == "YouTube") {
+                        var Tkey = vid.key
+                        var YTURL = `https://www.youtube.com/embed/${Tkey}`
+
+                        const yt_api = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status&id=${Tkey}&key=${GOOGLE_API}`)
+                        const yt_api_json = await yt_api.json()
+
+                        var canPutInVid = false
+
+                        if(yt_api_json.items[0].contentDetails && yt_api_json.items[0].contentDetails.regionRestriction) {
+                            //console.log(yt_api_json.items[0].contentDetails.regionRestriction)
+
+                            if (yt_api_json.items[0].contentDetails.regionRestriction.allowed && !yt_api_json.items[0].contentDetails.regionRestriction.allowed.includes("HU")) {
+                                canPutInVid = false
+                            } else if (yt_api_json.items[0].contentDetails.regionRestriction.blocked && yt_api_json.items[0].contentDetails.regionRestriction.blocked.includes("HU")) {
+                                canPutInVid = false
+                            } else {
+                                canPutInVid = true
+                            }
+                        } else {
+                            canPutInVid = true
+                        }
+
+                        if (canPutInVid) {
+                            videos_container.innerHTML += `
+                                <iframe width="445" height="250" src="${YTURL}" frameborder="0" allowfullscreen></iframe>
+                            `
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        if (videos_container.innerHTML == "") {
+            videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
+        }
+
+        if (trailers_container.innerHTML == "") {
+            trailers_container.innerHTML = `<p>Nincs elérhető trailer :(</p>`
+        }
+    } catch(e) {
+        console.error(e)
+    }
+
+}
+

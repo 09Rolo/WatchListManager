@@ -9,8 +9,9 @@ const app = require("./server.js")
 app.get("/getAPIinfo", async (req, res) => {
     try {
         const API_KEY = process.env.API_KEY
+        const GOOGLE_API = process.env.GOOGLE_API
 
-        res.status(200).json({ message: "API adatok sikeresen lekérve", type: "success", apiKey: API_KEY});
+        res.status(200).json({ message: "API adatok sikeresen lekérve", type: "success", apiKey: API_KEY, googleAPI: GOOGLE_API});
     } catch(e) {
         res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
     }

@@ -71,6 +71,17 @@
 }
 
 
+.card-body a {
+    margin-bottom: 0 !important;
+    transition: 0.3s;
+}
+
+.card-body a:hover {
+    scale: 1.09;
+    transition: 0.3s;
+}
+
+
 
 #searched {
     width: calc(95vw - 30px);

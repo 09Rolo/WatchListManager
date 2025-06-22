@@ -53,6 +53,124 @@ body {
 
 
 
+
+
+.videok {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+
+#videokLoad_btn {
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+    padding: 5px 10px;
+    width: fit-content;
+    text-align: center;
+    margin: 20px auto;
+    transition: 0.3s;
+
+    background-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+#videokLoad_btn:hover {
+    font-weight: bolder;
+    font-size: 1.05em;
+    transition: 0.3s;
+}
+
+
+
+#videok_container {
+    position: fixed;
+    inset: 0px;
+    max-width: 90vw;
+    max-height: 80dvh;
+    overflow: auto;
+    width: max-content;
+    height: max-content;
+
+    margin: auto;
+
+    z-index: 100 !important;
+
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    transition: 0.3s all;
+}
+
+#videok_container h5 {
+    font-size: 1.6em;
+    text-decoration: underline;
+    margin: 20px;
+}
+
+#videok_container h5:first-of-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#videok_container h5 span {
+    transition: 0.3s all;
+}
+#videok_container h5 span:hover {
+    color: var(--red-theme);
+    transition: 0.3s all;
+}
+
+
+#videok_container hr {
+    margin: 0;
+}
+
+.bgpreventclickandfade {
+    display: none;
+    position: fixed;
+    top: -100dvh !important;
+    left: -100vw !important;
+    min-width: 200vw;
+    min-height: 200dvh;
+
+    z-index: 80 !important;
+    background-color: rgba(0, 0, 0, 0.8);
+    
+}
+
+
+
+
+#trailers_container, #videos_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 10px;
+}
+
+
+iframe {
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+}
+
+
+
+
 h2 {
     font-size: 2.3em;
     margin: 0;
@@ -358,10 +476,10 @@ h2 {
     margin-top: 5px !important;
     border-radius: 20px !important;
     
-    background-color: rgba(0, 0, 0, 0.5) !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
 }
 
 

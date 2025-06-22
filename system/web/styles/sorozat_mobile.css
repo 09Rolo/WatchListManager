@@ -68,6 +68,10 @@
         display: none;
     }
 
+    
+    iframe {
+        margin: auto;
+    }
 }
 
 
@@ -84,6 +88,19 @@
 
     #inputactions {
         width: 100% !important;
+    }
+
+
+    #linkbox button {
+        display: block;
+    }
+
+    #collapse_links {
+        width: 100%;
+        height: 0px;
+        overflow: hidden;
+
+        transition: all 0.5s;
     }
 }
 
