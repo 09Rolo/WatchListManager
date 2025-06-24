@@ -1,0 +1,148 @@
+
+
+.navbarfixmarginja {
+    width: 100%;
+    height: 100px;
+}
+
+.bg-dark {
+    max-width: 85vw !important;
+    
+    margin-left: auto !important;
+    margin-right: auto !important;
+    
+    margin-top: 5px !important;
+    border-radius: 20px !important;
+    
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.offcanvas-backdrop {
+    width: 200vw !important;
+    height: 200vh !important;
+    left: -100px !important;
+}
+
+
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-image: url("/imgs/bg.svg");
+    background-color: rgb(20, 20, 20);
+}
+
+
+
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 95vw;
+    margin: auto;
+}
+
+.kartya {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 40%;
+    text-align: center;
+
+    padding: 10px;
+    margin: 20px;
+    border-radius: 20px;
+
+    border: 1px solid white;
+
+    background-color: rgba(0, 0, 0, 0.4) !important;
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.kartya::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.kartya::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+
+.kartya.big {
+    width: 80%;
+}
+
+.kartya h1 {
+    font-weight: bolder;
+}
+
+
+.kartya a {
+    margin: 15px auto;
+    width: fit-content;
+    transition: 0.3s;
+
+    border-radius: 20px;
+    padding: 5px 10px;
+    border: 1px solid var(--red-theme);
+    background-color: rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+}
+.kartya a:hover {
+    transform: 0.3s;
+
+    color: var(--red-theme);
+    font-size: 1.1rem;
+    text-decoration: underline;
+    border-color: var(--red-underline);
+}
+
+.kartya p {
+    width: fit-content;
+    margin: 10px 10px;
+}
+
+.kartya p.needtype, .kartya p.typed {
+    font-size: 1.2rem;
+    width: fit-content;
+    margin: 15px auto !important;
+}
+
+
+

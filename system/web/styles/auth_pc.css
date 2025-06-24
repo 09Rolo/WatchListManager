@@ -266,3 +266,36 @@
 .password-container .toggle-password:hover {
     color: white;
 }
+
+
+.big hr {
+    margin: 20px 0px 10px 0px;
+    width: 100%;
+    background-color: white;
+    border-color: white;
+}
+
+#forgetpassbtn {
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 0px auto;
+    width: fit-content;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 0px;
+    transition: 0.3s;
+}
+
+#forgetpassbtn:hover {
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-decoration: underline;
+    transition: 0.3s;
+}
+
+
+#recoverThings {
+    margin: 100px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

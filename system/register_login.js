@@ -2,6 +2,9 @@ require("dotenv").config();
 const express = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
+const cron = require('node-cron');
+const crypto = require('crypto');
+const nodemailer = require("nodemailer");
 
 const db = require("./db.js")
 const app = require("./server.js")
@@ -169,3 +172,157 @@ app.post("/getUserID", async (req, res) => {
         res.status(500).json({ message: "Szerver hiba!", type: "error", error: "Szerver hiba!" });
     }
 });
+
+
+
+
+//elfelejtett jelszó visszaállítás cucc
+app.post("/recoverPass", async (req, res) => {
+    const { email, url } = req.body;
+
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Érvénytelen email formátum", type: "error" });
+    }
+
+
+    try {
+        const userRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+            if (!err) {
+                if (result.length != 0) {
+                    try {
+                        const existscheck = db.getConnection().query("SELECT * FROM password_reset_tokens WHERE email = ?", [email], function (err, result) {
+                            if (!err) {
+                                if (result.length == 0) {
+                                    //mehet be
+                                    const resetToken = crypto.randomBytes(32).toString('hex');
+                                    var expireTime = new Date(Date.now() + 60 * 60 * 1000) //egy óra mulva, csak ms ben kell megadni neki
+
+                                    const addRecover = db.getConnection().query("INSERT INTO password_reset_tokens (email, token, expires_at) VALUES (?, ?, ?)", [email, resetToken, expireTime])
+                                
+                                    const newUserRow = db.getConnection().query("SELECT * FROM password_reset_tokens WHERE email = ?", [email], function (err, result) {
+                                        if (!err) {
+                                            if (result.length == 1) {
+                                                //oksa, benne van
+                                                res.status(201).json({ message: `Elküldtük a(z) ${email} email címre a linket!`, type: "success" });
+
+                                                sendResetEmail(email, resetToken, url)
+                                            } else {
+                                                res.status(500).json({ message: "Nemsokára elküldjük a linket!", type: "error", error: "Server speed error?" });
+
+                                                sendResetEmail(email, resetToken, url)
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    res.status(500).json({ message: "Már kaptál egy linket", type: "error", error: "Már van linkje" });
+                                }
+                            }
+                        })
+                    } catch(e) {console.log(e)}
+                } else {
+                    res.status(500).json({ message: "Még nem regisztráltál", type: "error", error: "Még nem is regisztrált" });
+                }
+            }
+        });
+    
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+
+
+app.post("/doRecover", async (req, res) => {
+    const { token, newpass, email } = req.body;
+
+    const salt = await bcrypt.genSalt(10);
+    const newlyhashedPassword = await bcrypt.hash(newpass, salt);
+
+    //console.log(token, newpass, email)
+
+    try {
+        const userRow = db.getConnection().query("SELECT * FROM password_reset_tokens WHERE email = ? AND token = ? AND expires_at > NOW()", [email, token], function (err, result) {
+            if (!err) {
+                if (result.length != 0) {
+                    try {
+                        
+                        const updatedUserRow = db.getConnection().query("UPDATE users SET password_hash = ? WHERE email = ?", [newlyhashedPassword, email], function (err, result) {
+                            if(err) throw err;
+                            
+                            if (result.affectedRows > 0) {
+
+                                const deleteFromDB = db.getConnection().query("DELETE FROM password_reset_tokens WHERE email = ? AND token = ?", [email, token], function (err, result) {
+                                    if (!err) {
+                                        if (result.affectedRows > 0) {
+                                            //oksa
+                                            res.status(201).json({ message: "Sikeresen megváltoztatva. Mostmár bejelentkezhetsz!", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Hiba", type: "error"});
+                                        }
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+
+                            } else {
+                                res.status(500).json({ message: "Hiba!", type: "error"});
+                            }
+                        });
+
+                    } catch(e) {console.log(e)}
+                } else {
+                    res.status(500).json({ message: "Már nem érvényes a link vagy rossz email címet adtál meg", type: "error", error: "Már nem érvényes a link vagy rossz email" });
+                }
+            }
+        });
+    
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+
+async function sendResetEmail(to, token, url) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail", // or 'hotmail', etc.
+        auth: {
+            user: "info.watchlistmanager@gmail.com",
+            pass: process.env.EMAIL_PASSWORD
+        }
+    });
+
+    const mailOptions = {
+        from: '"Watch List Manager" <info.watchlistmanager@gmail.com>',
+        to: to,
+        subject: "Jelszó visszaállítás",
+        html: `<p>Ezen a linken visszaállíthatod a jelszavadat:</p>
+            <a href="${url}/auth/recover?token=${token}">Jelszó visszaállítása</a>`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Reset email elküldve neki: ", to);
+}
+
+
+
+cron.schedule('0 */10 * * *', async () => {
+    console.log("⏰ Token törlések folyamatban...");
+
+    try {
+        const deleteFromDB = db.getConnection().query("DELETE FROM password_reset_tokens WHERE expires_at < NOW()", [], function (err, result) {
+            if (!err) {
+                console.log(`🧹 Törölve lett ${result.affectedRows} lejárt token.`);
+            } else {
+                console.error("❌ Error a tokenek törlésénél:", err);
+            }
+        });
+    } catch (err) {
+        console.error("❌ Error a tokenek törlésénél:", err);
+    }
+});
+

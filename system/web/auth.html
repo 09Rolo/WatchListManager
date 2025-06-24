@@ -29,7 +29,7 @@
 
 
 
-    <div class="container">
+    <div class="container" id="register_login_container">
         <div id="vissza" class="cant_select">
             <span>&larrhk;</span>
             <p>Vissza a főoldalra</p>
@@ -56,6 +56,8 @@
                 </label>
 
                 <input type="submit" value="Bejelentkezés" id="login_button">
+                <hr>
+                <button id="forgetpassbtn">Elfelejtettem a jelszavam</button>
             </div>
         </div>
 
@@ -86,6 +88,26 @@
 
                 <input type="submit" value="Regisztráció" id="register_button">
             </div>
+        </div>
+    </div>
+
+
+    <div id="recoverThings" style="display: none;">
+        <div id="recover" class="big cant_select">
+            <h2>Jelszó visszaállítása</h2>
+
+            <label for="email_recover">
+                <input type="email" name="email" id="email_recover" minlength="5" placeholder=" ">
+                <span>Email cím</span>
+            </label>
+
+            <label for="password_recover" class="password-container">
+                <input type="password" name="password" id="password_recover" minlength="5" placeholder=" ">
+                <span>Új jelszó</span>
+                <button type="button" class="toggle-password" data-target="password_recover">🙈</button>
+            </label>
+
+            <input type="submit" value="Jelszó visszaállítása" id="recover_button">
         </div>
     </div>
 

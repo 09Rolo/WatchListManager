@@ -10,7 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles/basics.css">
-    <link rel="stylesheet" href="/styles/homepage.css">
+    <link rel="stylesheet" href="/styles/homepage_pc.css">
+    <link rel="stylesheet" href="/styles/homepage_mobile.css">
 </head>
 
 <body onload="loaded()">
@@ -146,65 +147,39 @@
             </div>
         </nav>
 
+        <div class="navbarfixmarginja"></div>
 
-        <div class="reszek">
-            <div id="info" class="resz">
-                <div id="info_small" class="small">
-                    <h2 id="info_small_button" class="needtype">Információ</h2>
-                </div>
 
-                <div id="info_big" class="big">
-                    <h2>Információ</h2>
+        <div class="main">
 
-                    <ul>
-                        <li><b class="needtype">Üdvözöllek a weboldalon!</b></li>
-                        <li>Ezt a weboldalt <a href="https://kissroland.hu/" target="_blank" rel="noopener noreferrer" class="inline_a">Rolo</a> írta, remélem tetszeni fog.</li>
-                        <li>Az oldal a számontartás tekintetében jött létre, hogy követni lehessen hol járunk egy sorozatban, vagy éppen milyen filmeket szeretnénk megnézni.</li>
-                        <li>A kívánságlistát a barátaiddal is meg tudod osztani, így egyszerűbb lesz eldönteni melyik filmet nézzétek</li>
-                    </ul>
-                </div>
+            <div class="kartya big cant_select">
+                <h1 id="info">Információ</h1>
+                
+                <p class="needtype">Üdvözöllek a weboldalon! 😁</p>
+                <p>Ez a weboldal a számontartás érdekében jött létre. Itt kezelni tudod a megnézett epizódokat egy sorozatból, vagy akár a filmeket is amelyeket már láttál, vagy látni szeretnél.</p>
+                <p>A filmes kívánságlistádat megoszthatod barátaiddal is, így egy esti filmnézéshez közösen is tudtok filmet választani.</p>
+                <p>Igyekesztem rengeteg hasznos dolgot beépíteni a weboldalba. Így az előzeteseket is megtalálod illetve egy pár linket is ha esetleg online ingyenesen szeretnéd nézni a tartalmat</p>
+            </div>
+
+            <div class="kartya cant_select">
+                <h1 id="sorozatok">Sorozatok</h1>
+                <p>Kezeld a sorozatokat amelyeket éppen nézel, amelyeket szeretnél nézni, vagy épp amelyeket láttál.</p>
+                <a href="/sorozatok" id="sorozatok_starthere_button">Sorozatok</a>
+            </div>
+
+            <div class="kartya cant_select">
+                <h1 id="filmek">Filmek</h1>
+                <p>Kezeld a filmeket amelyeket láttál, és amelyeket szeretnél megnézni. A fiók menüpont alatt található linkkel megoszthatod ezeket másokkal is.</p>
+                <a href="/filmek" id="filmek_starthere_button">Filmek</a>
             </div>
 
 
 
-            <div id="sorozatok" class="resz">
-                <div id="sorozatok_small" class="small">
-                    <h2 id="sorozatok_small_button" class="needtype">Sorozatok</h2>
-                </div>
 
-                <div id="sorozatok_big" class="big">
-                    <h2>Sorozatok</h2>
-
-                    <ul>
-                        <li>Itt hozzáadhatsz sorozatok amelyeket éppen nézel, és ha megnézel egy részt bejelölheted, hogy láttad. Ezzel mindig sorban nézheted az epizódokat</li>
-                        <li>Illetve linket is csatolhatsz sorozatokhoz, amivel egyszerűbb lesz megtalálni őket, és online ingyenesen nézni</li>
-                        <li>Írhatsz még jegyzeteket is, ha esetleg egy részt nem tudsz végig nézni akkor az időpontot ahol jártál és hasonlók</li>
-                    </ul>
-
-                    <a href="/sorozatok" id="sorozatok_starthere_button">Kezeld őket itt</a>
-                </div>
+            <div class="karty big">
+                
             </div>
-
-
-
-            <div id="filmek" class="resz">
-                <div id="filmek_small" class="small">
-                    <h2 id="filmek_small_button" class="needtype">Filmek</h2>
-                </div>
-
-                <div id="filmek_big" class="big">
-                    <h2>Filmek</h2>
-
-                    <ul>
-                        <li>Itt hozzáadhatsz filmeket amelyeket szeretnél nézni. Illetve megjelölheted, hogy láttad őket.</li>
-                        <li>Illetve linket is csatolhatsz filmekhez, amivel egyszerűbb lesz megtalálni őket, és online ingyenesen nézni</li>
-                        <li>Írhatsz még jegyzeteket is, ha esetleg nem jutnál a végéig akkor az időpontot ahol jártál és hasonlók</li>
-                        <li>Illetve megoszthatod a barátaiddal a kívánságlistádat, és közösen is választhattok filmet</li>
-                    </ul>
-
-                    <a href="/filmek" id="filmek_starthere_button">Kezeld őket itt</a>
-                </div>
-            </div>
+            
         </div>
 
 
@@ -214,12 +189,9 @@
 
 
 
-
-
-
     <script src="/client/load.js"></script>
     <script src="/client/cl_register_login.js"></script>
-    <script src="/client/cl_homepage.js"></script>
+    <script type="module" src="/client/cl_homepage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

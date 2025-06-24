@@ -70,6 +70,8 @@ window.onload = async () => {
         SwitchToLogin()
     } else if (section && section == "register") {
         SwitchToRegister()
+    } else if (section && section == "recover") {
+        SwitchToRecover()
     }
 }
 
@@ -244,4 +246,76 @@ function SwitchToRegister() {
 
 vissza.onclick = () => {
     window.location.pathname = "/"
+}
+
+
+
+
+document.getElementById("forgetpassbtn").onclick = async () => {
+    if (emailLogin.value != "") {
+
+        try {
+            const response = await fetch(`${location.origin}/recoverPass`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: emailLogin.value,
+                    url: location.origin
+                })
+            })
+
+            const result = await response.json()
+
+            notify(result.message, result.type)
+
+        } catch(e) {
+            console.log("Error: ", e)
+        }
+    } else {
+        notify("Írd be az email címedet", "info")
+    }
+}
+
+
+
+var urlToken = new URLSearchParams(window.location.search).get("token")
+
+function SwitchToRecover() {
+    document.getElementById("register_login_container").style.display = "none"
+
+    if (urlToken || urlToken != "" || urlToken != undefined) {
+        document.getElementById("recoverThings").style.display = "flex"
+
+        document.getElementById("recover_button").addEventListener("click", doTheRecovering)
+    }
+}
+
+
+async function doTheRecovering() {
+    if (document.getElementById("password_recover").value != "" && document.getElementById("email_recover").value != "") {
+        try {
+            const response = await fetch(`${location.origin}/doRecover`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    token: urlToken,
+                    newpass: document.getElementById("password_recover").value,
+                    email: document.getElementById("email_recover").value
+                })
+            })
+
+            const result = await response.json()
+
+            notify(result.message, result.type)
+
+            window.location.search = ""
+            window.location.pathname = "/"
+
+        } catch(e) {
+            console.log("Error: ", e)
+        }
+    } else {
+        notify("Írd be az új jelszót és az email címedet!", "error")
+    }
+    
 }

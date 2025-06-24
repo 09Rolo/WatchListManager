@@ -69,3 +69,13 @@ CREATE TABLE IF NOT EXISTS user_links (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     UNIQUE (user_id, movie_id, series_id)
 );
+
+
+-- Password Reset Tokens table
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
