@@ -223,6 +223,7 @@ function GiveHrefToAdatlapButton() {
 
 
 
+
 function changeLang(what) {
     const sectionParts = window.location.pathname.split("/")
 
@@ -243,11 +244,11 @@ function changeCookieLang(what) {
 
 
 function adjustSwitcherToLang() {
-    const valaszto = document.getElementById("valaszto")
+    var valasztoL = document.getElementById("valasztonyelv")
 
     if (getLanguageCookie() != null) {
         if (getLanguageCookie() == "en") {
-            valaszto.style.background = "linear-gradient(90deg,rgba(0, 0, 0, 1) 40%, rgba(255, 0, 0, 1) 100%)"
+            valasztoL.style.background = "linear-gradient(90deg,rgba(0, 0, 0, 1) 40%, rgba(255, 0, 0, 1) 100%)"
         }
     }
 }
@@ -280,6 +281,38 @@ manageLang()
 
 
 
+
+function changeCookieSpecial(what) {
+    setSpecialCookie(what)
+    window.location.reload()
+}
+
+
+
+function adjustSwitcherToSpecial() {
+    var valasztoS = document.getElementById("valasztospecial")
+
+    if (getSpecialCookie() != null) {
+        
+        if (getSpecialCookie() == "ki") {
+            console.log(getSpecialCookie())
+            valasztoS.style.background = "linear-gradient(90deg,rgba(0, 0, 0, 1) 40%, rgba(255, 0, 0, 1) 100%)"
+        }
+    } else {
+        setSpecialCookie("be")
+    }
+}
+
+adjustSwitcherToSpecial()
+
+
+
+
+
+
+
+
+
 const movies_list = document.getElementById("movies_list")
 
 async function displayFilmek() {
@@ -298,9 +331,9 @@ async function displayFilmek() {
     
             movies_list.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
-                    <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="bluredimg" alt="poszter">
+                    <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="/imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="/imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
                     </div>
                     <div class="card-body card-body-wishlisted">
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
@@ -320,5 +353,30 @@ async function displayFilmek() {
     GiveHrefToAdatlapButton()
 
     setUpcomingErtekelesCucc()
+
+    checkImgLoaded()
+
+
+
+    setTimeout(() => {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+
+                    checkImgLoaded(2000)
+                    //observer.unobserve(img);
+                } else {
+                    const img = entry.target;
+                    img.src = "./imgs/placeholder.png";
+                }
+            });
+        });
+          
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            observer.observe(img);
+        });
+    }, 100);
 }
 

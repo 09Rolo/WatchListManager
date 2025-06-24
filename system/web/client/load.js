@@ -1,6 +1,8 @@
 
 kurzor()
 
+
+//--------------------------------------------------------Loading cuccok
 document.addEventListener("DOMContentLoaded", (event) => {
     loaded()
 });
@@ -28,6 +30,25 @@ document.addEventListener("visibilitychange", function() {
         lastActive = Date.now();
     }
 });
+
+
+
+function checkImgLoaded(diffTime) {
+    if (!diffTime) {diffTime = 10000}
+
+    const allImages = document.querySelectorAll("img")
+
+    allImages.forEach(img => {
+        setTimeout(() => {
+            if(img.complete && img.naturalHeight !== 0) {
+                //loaded
+            } else {
+                img.src = "/imgs/placeholder.png"
+                img.src = "/imgs/placeholder.png"
+            }
+        }, diffTime);
+    })
+}
 
 
 
@@ -414,6 +435,19 @@ function setLanguageCookie(language) {
 
 function getLanguageCookie() {
     const match = document.cookie.match(/(?:^|; )language=([^;]*)/);
+    return match ? decodeURIComponent(match[1]) : null;
+}
+
+
+function setSpecialCookie(state) {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 100); // Set to expire in 100 years
+    document.cookie = `special=${encodeURIComponent(state)}; expires=${date.toUTCString()}; path=/`;
+}
+
+
+function getSpecialCookie() {
+    const match = document.cookie.match(/(?:^|; )special=([^;]*)/);
     return match ? decodeURIComponent(match[1]) : null;
 }
 

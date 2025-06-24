@@ -146,13 +146,26 @@
 
 
             <div class="nyelvkuki box">
-                <h5>Megjelenítési nyelv</h5>
+                <h5>Beállítások</h5>
 
-                <div id="valaszto">
-                    <p id="magyar" onclick="changeCookieLang('hu')">Magyar</p>
-                    <p>/</p>
-                    <p id="angol" onclick="changeCookieLang('en')">Angol</p>
+                <div class="valaszto">
+                    <h6>Megjelenítési nyelv</h6>
+                    <div id="valasztonyelv">
+                        <p id="magyar" class="option" onclick="changeCookieLang('hu')">Magyar</p>
+                        <p>/</p>
+                        <p id="angol" class="option" onclick="changeCookieLang('en')">Angol</p>
+                    </div>
                 </div>
+
+                <div class="valaszto">
+                    <h6>Speciális Sorozatok</h6>
+                    <div id="valasztospecial">
+                        <p id="lehetspecial" class="option" onclick="changeCookieSpecial('be')">Be</p>
+                        <p>/</p>
+                        <p id="nemlehetspecial" class="option" onclick="changeCookieSpecial('ki')">Ki</p>
+                    </div>
+                </div>
+
             </div>
 
             <div class="helpbox box">

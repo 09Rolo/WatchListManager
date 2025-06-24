@@ -238,6 +238,7 @@ async function getData() {
         dataAdded = true
 
         setUpcomingErtekelesCucc()
+        checkImgLoaded()
     }
 
 }
@@ -493,8 +494,8 @@ async function noteManage() {
         belepesnelNote = hasnote
         note.value = hasnote
 
-        if ((hasnote.length / 50) > 3) {
-            note.rows = hasnote.length / 50
+        if (Math.floor(hasnote.length / 30) > 2) {
+            note.rows = Math.floor(hasnote.length / 30)
         }
     } else {
         sajatnote.innerHTML = ""

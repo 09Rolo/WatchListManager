@@ -234,6 +234,8 @@ async function searching(tartalom) {
 
           setUpcomingErtekelesCucc()
 
+          checkImgLoaded()
+
 
 
           setTimeout(() => {
@@ -242,6 +244,8 @@ async function searching(tartalom) {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         img.src = img.dataset.src;
+
+                        checkImgLoaded(2000)
                         //observer.unobserve(img);
                     } else {
                         const img = entry.target;
@@ -430,6 +434,8 @@ async function fillSajatMovies() {
 
     setUpcomingErtekelesCucc()
 
+    checkImgLoaded()
+
 
     setTimeout(() => {
         const observer = new IntersectionObserver(entries => {
@@ -437,6 +443,8 @@ async function fillSajatMovies() {
                 if (entry.isIntersecting) {
                     const img = entry.target;
                     img.src = img.dataset.src;
+
+                    checkImgLoaded(2000)
                     //observer.unobserve(img);
                 } else {
                     const img = entry.target;

@@ -1144,3 +1144,20 @@ h2 {
 #videok_container a {
     color: var(--red-underline);
 }
+
+
+
+.mid_season_secound_countdown {
+    margin: 0;
+    margin-top: -5px;
+    font-size: smaller;
+    color: gray;
+}
+
+.ep_num:has(.mid_season_secound_countdown) {
+    height: fit-content;
+}
+
+.extrainfo {
+    color: gray;
+}

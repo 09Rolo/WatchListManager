@@ -585,6 +585,8 @@ async function getData() {
         setErtekelesColors()
         setUpcomingErtekelesCucc()
         startDragFigyeles()
+        checkImgLoaded()
+        SpecialSeriesThings()
 
         dataAdded = true
 
@@ -939,8 +941,8 @@ async function noteManage() {
         belepesnelNote = hasnote
         note.value = hasnote
 
-        if ((hasnote.length / 50) > 3) {
-            note.rows = hasnote.length / 50
+        if (Math.floor(hasnote.length / 30) > 2) {
+            note.rows = Math.floor(hasnote.length / 30)
         }
     } else {
         sajatnote.innerHTML = ""
@@ -1161,15 +1163,20 @@ collapse_button.addEventListener("click", (e) => {
 
 
 
-
+var videokPuttedIn = false
 
 var videokLoad_btn = document.getElementById("videokLoad_btn")
 var x_videok = document.getElementById("x_videok")
 var videok_container = document.getElementById("videok_container")
 
-putInVideok()
+//putInVideok()
 
 videokLoad_btn.addEventListener("click", (e) => {
+    if (!videokPuttedIn) {
+        putInVideok()
+        videokPuttedIn = true
+    }
+
     if (videok_container.style.opacity == "0" || videok_container.style.opacity == "") {
         document.querySelector(".bgpreventclickandfade").style.display = "flex"
 
@@ -1321,6 +1328,8 @@ async function changeSeason(btn, seasonnum, eptoselect) {
             const container = document.getElementById("seasonpage")
 
             container.innerHTML = ""
+
+            nav_musicbutton("", true)
         }
 
     }
@@ -1330,7 +1339,7 @@ async function changeSeason(btn, seasonnum, eptoselect) {
 
 function loadSeasonData(s) {
     const container = document.getElementById("seasonpage")
-
+    //console.log(s)
     let date = s.air_date
     let name = s.name
     let episodes = s.episodes
@@ -1338,6 +1347,9 @@ function loadSeasonData(s) {
     let poster = s.poster_path
     let num = s.season_number
     let rating = s.vote_average
+    var countAfterMidSeason = 0
+
+    SpecialThingsAudioManage(num)
 
     container.innerHTML = `
         <div class="infok">
@@ -1372,17 +1384,31 @@ function loadSeasonData(s) {
             var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc`
         }
 
+        var epnumtext = ep.episode_number
+        var overviewinfo = ""
+
+        if (ep.episode_type == "mid_season" || countAfterMidSeason > 0) {
+            if (countAfterMidSeason == 0) {
+                countAfterMidSeason++
+            } else {
+                countAfterMidSeason++
+                epnumtext = `${ep.episode_number} <span class="mid_season_secound_countdown">(${countAfterMidSeason-1})</span>`
+                overviewinfo = "<br><br><span class='extrainfo'>(Sok helyen külön töltik fel a seasont a felénél kettéosztva. Azért van a második számláló)</span>"
+            }
+
+        }
+
         episodes_container.innerHTML += `
             <div class="episode hidden" id="${ep.id}" onclick="selectEpisode(this)">
                 <div class="data">
-                    <p class="ep_num">${ep.episode_number}.</p>
+                    <p class="ep_num">${epnumtext}.</p>
                     <p>${ep.name}</p>
                     <p>(${ep.air_date}, ${hossz})</p>
                     <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
                     <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
                 </div>
                 <div class="overview">
-                    <p>${ep.overview}</p>
+                    <p>${ep.overview}${overviewinfo}</p>
                 </div>
             </div>
         
@@ -1408,6 +1434,7 @@ function loadSeasonData(s) {
 
     setUpcomingErtekelesCucc()
     startEpsObserver()
+    checkImgLoaded()
 
     container.scrollIntoView({ behavior: 'smooth' });
 
@@ -1844,7 +1871,7 @@ function startBarObserver() {
                         circle.style.animation = "coloring 3s infinite ease-in-out"
 
                     } else if (percentage <= 0.25) {
-                        console.log(percentage)
+                        //console.log(percentage)
                         circle.style.stroke = "rgb(169, 19, 19)"
                     } else if (percentage <= 0.5) {
                         circle.style.stroke = "rgb(202, 133, 53)"
@@ -1997,4 +2024,182 @@ async function putInVideok() {
         console.error(e)
     }
 
+}
+
+
+
+
+var isSpecial = false
+
+async function SpecialSeriesThings() { //ide kell majd a kuki check a legelejére, hogy ne menjen tovább mer fölösleges lenne akkor ha ki van kapcsolva
+
+if (getSpecialCookie() == null) {setSpecialCookie("be")}
+
+if (getSpecialCookie() == "be") {
+    var sseries
+
+    try {
+        const response = await fetch('/client/specialseries.json');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const file = await response.json();
+        sseries = file.sorozatok;
+
+
+    } catch(e) {
+        console.error(e)
+    }
+
+
+    //Dolgozhatunk is vele végre
+    
+    for(let i in sseries) {
+        if (sseries[i].id == id) {
+            isSpecial = true
+
+            if (sseries[i].mode == "music") {
+
+                if (sseries[i].settings && sseries[i].settings["ALL"]) {
+                    var fileformat = sseries[i].settings["ALL"][0].split(".")[sseries[i].settings["ALL"][0].split(".").length - 1]
+                    var hang = document.createElement("AUDIO");
+
+                    if (hang.canPlayType(`audio/${fileformat}`) !== "") {
+
+                        hang.setAttribute("src",`/audio/${sseries[i].title}/${sseries[i].settings["ALL"][0]}`);
+                        hang.setAttribute("id", "audio_ALL")
+                        
+                        if (sseries[i].settings["loop"]) {
+                            hang.setAttribute("loop", "");
+                        }
+
+                        hang.volume = sseries[i].settings["ALL"][1]
+                        hang.style.display = "none"
+
+                        document.body.appendChild(hang);
+                    }
+
+
+                } else if(!sseries[i].settings["ALL"]) {
+                    for(let s in sseries[i].settings) {
+                        if(s / s == 1) { //csak hogy szám legyen, a loop és hasonlók nem kellenek, csak majd később
+                            var fileformat = sseries[i].settings[s][0].split(".")[sseries[i].settings[s][0].split(".").length - 1]
+                            var hang = document.createElement("AUDIO");
+
+                            if (hang.canPlayType(`audio/${fileformat}`) !== "") {
+                                hang.setAttribute("src",`/audio/${sseries[i].title}/${sseries[i].settings[s][0]}`);
+                                hang.setAttribute("id", `audio_S${s}`)
+
+                                if (sseries[i].settings["loop"]) {
+                                    hang.setAttribute("loop", "");
+                                }
+                            
+                                hang.volume = sseries[i].settings[s][1]
+                                hang.style.display = "none"
+                            
+                                document.body.appendChild(hang);
+                            }
+
+                        }
+                    }
+                }
+
+
+            }
+
+
+        }
+    }
+}
+}
+
+
+
+
+var audioPlayed = false
+var navtartalom = document.getElementById("navtartalom")
+var tartalomadva = false
+
+function SpecialThingsAudioManage(season) {
+if (isSpecial){
+
+    if (!tartalomadva) {
+        navtartalom.innerHTML += `
+            <span class="navbar-text cant_select" id="nav_music"> | Zene megállítása |</span>
+        `
+        tartalomadva = true
+
+        document.getElementById("nav_music").addEventListener("click", nav_musicbutton)
+    }
+    
+    
+
+    if (!audioPlayed) {
+        if(document.querySelector("#audio_ALL")) {
+            document.querySelector("#audio_ALL").play()
+            audioPlayed = true
+        } else if(document.querySelector(`#audio_S${season}`)) {
+            document.querySelector(`#audio_S${season}`).play()
+            audioPlayed = true
+        }
+    } else {
+        var auds = document.querySelectorAll("audio")
+
+        auds.forEach(aud => {
+            aud.pause()
+            aud.load()
+        })
+
+        audioPlayed = false
+
+        SpecialThingsAudioManage(season)
+    }
+
+}
+}
+
+
+
+var utcsozene
+
+function nav_musicbutton(e, fullypause) {
+if (isSpecial) {
+    var nav_music = document.getElementById("nav_music")
+
+    if (fullypause) {
+        var auds = document.querySelectorAll("audio")
+                
+        auds.forEach(aud => {
+            if (!aud.paused && !aud.ended && aud.readyState > 2) {
+                aud.pause()
+                aud.load()
+                utcsozene = aud
+            }
+        })
+        
+        audioPlayed = false
+        nav_music.innerHTML = " | Zene lejátszása|"
+    } else {
+        if(nav_music.innerHTML == " | Zene megállítása |") {
+            var auds = document.querySelectorAll("audio")
+                
+            auds.forEach(aud => {
+                if (!aud.paused && !aud.ended && aud.readyState > 2) {
+                    aud.pause()
+                    aud.load()
+                    utcsozene = aud
+                }
+            })
+        
+            audioPlayed = false
+            nav_music.innerHTML = " | Zene lejátszása|"
+        } else {
+            utcsozene.play()
+            audioPlayed = true
+            nav_music.innerHTML = " | Zene megállítása |"
+        }
+    }
+}
 }
