@@ -31,7 +31,6 @@ window.onload = async () => {
 
 var API_KEY = ""
 
-//welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
     menu_login_register.style.display = "none"
     menu_account.style.display = ""

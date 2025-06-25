@@ -1,6 +1,7 @@
 @media screen and (max-width: 800px) {
     .kartya {
         width: 90% !important;
+        background-color: rgba(0, 0, 0, 0.2) !important;
     }
 
     .kartya.big {

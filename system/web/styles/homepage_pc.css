@@ -146,3 +146,169 @@ body {
 
 
 
+
+
+
+
+
+/* Timeline container */
+.timeline-wrapper {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+
+    position: relative;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 400px 100px;
+    height: fit-content !important;
+
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* The actual timeline line */
+.timeline {
+    position: relative;
+    height: 4px;
+    background: #888;
+    min-width: 10950px; /* 10px per day for 365 days */
+}
+
+/* Start and end date labels */
+.timeline-start {
+    left: -90px !important;
+    top: -10px !important;
+}
+.timeline-end {
+    left: 10965px !important;
+    top: -30px !important;
+}
+
+.timeline-start,
+.timeline-end {
+    position: relative;
+    width: fit-content;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.timeline-start {
+    left: 0;
+}
+
+.timeline-end {
+    right: 0;
+}
+
+/* Timeline item (show) */
+.timeline-item {
+    position: absolute;
+    width: 150px;
+    text-align: center;
+    color: #fff;
+    transform: translateX(-50%);
+    transition: transform 0.3s ease;
+    z-index: 1;
+
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.timeline-item:hover {
+    transform: translateX(-50%) scale(1.3);
+    z-index: 10;
+}
+
+/* Alternating positions */
+.timeline-item.top {
+    top: -330px;
+}
+
+.timeline-item.bottom {
+    top: 50px;
+}
+
+
+.timeline-item img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.timeline-item h4 {
+    margin: 5px auto !important;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
+
+.timeline-item h5 {
+    margin: 5px auto !important;
+}
+
+
+.timeline-item a {
+    text-decoration: none;
+    background: #ff5252;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-bottom: 10px !important;
+}
+
+.timeline-item a:hover {
+    background: #ff7979;
+}
+
+.timeline-item p {
+    margin-bottom: 0px;
+}
+
+
+.month-marker {
+    display: inline-block;
+    width: 913px; /* space for each month */
+    height: 100px;
+    position: relative;
+}
+
+.month-marker::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    width: 5px;
+    height: 20px;
+    background-color: white;
+}
+
+.month-label {
+    position: absolute;
+    top: -8px;
+    font-size: 12px;
+}
+
+.timeline-item div {
+    height: 10px !important;
+    width: 100%;
+    margin: auto;
+}

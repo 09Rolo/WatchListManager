@@ -327,18 +327,3 @@
     font-weight: bolder;
 }
 
-
-.bg-dark {
-    max-width: 85vw !important;
-    
-    margin-left: auto !important;
-    margin-right: auto !important;
-    
-    margin-top: 5px !important;
-    border-radius: 20px !important;
-    
-    background-color: rgba(0, 0, 0, 0.5) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}

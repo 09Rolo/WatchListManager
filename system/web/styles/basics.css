@@ -484,6 +484,41 @@ button, button *, a, a * {
 
 
 
+
+
+.bg-dark {
+    max-width: 85vw !important;
+    
+    margin-left: auto !important;
+    margin-right: auto !important;
+    
+    margin-top: 5px !important;
+    border-radius: 20px !important;
+    
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+
+
+.offcanvas-backdrop {
+    width: 200vw !important;
+    height: 200vh !important;
+    left: -100px !important;
+}
+
+
+.offcanvas {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+
 .offcanvas-backdrop.show {
     width: 200vw;
     height: 200dvh;
