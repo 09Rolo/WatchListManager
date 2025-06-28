@@ -190,6 +190,33 @@ if(isLoggedin) {
     } catch(e) {
         console.error(e)
     }
+
+
+
+    try {
+        const response = await fetch(`${location.origin}/getWishlist`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(let i in result.dataVissza) {
+                if (allSeries.includes(result.dataVissza[i].media_id)) {
+                    
+                } else {
+                    allSeries.push(result.dataVissza[i].media_id)
+                }
+            }
+        }
+    } catch(e) {
+        console.error(e)
+    }
+
+
+    console.log(allSeries)
     
     
 
@@ -273,12 +300,14 @@ async function fillInData() {
 
 
 function DoTimelineData() {
-    console.log("Timelinecucc")
+    var counter
+
 
     document.getElementById("timeline-wrapper").style.display = "block"
     document.getElementById("timeline").innerHTML = ""
 
-    var counter = 0
+    document.getElementById("timeline").innerHTML += `<div class="timeline-start" id="timelineStartDate"></div>`
+
 
     for(let day in Datumok) {
         for(let date in Datumok[day]) {
@@ -301,9 +330,7 @@ function DoTimelineData() {
                     }
                 }
 
-                if (counter == 0) {
-                    document.getElementById("timeline").innerHTML += `<div class="timeline-start" id="timelineStartDate"></div>`
-                }
+                    
 
                 addTimelineItem(date, poster, sname, mettolmeddigtxt, id, day, counter)
 
@@ -359,6 +386,9 @@ function DoTimelineData() {
 
 
     GiveHrefToAdatlapButton()
+
+
+    afterDisplayedData()
 }
 
 
@@ -386,3 +416,19 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
 
     timeline.appendChild(item);
 }
+
+
+
+
+function afterDisplayedData() {
+    var evek = document.getElementById("evek")
+
+
+    if (now.getMonth() > 0) {
+        evek.innerHTML = `<span>${now.getFullYear()} / ${now.getFullYear() + 1}</span>`
+    } else {
+        evek.innerHTML = `<span>${now.getFullYear()}</span>`
+    }
+
+}
+

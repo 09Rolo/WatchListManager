@@ -319,3 +319,51 @@ async function doTheRecovering() {
     }
     
 }
+
+
+
+
+function giveEnterAFunction() {
+    emailLogin.addEventListener("keypress", (e) => {
+        console.log(e.key)
+        if(e.key == "Enter") {
+            e.preventDefault()
+            loginButton.click()
+        }
+    })
+
+    passwordLogin.addEventListener("keypress", (e) => {
+        console.log(e.key)
+        if(e.key == "Enter") {
+            e.preventDefault()
+            loginButton.click()
+        }
+    })
+
+
+    emailRegister.addEventListener("keypress", (e) => {
+        console.log(e.key)
+        if(e.key == "Enter") {
+            e.preventDefault()
+            registerButton.click()
+        }
+    })
+
+    usernameRegister.addEventListener("keypress", (e) => {
+        console.log(e.key)
+        if(e.key == "Enter") {
+            e.preventDefault()
+            registerButton.click()
+        }
+    })
+
+    passwordRegister.addEventListener("keypress", (e) => {
+        console.log(e.key)
+        if(e.key == "Enter") {
+            e.preventDefault()
+            registerButton.click()
+        }
+    })
+}
+
+giveEnterAFunction()

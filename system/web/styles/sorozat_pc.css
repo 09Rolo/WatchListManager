@@ -754,6 +754,14 @@ h2 {
 }
 
 
+#kezelobtns {
+    position: sticky;
+    bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 25px;
+}
+
+
 
 .selected {
     /*background-color: rgba(32, 70, 32, 0.6) !important;*/

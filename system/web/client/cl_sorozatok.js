@@ -409,11 +409,23 @@ async function getPartiallyWatched() {
 
         const adatok = await getData.json()
         if (adatok) {
-            for (let seasons = 1; seasons < adatok.seasons.length; seasons++) {
-                const element = adatok.seasons[seasons];
+            var now = new Date()
+            var utcsoevaddatum = new Date(adatok.seasons[adatok.seasons.length - 1].air_date)
 
-                allEpisodes += element.episode_count
+            if (adatok.seasons[0].season_number == 1 && utcsoevaddatum <= now) {
+                for (let seasons = 0; seasons < adatok.seasons.length; seasons++) {
+                    const element = adatok.seasons[seasons];
+                                
+                    allEpisodes += element.episode_count
+                }
+            } else if(adatok.seasons[0].season_number != 1 && utcsoevaddatum <= now) {
+                for (let seasons = 1; seasons < adatok.seasons.length; seasons++) {
+                    const element = adatok.seasons[seasons];
+                                
+                    allEpisodes += element.episode_count
+                }
             }
+
             
 
 

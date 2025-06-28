@@ -201,6 +201,7 @@ async function getData() {
                             <hr>
                             <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">Hivatalos oldala</span></a>
                             <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
+                            <a href="https://www.google.com/search?q=${adatok.name}+teljes+részek+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold">Google Keresés</span></a>
                             
                             <hr>
                             <button id="collapse_button">Több link mutatása</button>
@@ -394,10 +395,11 @@ async function getData() {
 
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
-
-                if (seasonok.episodes[seasonok.episodes.length - 1].episode_number > max_eps) {  //faszom, ha kimarad egy rész, vagyis szar a számozás akkor nagyobb lesz a szám mint az ep_count :(((
-                    max_eps = seasonok.episodes[seasonok.episodes.length - 1].episode_number
-                }
+                try {
+                    if (seasonok.episodes[seasonok.episodes.length - 1].episode_number > max_eps) {  //faszom, ha kimarad egy rész, vagyis szar a számozás akkor nagyobb lesz a szám mint az ep_count :(((
+                        max_eps = seasonok.episodes[seasonok.episodes.length - 1].episode_number
+                    }
+                } catch(e) {}
             }
 
 
@@ -436,7 +438,7 @@ async function getData() {
                         
 
                         document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                            <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                            <td id="Table${seasonok.episodes[i].id}" style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                         `
                     } else {
                         document.getElementById(`t_e${i+1}`).innerHTML += `
@@ -507,7 +509,7 @@ async function getData() {
                         if (seasonok.episodes[i]) {
 
                             document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                                <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                <td id="Table${seasonok.episodes[i].id}" style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                             `
                         } else {
                             document.getElementById(`t_e${i+1}`).innerHTML += `
@@ -528,7 +530,7 @@ async function getData() {
                                 szamokVoltak.push(seasonok.episodes[i].episode_number)
 
                                 document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                    <td id="Table${seasonok.episodes[i].id}" style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                                     <td></td>
                                 `
                             }
@@ -539,7 +541,7 @@ async function getData() {
                                 szamokVoltak.push(seasonok.episodes[i].episode_number)
 
                                 document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
-                                    <td style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
+                                    <td id="Table${seasonok.episodes[i].id}" style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                                     <td></td>
                                 `
                             }
@@ -623,6 +625,23 @@ async function getData() {
             <p id="num_of_e"><span>Epizódok száma:</span> ${allEpisodes.length}</p>
             <p id="num_of_mins"><span>Átlag hossz:</span> ${ahossztext}</p>
         `
+
+
+
+        var marVoltKoviAirDate = false
+
+        for(let ep in allEpisodes_jsonok) {
+            if (!marVoltKoviAirDate) {
+                if (new Date(allEpisodes_jsonok[ep].air_date) > new Date()) {
+                    document.getElementById("general").innerHTML += `
+                        <p id="kovi_ep_to_air"><span>Következő megjelenés:</span> ${allEpisodes_jsonok[ep].season_number}. évad ${allEpisodes_jsonok[ep].episode_number}. rész (${allEpisodes_jsonok[ep].air_date})</p>
+                    `
+
+                    marVoltKoviAirDate = true
+                }
+            }
+        }
+
     }
 
 }
@@ -1271,9 +1290,22 @@ async function changeSeason(btn, seasonnum, eptoselect) {
         if (haveToClearSelection) {
             if (selectedEpisodes.length > 0) {
                 notify("Az összes kiválasztás törlődött", "info")
+
+                document.querySelectorAll("td").forEach(tableep => {
+                    if (tableep.style.border == "3px solid var(--red-theme)") {
+                        tableep.style.border = "0px"
+                    }
+                })
             }
 
             selectedEpisodes = []
+
+
+            document.querySelectorAll("td").forEach(tableep => {
+                if (tableep.style.border == "3px solid var(--red-theme)") {
+                    tableep.style.border = "0px"
+                }
+            })
         }
 
 
@@ -1490,9 +1522,13 @@ function selectEpisode(melyik) {
 
     if (found) {
         melyik.classList.remove("selected")
+
+        document.getElementById(`Table${melyik.id}`).style.border = "0px"
     } else {
         melyik.classList.add("selected")
         selectedEpisodes.push(melyik.id)
+
+        document.getElementById(`Table${melyik.id}`).style.border = "3px solid var(--red-theme)"
     }
 
 
@@ -1533,8 +1569,8 @@ async function addEpsToWatched() {
             if (json.id == ep) {
                 var epDate = new Date(json.air_date)
                 var currDate = new Date()
-                
-                if (currDate > epDate) {
+                console.log(json)
+                if (currDate >= epDate && json.runtime > 0) {
                     try {
                         var details = {
                             user_id: JSON.parse(localStorage.user).user_id,
@@ -1724,7 +1760,7 @@ function startDragFigyeles() {
         const x = e.pageX - table.offsetLeft;
         const walk = (x - startX) * 1; //scroll-speed
         table.scrollLeft = scrollLeft - walk;
-        console.log(walk);
+        //console.log(walk);
     });
 }
 
@@ -1737,15 +1773,31 @@ async function checkWatchedMinutes() {
 
     const adatok = await getData.json()
     if (adatok) {
-
-        for (let seasoni = 1; seasoni < adatok.seasons.length; seasoni++) {
-            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${seasoni}?api_key=${API_KEY}&language=${language}`)
-            const season = await getData_seasons.json()
-        
-            for (let eps = 0; eps < season.episodes.length; eps++) {
-                if (episodesWatched.includes(season.episodes[eps].id)) {
+    
+        if (adatok.seasons[0].season_number == 1) {
+            for (let seasoni = 1; seasoni < adatok.seasons.length + 1; seasoni++) {
                 
-                    watchedMinutes += season.episodes[eps].runtime
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${seasoni}?api_key=${API_KEY}&language=${language}`)
+                const season = await getData_seasons.json()
+                
+                for (let eps = 0; eps < season.episodes.length; eps++) {
+                    if (episodesWatched.includes(season.episodes[eps].id)) {
+                    
+                        watchedMinutes += season.episodes[eps].runtime
+                    }
+                }
+            }
+        } else {
+            for (let seasoni = 1; seasoni < adatok.seasons.length; seasoni++) {
+                
+                const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${seasoni}?api_key=${API_KEY}&language=${language}`)
+                const season = await getData_seasons.json()
+                
+                for (let eps = 0; eps < season.episodes.length; eps++) {
+                    if (episodesWatched.includes(season.episodes[eps].id)) {
+                    
+                        watchedMinutes += season.episodes[eps].runtime
+                    }
                 }
             }
         }
@@ -1969,7 +2021,7 @@ async function putInVideok() {
 
                 } else {
                     
-                    console.log(vid)
+                    //console.log(vid)
                     if (vid.site == "YouTube") {
                         var Tkey = vid.key
                         var YTURL = `https://www.youtube.com/embed/${Tkey}`

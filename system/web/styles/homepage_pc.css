@@ -175,6 +175,14 @@ body {
         inset 0 -1px 0 rgba(255, 255, 255, 0.1);
 }
 
+
+.timeline-wrapper h2 {
+    position: relative;
+    top: -365px;
+    width: fit-content;
+    margin: auto;
+}
+
 /* The actual timeline line */
 .timeline {
     position: relative;
@@ -311,4 +319,131 @@ body {
     height: 10px !important;
     width: 100%;
     margin: auto;
+}
+
+
+#timeline-kulso {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    padding-bottom: 0px;
+    height: fit-content !important;
+    min-width: 95vw !important;
+    max-width: 95vw !important;
+
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+
+
+#kijeloloresz {
+    margin: 20px auto;
+    margin-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    position: relative;
+    height: 400px;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+
+
+#evek {
+    position: absolute;
+    bottom: 0;
+    width: 15rem;
+    height: 7.5rem;
+    border: 3px solid white;
+    border-bottom: 0px;
+    border-radius: 7.5rem 7.5rem 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(20, 20, 20);
+}
+
+#evek span {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.3rem;
+}
+
+
+
+
+
+#honapok {
+    position: absolute;
+    bottom: 0;
+    left: 49.5%;
+    transform: translate(-50%, 10%);
+    width: 400px;         /* Natural width */
+    height: 200px;        /* Natural height (half-circle) */
+    margin: 20px auto;
+    list-style: none;
+    padding: 0;
+}
+
+#honapok li {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 40px;
+    height: 250px;
+    transform-origin: bottom center;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    border-top-color: white;
+}
+
+
+
+#honapok li:nth-child(1)  { transform: rotate(277.5deg); }
+#honapok li:nth-child(2)  { transform: rotate(292.5deg); }
+#honapok li:nth-child(3)  { transform: rotate(307.5deg); }
+#honapok li:nth-child(4)  { transform: rotate(322.5deg); }
+#honapok li:nth-child(5)  { transform: rotate(337.5deg); }
+#honapok li:nth-child(6)  { transform: rotate(352.5deg); }
+#honapok li:nth-child(7)  { transform: rotate(7.5deg); }
+#honapok li:nth-child(8)  { transform: rotate(22.5deg); }
+#honapok li:nth-child(9)  { transform: rotate(37.5deg); }
+#honapok li:nth-child(10) { transform: rotate(52.5deg); }
+#honapok li:nth-child(11) { transform: rotate(67.5deg); }
+#honapok li:nth-child(12) { transform: rotate(82.5deg); }
+
+#honapok li.selected {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: var(--red-underline);
+    box-shadow: 0 0 5px var(--red-theme);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+
+#honapok li span {
+    position: absolute;
+    top: -20px;
+    left: 8px;
+    transform-origin: bottom center;
+    font-size: 12px;
+    color: white;
+    white-space: nowrap;
+    pointer-events: none;
 }

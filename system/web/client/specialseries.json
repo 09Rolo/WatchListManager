@@ -50,6 +50,24 @@
                 "ALL": ["ST_Opening.mp3", 0.3],
                 "loop": false
             }
+        },
+        {
+            "title": "The Walking Dead",
+            "id": 1402,
+            "mode":"music",
+            "settings": {
+                "ALL": ["WD_Opening.mp3", 0.3],
+                "loop": false
+            }
+        },
+        {
+            "title": "Game of Thrones",
+            "id": 1399,
+            "mode":"music",
+            "settings": {
+                "ALL": ["GoT_Opening.mp3", 0.3],
+                "loop": false
+            }
         }
   ]
 }

@@ -175,13 +175,13 @@ async function getData() {
                             <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
                             <hr>
                             <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
-                            
+                            <a href="https://www.google.com/search?q=${adatok.title}+teljes+film+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold">Google Keresés</span></a>
                             
                             <hr>
                             <a href="https://moviedrive.hu/filmek/?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
                             <a href="https://mozisarok.hu/search/${adatok.title}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
-                            <a href="https://hdmozi.hu/?s=${adatok.name}" target="_blank" rel="noopener noreferrer">HDMozi.hu</a>
-                            <a href="https://filminvazio.cc/?s=${adatok.name}" target="_blank" rel="noopener noreferrer">FilmInvazio.cc</a>
+                            <a href="https://hdmozi.hu/?s=${adatok.title}" target="_blank" rel="noopener noreferrer">HDMozi.hu</a>
+                            <a href="https://filminvazio.cc/?s=${adatok.title}" target="_blank" rel="noopener noreferrer">FilmInvazio.cc</a>
                             <a href="https://ww.yesmovies.ag/search.html?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
                             <a href="https://donkey.to/media/search?query=${adatok.title}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
 
