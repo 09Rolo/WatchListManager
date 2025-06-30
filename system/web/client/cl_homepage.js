@@ -120,6 +120,11 @@ function GiveHrefToAdatlapButton() {
 
 
 
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------TIMELINE Újra------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function daysUntil(dateString) {
     const now = new Date();
     const targetDate = new Date(dateString);
@@ -135,16 +140,23 @@ function daysUntil(dateString) {
 
 
 
-function formatDate(date) {
+function formatDate(date, nodots, extra) {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
     const year = d.getFullYear();
 
-    return `${year}.${month}.${day}`
+    if (!extra) {
+        if (!nodots) {
+            return `${year}.${month}.${day}`
+        } else {
+            return `${year}-${month}-${day}`
+        }
+    } else if(extra == "year_and_month") {
+        return `${year}-${month}`
+    }
+
 }
-
-
 
 
 
@@ -159,6 +171,8 @@ var allSeries = []
 var Series = [] //ezzel kellene dolgozni csak
 var Seasons = [] //ezek amiket displayelni kellene
 var Datumok = []
+
+
 
 async function getMedia() {
 if(isLoggedin) {
@@ -299,14 +313,10 @@ async function fillInData() {
 
 
 
+
+
 function DoTimelineData() {
-    var counter
-
-
-    document.getElementById("timeline-wrapper").style.display = "block"
-    document.getElementById("timeline").innerHTML = ""
-
-    document.getElementById("timeline").innerHTML += `<div class="timeline-start" id="timelineStartDate"></div>`
+    ManageTimelineBeforeData()
 
 
     for(let day in Datumok) {
@@ -330,16 +340,106 @@ function DoTimelineData() {
                     }
                 }
 
-                    
-
-                addTimelineItem(date, poster, sname, mettolmeddigtxt, id, day, counter)
-
-                counter++
+                
+                addTimelineItem(date, poster, sname, mettolmeddigtxt, id, day)
             }
         }
     }
 
 
+    ManageTimelineAfterData()
+}
+
+
+
+
+
+const idovonal = document.getElementById("idovonal");
+
+function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday) {
+    const pxPerDay = 120;
+
+    if (new Date(date).getMonth() == now.getMonth()) {
+        var leftPx = daysFromToday * pxPerDay;
+    } else {
+        var leftPx = date.split("-")[date.split("-").length - 1] * pxPerDay;
+    }
+    
+
+    const item = document.createElement("div");
+    item.className = "timeline-item";
+    item.style.left = `${leftPx}px`;
+
+    item.innerHTML = `
+      <h5>${date}</h5>
+      <img src="${poster}">
+      <h4>${sname}</h4>
+      <p>${mettolmeddigtxt}</p>
+      <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+      <div></div>
+    `;
+
+
+    if (document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`)) {
+        document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`).appendChild(item);
+    } else {
+        var realDate = new Date(date)
+
+        document.querySelector(".idovonalak").innerHTML += `
+            <div class="idovonal" style="display: none" id="idovonal_${formatDate(date, true, "year_and_month")}">
+                <div class="timeline-start" id="timelineStartDate">${formatDate(new Date(realDate.getFullYear(), realDate.getMonth(), 1))}</div>
+                <div class="timeline-end" id="timelineEndDate">${formatDate(new Date(realDate.getFullYear(), realDate.getMonth() + 1, 0))}</div>
+            </div>
+        `
+
+        document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`).appendChild(item);
+    }
+}
+
+
+
+
+
+function ManageTimelineBeforeData() {
+    document.getElementById("timeline-kulso").style.display = ""
+
+
+    var evek = document.getElementById("evek")
+    if (now.getMonth() > 0) {
+        evek.innerHTML = `<span>${now.getFullYear()} / ${now.getFullYear() + 1}</span>`
+    } else {
+        evek.innerHTML = `<span>${now.getFullYear()}</span>`
+    }
+
+
+    //többi
+    const honapok = document.getElementById("honapok")
+    honapok.innerHTML = ""
+
+    const currYear = now.getFullYear()
+    const currMonth = now.getMonth()
+    const currMonthText = now.toLocaleDateString('hu-HU', { month: 'short' })
+    const monthsToShow = 9 //+ugye a mostani
+
+    for (let i = 0; i <= monthsToShow; i++) {
+        const newDate = new Date(currYear, currMonth + i).toLocaleDateString('hu-HU', { month: 'short' })
+
+        if (newDate == currMonthText) {
+            honapok.innerHTML += `
+                <li class="honap selected" id="honap_${formatDate(new Date(currYear, currMonth + i), true, "year_and_month")}"><span>${newDate}</span></li>
+            `
+        } else {
+            honapok.innerHTML += `
+                <li class="honap" id="honap_${formatDate(new Date(currYear, currMonth + i), true, "year_and_month")}"><span>${newDate}</span></li>
+            `
+        }
+    }
+
+}
+
+
+
+function ManageTimelineAfterData() {
     document.getElementById("timeline").innerHTML += `<div class="timeline-end" id="timelineEndDate"></div>`
     document.getElementById("timelineEndDate").innerHTML = formatDate(oneYearLater)
     document.getElementById("timelineStartDate").innerHTML = formatDate(now)
@@ -387,48 +487,40 @@ function DoTimelineData() {
 
     GiveHrefToAdatlapButton()
 
+    GiveClickFunctionToMonths()
 
-    afterDisplayedData()
+    switchMonth(formatDate(now, true, "year_and_month"))
 }
 
 
 
-
-
-const timeline = document.getElementById("timeline");
-
-function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday, index = 0) {
-    const pxPerDay = 30;
-    const leftPx = daysFromToday * pxPerDay;
-
-    const item = document.createElement("div");
-    item.className = "timeline-item " + (index % 2 === 0 ? "top" : "bottom");
-    item.style.left = `${leftPx}px`;
-
-    item.innerHTML = `
-      <h5>${date}</h5>
-      <img src="${poster}">
-      <h4>${sname}</h4>
-      <p>${mettolmeddigtxt}</p>
-      <a class="adatlap-button" id="${id}" href="">Adatlap</a>
-      <div></div>
-    `;
-
-    timeline.appendChild(item);
+function GiveClickFunctionToMonths() {
+    document.querySelectorAll(".honap").forEach(ho => {
+        ho.addEventListener("click", (e) => {
+            switchMonth(ho.id.split("_")[1])
+        })
+    })
 }
 
 
+function switchMonth(date) {
+    document.querySelector(".idovonalak").style.display = "none"
+    document.querySelectorAll(".idovonal").forEach(vonal => {vonal.style.display = "none"})
 
+    if (!document.querySelector(`#honap_${date}`).classList.contains("selected")) {
+        if (document.querySelector(`#idovonal_${date}`)) {
+                document.querySelector(".idovonalak").style.display = ""
+                document.querySelector(`#idovonal_${date}`).style.display = ""
 
-function afterDisplayedData() {
-    var evek = document.getElementById("evek")
+                document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
+                document.querySelector(`#honap_${date}`).classList.add("selected")
+        } else {
+            notify("Ebben a hónapban nem jelenik meg semmi!", "info")
 
-
-    if (now.getMonth() > 0) {
-        evek.innerHTML = `<span>${now.getFullYear()} / ${now.getFullYear() + 1}</span>`
+            document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
+            document.querySelector(`#honap_${date}`).classList.add("selected")
+        }
     } else {
-        evek.innerHTML = `<span>${now.getFullYear()}</span>`
+        document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
     }
-
 }
-

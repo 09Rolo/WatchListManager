@@ -151,8 +151,8 @@ body {
 
 
 
-/* Timeline container */
-.timeline-wrapper {
+
+#timeline-kulso {
     margin-top: 50px;
     margin-bottom: 50px;
     margin-left: auto;
@@ -160,10 +160,11 @@ body {
 
     position: relative;
     overflow: hidden;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 400px 100px;
+    padding: 20px;
+    padding-bottom: 0px;
     height: fit-content !important;
+    min-width: 95vw !important;
+    max-width: 95vw !important;
 
     border-radius: 20px;
     backdrop-filter: blur(5px);
@@ -176,28 +177,50 @@ body {
 }
 
 
-.timeline-wrapper h2 {
-    position: relative;
-    top: -365px;
+
+#timeline-kulso h2 {
     width: fit-content;
     margin: auto;
+    text-decoration: underline;
 }
 
-/* The actual timeline line */
-.timeline {
+
+
+.idovonalak {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+
     position: relative;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 200px 100px;
+    height: fit-content !important;
+
+    border-radius: 20px;
+}
+
+
+.idovonal {
     height: 4px;
     background: #888;
-    min-width: 10950px; /* 10px per day for 365 days */
+    min-width: 3720px; /* 120px per day */
 }
 
-/* Start and end date labels */
+
+
 .timeline-start {
     left: -90px !important;
     top: -10px !important;
 }
 .timeline-end {
-    left: 10965px !important;
+    left: 3725px !important;
     top: -30px !important;
 }
 
@@ -210,18 +233,11 @@ body {
     font-weight: bold;
 }
 
-.timeline-start {
-    left: 0;
-}
-
-.timeline-end {
-    right: 0;
-}
 
 /* Timeline item (show) */
 .timeline-item {
     position: absolute;
-    width: 150px;
+    width: 130px;
     text-align: center;
     color: #fff;
     transform: translateX(-50%);
@@ -230,20 +246,13 @@ body {
 
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.9);
+
+    bottom: 50px;
 }
 
 .timeline-item:hover {
     transform: translateX(-50%) scale(1.3);
     z-index: 10;
-}
-
-/* Alternating positions */
-.timeline-item.top {
-    top: -330px;
-}
-
-.timeline-item.bottom {
-    top: 50px;
 }
 
 
@@ -292,59 +301,12 @@ body {
 }
 
 
-.month-marker {
-    display: inline-block;
-    width: 913px; /* space for each month */
-    height: 100px;
-    position: relative;
-}
-
-.month-marker::after {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: 0;
-    width: 5px;
-    height: 20px;
-    background-color: white;
-}
-
-.month-label {
-    position: absolute;
-    top: -8px;
-    font-size: 12px;
-}
-
 .timeline-item div {
     height: 10px !important;
     width: 100%;
     margin: auto;
 }
 
-
-#timeline-kulso {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    margin-left: auto;
-    margin-right: auto;
-
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-    padding-bottom: 0px;
-    height: fit-content !important;
-    min-width: 95vw !important;
-    max-width: 95vw !important;
-
-    border-radius: 20px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-}
 
 
 
@@ -357,7 +319,7 @@ body {
     align-items: center;
 
     position: relative;
-    height: 400px;
+    height: 300px;
     min-width: 100% !important;
     max-width: 100% !important;
 }
@@ -378,6 +340,7 @@ body {
 }
 
 #evek span {
+    text-align: center;
     position: absolute;
     top: 60%;
     left: 50%;
@@ -411,10 +374,13 @@ body {
     border: 2px solid transparent;
     box-sizing: border-box;
     border-top-color: white;
+
+    transition: 0.3s all;
 }
 
 
 
+/*
 #honapok li:nth-child(1)  { transform: rotate(277.5deg); }
 #honapok li:nth-child(2)  { transform: rotate(292.5deg); }
 #honapok li:nth-child(3)  { transform: rotate(307.5deg); }
@@ -427,6 +393,23 @@ body {
 #honapok li:nth-child(10) { transform: rotate(52.5deg); }
 #honapok li:nth-child(11) { transform: rotate(67.5deg); }
 #honapok li:nth-child(12) { transform: rotate(82.5deg); }
+*/
+
+#honapok li:nth-child(1)  { transform: rotate(279deg); }
+#honapok li:nth-child(2)  { transform: rotate(297deg); }
+#honapok li:nth-child(3)  { transform: rotate(315deg); }
+#honapok li:nth-child(4)  { transform: rotate(333deg); }
+#honapok li:nth-child(5)  { transform: rotate(351deg); }
+#honapok li:nth-child(6)  { transform: rotate(9deg);   }
+#honapok li:nth-child(7)  { transform: rotate(27deg);  }
+#honapok li:nth-child(8)  { transform: rotate(45deg);  }
+#honapok li:nth-child(9)  { transform: rotate(63deg);  }
+#honapok li:nth-child(10) { transform: rotate(81deg);  }
+
+
+
+
+
 
 #honapok li.selected {
     background-color: rgba(0, 0, 0, 0.5);
@@ -434,6 +417,17 @@ body {
     box-shadow: 0 0 5px var(--red-theme);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+
+    transition: 0.3s all;
+}
+
+
+#honapok li:hover {
+    background-color: rgba(111, 111, 111, 0.7);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+
+    transition: 0.3s all;
 }
 
 

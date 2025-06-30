@@ -465,9 +465,9 @@ async function getData() {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${language}`)
                 const seasonok = await getData_seasons.json()
                 
-                if (seasonok.episodes[seasonok.episodes.length - 1]) {
-                    if (seasonok.episodes[seasonok.episodes.length - 1].episode_number > max_eps) {  //faszom, ha kimarad egy rész, vagyis szar a számozás akkor nagyobb lesz a szám mint az ep_count :(((
-                        max_eps = seasonok.episodes[seasonok.episodes.length - 1].episode_number
+                for(let faszomszam in seasonok.episodes) {
+                    if (seasonok.episodes[faszomszam].episode_number > max_eps) {  //faszom, ha kimarad egy rész, vagyis szar a számozás akkor nagyobb lesz a szám mint az ep_count :(((
+                        max_eps = seasonok.episodes[faszomszam].episode_number
                     }
                 }
             }
@@ -539,7 +539,7 @@ async function getData() {
                             if (!szamokVoltak.includes(seasonok.episodes[i].episode_number)) {
 
                                 szamokVoltak.push(seasonok.episodes[i].episode_number)
-
+                                
                                 document.getElementById(`t_e${seasonok.episodes[i].episode_number}`).innerHTML += `
                                     <td id="Table${seasonok.episodes[i].id}" style="background-color: ${ratingColor(seasonok.episodes[i].vote_average)};" title="${seasonok.episodes[i].name}" onclick="clickedInTable(${seasonok.episodes[i].season_number}, ${seasonok.episodes[i].id})">${seasonok.episodes[i].vote_average.toFixed(1)}</td>
                                     <td></td>
