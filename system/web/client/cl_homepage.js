@@ -424,15 +424,9 @@ function ManageTimelineBeforeData() {
     for (let i = 0; i <= monthsToShow; i++) {
         const newDate = new Date(currYear, currMonth + i).toLocaleDateString('hu-HU', { month: 'short' })
 
-        if (newDate == currMonthText) {
-            honapok.innerHTML += `
-                <li class="honap selected" id="honap_${formatDate(new Date(currYear, currMonth + i), true, "year_and_month")}"><span>${newDate}</span></li>
-            `
-        } else {
-            honapok.innerHTML += `
-                <li class="honap" id="honap_${formatDate(new Date(currYear, currMonth + i), true, "year_and_month")}"><span>${newDate}</span></li>
-            `
-        }
+        honapok.innerHTML += `
+            <li class="honap" id="honap_${formatDate(new Date(currYear, currMonth + i), true, "year_and_month")}"><span>${newDate}</span></li>
+        `
     }
 
 }
@@ -440,49 +434,18 @@ function ManageTimelineBeforeData() {
 
 
 function ManageTimelineAfterData() {
-    document.getElementById("timeline").innerHTML += `<div class="timeline-end" id="timelineEndDate"></div>`
-    document.getElementById("timelineEndDate").innerHTML = formatDate(oneYearLater)
-    document.getElementById("timelineStartDate").innerHTML = formatDate(now)
-
-
     const year = now.getFullYear();
-    const month = now.getMonth(); // current month (0-based)
+    const month = now.getMonth();
     const day = now.getDate();
-    
-    // Number of days in current month
+                
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
-    // Calculate the remaining ratio of the current month (days left)
     const remainingRatio = (daysInMonth - day + 1) / daysInMonth;
-    
-    // Width per month block in px (must match CSS)
-    const monthWidth = 913;
-    
-    // Calculate pixel width for the remaining space of current month
+    const monthWidth = 3720; //120px per nap
     const remainingPx = remainingRatio * monthWidth;
     
-    const monthsToShow = 12;
-    
-    // Add a blank spacer div for the partial current month space
-    const spacer = document.createElement('div');
-    spacer.style.display = 'inline-block';
-    spacer.style.width = remainingPx + 'px';
-    spacer.style.height = '50px';
-    timeline.appendChild(spacer);
-    
-    // Now add next 12 months starting from next month (month + 1)
-    for (let i = 1; i <= monthsToShow; i++) {
-        const date = new Date(year, month + i);
-        const div = document.createElement('div');
-        div.className = 'month-marker';
-    
-        const label = document.createElement('div');
-        label.className = 'month-label';
-        label.textContent = date.toLocaleDateString('hu-HU', { year: 'numeric', month: 'short' });
-    
-        div.appendChild(label);
-        timeline.appendChild(div);
-    }
+    document.getElementById(`idovonal_${formatDate(new Date(year, month), true, "year_and_month")}`).style.minWidth = remainingPx + "px"
+    document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-end`).style.left = remainingPx + 5 + "px"
+    document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-start`).innerHTML = formatDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()))
 
 
     GiveHrefToAdatlapButton()
@@ -524,3 +487,4 @@ function switchMonth(date) {
         document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
     }
 }
+

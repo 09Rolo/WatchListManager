@@ -220,7 +220,7 @@ body {
     top: -10px !important;
 }
 .timeline-end {
-    left: 3725px !important;
+    left: 3725px;
     top: -30px !important;
 }
 
