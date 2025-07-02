@@ -164,14 +164,18 @@ function formatDate(date, nodots, extra) {
 
 
 var now = new Date()
-var oneYearLater = new Date();
-oneYearLater.setFullYear(now.getFullYear() + 1);
+
+var nineMonths = new Date
+nineMonths.setMonth(now.getMonth() + 9);
+
+var someMonthsLater = new Date(nineMonths.getFullYear(), nineMonths.getMonth() + 1, 0)
+
 
 var allSeries = []
 var Series = [] //ezzel kellene dolgozni csak
 var Seasons = [] //ezek amiket displayelni kellene
 var Datumok = []
-
+var MaJelenikMeg = []
 
 
 async function getMedia() {
@@ -253,11 +257,11 @@ if(isLoggedin) {
 
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${Series[d].id}/season/${Series[d].seasons[s].season_number}?api_key=${API_KEY}&language=${language}`)
                 const season = await getData_seasons.json()
-
+                
                 //datum nagyobb mint a mostani vagy egyenlő VAGY null, mert lehet még nincs megadva, akkor is kellenek az előző epek miatt a seasonok
-
+        
                 //console.log(season, new Date(season.episodes[season.episodes.length -1].air_date) >= now)
-                if (season.episodes[season.episodes.length -1].air_date == null || new Date(season.episodes[season.episodes.length -1].air_date) >= now) {
+                if (season.episodes[season.episodes.length -1].air_date == null || formatDate(new Date(season.episodes[season.episodes.length -1].air_date)) >= formatDate(now)) {
                     Seasons.push(season)
                 }
             }
@@ -281,9 +285,27 @@ async function fillInData() {
             var airdate = new Date(Seasons[s].episodes[e].air_date)
             var airdate_str = Seasons[s].episodes[e].air_date
 
-            if (airdate >= now && airdate <= oneYearLater) {
+
+
+            if(formatDate(airdate) == formatDate(now)) {
+                var ep = Seasons[s].episodes[e]
+
+                if (!MaJelenikMeg[airdate_str]) {
+                    MaJelenikMeg[airdate_str] = []
+                }
+
+
+                if (!MaJelenikMeg[airdate_str][ep.show_id]) {
+                    MaJelenikMeg[airdate_str][ep.show_id] = []
+                }
+
+
+                MaJelenikMeg[airdate_str][ep.show_id].push(ep)
+
+            } else if (airdate > now && airdate <= someMonthsLater) {
                 var napaddig = daysUntil(Seasons[s].episodes[e].air_date)
                 var ep = Seasons[s].episodes[e]
+
 
                 if (!Datumok[napaddig]) {
                     Datumok[napaddig] = [];
@@ -301,7 +323,9 @@ async function fillInData() {
 
                 Datumok[napaddig][airdate_str][ep.show_id].push(ep)
 
-            } 
+            }
+
+
         }
     }
 
@@ -347,6 +371,35 @@ function DoTimelineData() {
     }
 
 
+
+    for(let date in MaJelenikMeg) {
+        for(let id in MaJelenikMeg[date]) {
+            var mettolmeddigtxt
+            var sname
+            var poster
+
+            if (MaJelenikMeg[date][id].length > 1) {
+                mettolmeddigtxt = `S${MaJelenikMeg[date][id][0].season_number} | E${MaJelenikMeg[date][id][0].episode_number} - E${MaJelenikMeg[date][id][Datumok[day][date][id].length - 1].episode_number}`
+            } else {
+                mettolmeddigtxt = `S${MaJelenikMeg[date][id][0].season_number} E${MaJelenikMeg[date][id][0].episode_number}`
+            }
+
+
+
+            for (let series in Series) {
+                if (Series[series].id == MaJelenikMeg[date][id][0].show_id) {
+                    sname = Series[series].name
+                    poster = "https://image.tmdb.org/t/p/original" + Series[series].poster_path
+                }
+            }
+
+                
+            addNowAiring(poster, sname, mettolmeddigtxt, id)
+        }
+    }
+
+
+
     ManageTimelineAfterData()
 }
 
@@ -366,22 +419,46 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
     }
     
 
-    const item = document.createElement("div");
-    item.className = "timeline-item";
-    item.style.left = `${leftPx}px`;
 
-    item.innerHTML = `
-      <h5>${date}</h5>
-      <img src="${poster}">
-      <h4>${sname}</h4>
-      <p>${mettolmeddigtxt}</p>
-      <a class="adatlap-button" id="${id}" href="">Adatlap</a>
-      <div></div>
-    `;
+
+    if (document.getElementById(`timeline-items_${daysFromToday}`)) { //már van
+
+        document.getElementById(`timeline-items_${daysFromToday}`).innerHTML += `
+            <div class="timeline-item">
+                <h5>${date}</h5>
+                <img src="${poster}">
+                <h4>${sname}</h4>
+                <p>${mettolmeddigtxt}</p>
+                <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+                <div></div>
+            </div>
+        `
+
+    } else { //még nincs az nap, első cucc
+
+        var item = document.createElement("div") //és ez ugye nem a card hanem a card containerje
+        item.id = `#timeline-items_${daysFromToday}`
+        item.className = "timeline-items"
+        item.style.left = `${leftPx}px`
+
+        item.innerHTML += `
+            <div class="timeline-item">
+                <h5>${date}</h5>
+                <img src="${poster}">
+                <h4>${sname}</h4>
+                <p>${mettolmeddigtxt}</p>
+                <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+                <div></div>
+            </div>
+        `
+
+    }
 
 
     if (document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`)) {
-        document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`).appendChild(item);
+        if (item) {
+            document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`).appendChild(item);
+        }   
     } else {
         var realDate = new Date(date)
 
@@ -392,9 +469,30 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
             </div>
         `
 
-        document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`).appendChild(item);
+        if (item) {
+            document.querySelector(`#idovonal_${formatDate(date, true, "year_and_month")}`).appendChild(item);
+        }
     }
 }
+
+
+
+
+
+
+function addNowAiring(poster, sname, mettolmeddigtxt, id) {
+    document.getElementById("idovonal_MA").innerHTML += `
+        <div class="NowAiring">
+            <img src="${poster}">
+            <h4>${sname}</h4>
+            <p>${mettolmeddigtxt}</p>
+            <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+            <div></div>
+        </div>
+    `
+}
+
+
 
 
 
@@ -403,9 +501,13 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
 function ManageTimelineBeforeData() {
     document.getElementById("timeline-kulso").style.display = ""
 
+    //console.log(MaJelenikMeg)
+    for(let i in MaJelenikMeg) {document.getElementById("majelenikmeg").style.display = ""} //valamiért csak így lehet sajna, de az a lényeg ha van benne valami akkor megjeleníti a divet
+
 
     var evek = document.getElementById("evek")
-    if (now.getMonth() > 0) {
+
+    if (now.getMonth() > 3) {
         evek.innerHTML = `<span>${now.getFullYear()} / ${now.getFullYear() + 1}</span>`
     } else {
         evek.innerHTML = `<span>${now.getFullYear()}</span>`

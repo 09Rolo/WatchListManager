@@ -186,6 +186,117 @@ body {
 
 
 
+
+#majelenikmeg {
+    text-align: center;
+    position: relative;
+    max-width: 100% !important;
+    margin: 30px auto;
+}
+
+#majelenikmeg div div {
+    scroll-snap-align: center; /* Can also be 'start', 'center' or 'end' */
+}
+
+
+
+#idovonal_MA {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: fit-content;
+    max-width: 100%;
+    overflow: auto hidden;
+    margin: auto;
+
+    scroll-snap-type: x mandatory;
+}
+
+
+.NowAiring {
+    position: relative;
+    text-align: center;
+    color: #fff;
+    
+    z-index: 1;
+
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    margin: 30px;
+    width: fit-content;
+    padding: 5px 15px;
+
+    scroll-snap-align: center;
+
+    transition: 0.3s;
+}
+
+.NowAiring:hover {
+    scale: 1.1;
+    transition: 0.3s;
+}
+
+
+.NowAiring img {
+    border: 2px solid white;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.NowAiring h4 {
+    margin: 5px auto !important;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px !important;
+}
+
+.NowAiring h5 {
+    margin: 5px auto !important;
+}
+
+
+.NowAiring a {
+    text-decoration: none;
+    background: #ff5252;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-bottom: 10px !important;
+}
+
+.NowAiring a:hover {
+    background: #ff7979;
+}
+
+.NowAiring p {
+    margin-bottom: 0px;
+}
+
+
+.NowAiring div {
+    height: 10px !important;
+    width: 100%;
+    margin: auto;
+}
+
+
+
+
+
+
+
+
+
+
 .idovonalak {
     display: flex;
     flex-direction: column;
@@ -217,11 +328,19 @@ body {
 
 .timeline-start {
     left: -90px !important;
-    top: -10px !important;
+    top: -15px !important;
+    z-index: 2;
+    background-color: rgba(30,30,30);
+    border-radius: 20px;
+    padding: 5px 10px;
 }
 .timeline-end {
     left: 3725px;
-    top: -30px !important;
+    top: -45px !important;
+    z-index: 2;
+    background-color: rgba(30,30,30);
+    border-radius: 20px;
+    padding: 5px 10px;
 }
 
 .timeline-start,
@@ -234,25 +353,56 @@ body {
 }
 
 
-/* Timeline item (show) */
-.timeline-item {
+
+.timeline-items {
     position: absolute;
     width: 130px;
     text-align: center;
-    color: #fff;
-    transform: translateX(-50%);
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    overflow: hidden;
+    overflow-y: auto;
+
     transition: transform 0.3s ease;
+
+    max-height: 300px !important;
+
+    bottom: 50px;
+    padding: 0;
+
+    scroll-snap-type: y mandatory;
+}
+
+.timeline-items:hover {
+    transform: scale(1.3);
+    z-index: 10;
+}
+
+
+/* Timeline item (show) */
+.timeline-item {
+    position: relative;
+    width: 130px;
+    text-align: center;
+    color: #fff;
+    
     z-index: 1;
 
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.9);
+    margin-top: 30px;
 
-    bottom: 50px;
+    scroll-snap-align: start;
 }
 
-.timeline-item:hover {
-    transform: translateX(-50%) scale(1.3);
-    z-index: 10;
+.timeline-item:first-of-type {
+    margin-top: 0;
 }
 
 
