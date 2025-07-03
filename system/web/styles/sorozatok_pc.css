@@ -179,7 +179,7 @@
 
 
 
-#sajat_series_list {
+#sajat_series_list, #sajat_series_wishlisted, #sajat_series_watched, #sajat_series_partial {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -327,4 +327,30 @@
     font-weight: bolder;
 }
 
+
+
+.seriesContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+
+.seriesContainer button {
+    border: 2px solid var(--red-theme);
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 30px auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: fit-content;
+    transition: 0.3s all;
+}
+
+.seriesContainer button:hover {
+    scale: 1.1;
+    border-radius: 10px;
+    border-color: var(--red-underline);
+    transition: 0.3s all;
+}
 

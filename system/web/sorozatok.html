@@ -158,6 +158,26 @@
             <div id="sajat">
                 <h3 class="cant_select">Saját Sorozatok</h3>
 
+
+                <div class="seriesContainer">
+                    <button onclick="togglePartial()" id="partialSeriesToggleBtn">Elkezdett sorozataid elrejtése</button>
+                    <div id="sajat_series_partial" style="display: flex;"></div>
+                </div>
+
+                <div class="seriesContainer">
+                    <hr>
+                    <button onclick="toggleWishlisted()" id="wishlistedSeriesToggleBtn">Kívánságlistás sorozataid megjelenítése</button>
+                    <div id="sajat_series_wishlisted" style="display: none;"></div>
+                </div>
+
+                <div class="seriesContainer">
+                    <hr>
+                    <button onclick="toggleWatched()" id="watchedSeriesToggleBtn">Megnézett sorozataid megjelenítése</button>
+                    <div id="sajat_series_watched" style="display: none;"></div>
+                </div>
+
+                
+
                 <div id="sajat_series_list">
                     <!--<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>-->
 

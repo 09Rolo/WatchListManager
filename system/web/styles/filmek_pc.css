@@ -179,7 +179,7 @@
 
 
 
-#sajat_movies_list {
+#sajat_movies_list, #sajat_movies_wishlisted, #sajat_movies_watched {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -327,3 +327,29 @@
     font-weight: bolder;
 }
 
+
+
+.moviesContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+
+.moviesContainer button {
+    border: 2px solid var(--red-theme);
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 30px auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: fit-content;
+    transition: 0.3s all;
+}
+
+.moviesContainer button:hover {
+    scale: 1.1;
+    border-radius: 10px;
+    border-color: var(--red-underline);
+    transition: 0.3s all;
+}

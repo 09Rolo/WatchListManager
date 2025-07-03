@@ -73,6 +73,9 @@ menu_logout_button.onclick = async () => {
 const searched_movies_list = document.getElementById("searched_movies_list")
 const sajat_movies_list = document.getElementById("sajat_movies_list")
 
+const sajat_movies_wishlisted = document.getElementById("sajat_movies_wishlisted")
+const sajat_movies_watched = document.getElementById("sajat_movies_watched")
+
 
 const searchbar = document.getElementById("searchbar")
 var search = ""
@@ -149,18 +152,21 @@ async function searching(tartalom) {
           searched_movies_list.innerHTML = ""
           sajat_movies_list.innerHTML = ""
 
+          sajat_movies_watched.innerHTML = ""
+          sajat_movies_wishlisted.innerHTML = ""
+
           sortedMovies.forEach(el => {
         
             var cardColor = ""
             var cardBodyClass = ""
 
             for(i in watchedMovies) {
-                if (watchedMovies[i] == el.id) {
+                if (watchedMovies[i] == el.id && el.title != undefined) {
                     //sajátba is
                     cardColor = "var(--watched)"
                     cardBodyClass = "card-body-watched"
 
-                    sajat_movies_list.innerHTML += `
+                    sajat_movies_watched.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
                             <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                             <div class="imgkeret">
@@ -182,12 +188,12 @@ async function searching(tartalom) {
             }
 
             for(i in wishlistedMovies) {
-                if (wishlistedMovies[i] == el.id) {
+                if (wishlistedMovies[i] == el.id && el.title != undefined) {
                     //sajátba is
                     cardColor = "var(--wishlisted)"
                     cardBodyClass = "card-body-wishlisted"
 
-                    sajat_movies_list.innerHTML += `
+                    sajat_movies_wishlisted.innerHTML += `
                         <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
                             <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                             <div class="imgkeret">
@@ -209,24 +215,27 @@ async function searching(tartalom) {
             }
 
 
-            searched_movies_list.innerHTML += `
-                <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
-                    <div class="imgkeret">
-                        <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+            if (el.title != undefined) {
+                searched_movies_list.innerHTML += `
+                    <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
+                        <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                        <div class="imgkeret">
+                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        </div>
+                        <div class="card-body ${cardBodyClass}">
+                            <h5 class="card-title"><b>${el.title}</b></h5>
+                            <i class="bi bi-journal-arrow-up showtexticon"></i>
+                            <p class="card-text">${el.overview}</p>
+                            <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                            <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">Megjelenés: ${el.release_date}</small>
+                        </div>
                     </div>
-                    <div class="card-body ${cardBodyClass}">
-                        <h5 class="card-title"><b>${el.title}</b></h5>
-                        <i class="bi bi-journal-arrow-up showtexticon"></i>
-                        <p class="card-text">${el.overview}</p>
-                        <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
-                        <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-body-secondary">Megjelenés: ${el.release_date}</small>
-                    </div>
-                </div>
-            `
+                `
+            }
+
           });
 
 
@@ -262,17 +271,23 @@ async function searching(tartalom) {
 
 
 
-          if (searched_movies_list.innerHTML == "") {
-            searched_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
-          }
+            if (searched_movies_list.innerHTML == "") {
+                searched_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
+            }
 
-          if (sajat_movies_list.innerHTML == "") {
-            sajat_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+            if (sajat_movies_watched.innerHTML == "") {
+                sajat_movies_watched.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+            }
+
+            if (sajat_movies_wishlisted.innerHTML == "") {
+                sajat_movies_wishlisted.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+            }
+
 
             if (search.length == 0) {
                 fillSajatMovies()
             }
-          }
+
         }
     } catch(e) {
         console.error(e)
@@ -360,10 +375,19 @@ getWishlisted()
 
 async function fillSajatMovies() {
 
-    if (wishlistedMovies.length > 0 || watchedMovies.length > 0) {
-        sajat_movies_list.innerHTML = ""
+    sajat_movies_list.innerHTML = ""
+
+    if (wishlistedMovies.length > 0) {
+        sajat_movies_wishlisted.innerHTML = ""
     } else {
-        sajat_movies_list.innerHTML = '<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>'
+        sajat_movies_wishlisted.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+    }
+
+
+    if (watchedMovies.length > 0) {
+        sajat_movies_watched.innerHTML = ""
+    } else {
+        sajat_movies_watched.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
     }
 
 
@@ -371,13 +395,13 @@ async function fillSajatMovies() {
         const getData = await fetch(`https://api.themoviedb.org/3/movie/${wishlistedMovies[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
-        if (adatok) {
+        if (adatok && adatok.title != undefined) {
             //console.log(adatok);
             
             var cardColor = "var(--wishlisted)"
             var cardBodyClass = "card-body-wishlisted"
     
-            sajat_movies_list.innerHTML += `
+            sajat_movies_wishlisted.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
@@ -403,13 +427,13 @@ async function fillSajatMovies() {
         const getData = await fetch(`https://api.themoviedb.org/3/movie/${watchedMovies[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
-        if (adatok) {
+        if (adatok && adatok.title != undefined) {
             //console.log(adatok);
             
             var cardColor = "var(--watched)"
             var cardBodyClass = "card-body-watched"
     
-            sajat_movies_list.innerHTML += `
+            sajat_movies_watched.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
@@ -464,3 +488,27 @@ async function fillSajatMovies() {
 setTimeout(() => {
     fillSajatMovies()
 }, 2000);
+
+
+
+
+function toggleWishlisted() {
+    if(sajat_movies_wishlisted.style.display == "none") {
+        sajat_movies_wishlisted.style.display = "flex"
+        document.getElementById("wishlistedMoviesToggleBtn").innerHTML = "Kívánságlistás filmeid elrejtése"
+    } else {
+        sajat_movies_wishlisted.style.display = "none"
+        document.getElementById("wishlistedMoviesToggleBtn").innerHTML = "Kívánságlistás filmeid megjelenítése"
+    }
+}
+
+
+function toggleWatched() {
+    if(sajat_movies_watched.style.display == "none") {
+        sajat_movies_watched.style.display = "flex"
+        document.getElementById("watchedMoviesToggleBtn").innerHTML = "Megnézett filmeid elrejtése"
+    } else {
+        sajat_movies_watched.style.display = "none"
+        document.getElementById("watchedMoviesToggleBtn").innerHTML = "Megnézett filmeid megjelenítése"
+    }
+}

@@ -707,6 +707,10 @@ h2 {
     font-size: larger;
 }
 
+.episode .data p:nth-child(3) {
+    text-align: center;
+}
+
 
 #episodes hr {
     width: 95% !important;

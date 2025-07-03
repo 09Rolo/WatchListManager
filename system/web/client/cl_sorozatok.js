@@ -52,7 +52,6 @@ async function loggedIn() {
         if (response.ok) {
             API_KEY = result.apiKey
 
-            getPartiallyWatched()
         } else {
             notify("Hiba történt az API-al", "error")
         }
@@ -74,6 +73,11 @@ menu_logout_button.onclick = async () => {
 //Keresés cucc
 const searched_series_list = document.getElementById("searched_series_list")
 const sajat_series_list = document.getElementById("sajat_series_list")
+
+const sajat_series_partial = document.getElementById("sajat_series_partial")
+const sajat_series_wishlisted = document.getElementById("sajat_series_wishlisted")
+const sajat_series_watched = document.getElementById("sajat_series_watched")
+
 
 
 const searchbar = document.getElementById("searchbar")
@@ -145,120 +149,125 @@ async function searching(tartalom) {
         const adatok = await getData.json()
     
         if (adatok.results) {
-          const sortedSeries = adatok.results.sort((a, b) => b.popularity - a.popularity);
-          //console.log(sortedSeries);
+            const sortedSeries = adatok.results.sort((a, b) => b.popularity - a.popularity);
+            //console.log(sortedSeries);
 
-          searched_series_list.innerHTML = ""
-          sajat_series_list.innerHTML = ""
+            searched_series_list.innerHTML = ""
+            sajat_series_list.innerHTML = ""
 
-          sortedSeries.forEach(el => {
-        
-            var cardColor = ""
-            var cardBodyClass = ""
+            sajat_series_partial.innerHTML = ""
+            sajat_series_wishlisted.innerHTML = ""
+            sajat_series_watched.innerHTML = ""
 
-            for(i in watchedSeries) {
-                if (watchedSeries[i] == el.id) {
-                    //sajátba is
-                    cardColor = "var(--watched)"
-                    cardBodyClass = "card-body-watched"
 
-                    sajat_series_list.innerHTML += `
-                        <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
-                            <div class="imgkeret">
-                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+            sortedSeries.forEach(el => {
+            
+                var cardColor = ""
+                var cardBodyClass = ""
+                
+                for(let i in watchedSeries) {
+                    if (watchedSeries[i] == el.id) {
+                        //sajátba is
+                        cardColor = "var(--watched)"
+                        cardBodyClass = "card-body-watched"
+
+                        sajat_series_watched.innerHTML += `
+                            <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
+                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                                <div class="imgkeret">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                                </div>
+                                <div class="card-body ${cardBodyClass}">
+                                    <h5 class="card-title"><b>${el.name}</b></h5>
+                                    <i class="bi bi-journal-arrow-up showtexticon"></i>
+                                    <p class="card-text">${el.overview}</p>
+                                    <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                                    <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
+                                </div>
                             </div>
-                            <div class="card-body ${cardBodyClass}">
-                                <h5 class="card-title"><b>${el.name}</b></h5>
-                                <i class="bi bi-journal-arrow-up showtexticon"></i>
-                                <p class="card-text">${el.overview}</p>
-                                <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
-                                <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
-                            </div>
-                            <div class="card-footer">
-                                <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
-                            </div>
-                        </div>
-                    `
+                        `
+                    }
                 }
-            }
 
 
-            for(i in partiallWatched) {
-                if (partiallWatched[i] == el.id) {
-                    //sajátba is
-                    cardColor = "var(--started-series-lathatobb-bg)"
-                    cardBodyClass = "card-body-watched_partially"
+                for(let i in partiallWatched) {
+                    if (partiallWatched[i] == el.id) {
+                        //sajátba is
+                        cardColor = "var(--started-series-lathatobb-bg)"
+                        cardBodyClass = "card-body-watched_partially"
 
-                    sajat_series_list.innerHTML += `
-                        <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
-                            <div class="imgkeret">
-                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        sajat_series_partial.innerHTML += `
+                            <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
+                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                                <div class="imgkeret">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                                </div>
+                                <div class="card-body ${cardBodyClass}">
+                                    <h5 class="card-title"><b>${el.name}</b></h5>
+                                    <i class="bi bi-journal-arrow-up showtexticon"></i>
+                                    <p class="card-text">${el.overview}</p>
+                                    <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                                    <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
+                                </div>
                             </div>
-                            <div class="card-body ${cardBodyClass}">
-                                <h5 class="card-title"><b>${el.name}</b></h5>
-                                <i class="bi bi-journal-arrow-up showtexticon"></i>
-                                <p class="card-text">${el.overview}</p>
-                                <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
-                                <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
-                            </div>
-                            <div class="card-footer">
-                                <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
-                            </div>
-                        </div>
-                    `
+                        `
+                    }
                 }
-            }
 
 
-            for(i in wishlistedSeries) {
-                if (wishlistedSeries[i] == el.id) {
-                    //sajátba is
-                    cardColor = "var(--wishlisted)"
-                    cardBodyClass = "card-body-wishlisted"
+                for(let i in wishlistedSeries) {
+                    if (wishlistedSeries[i] == el.id) {
+                        //sajátba is
+                        cardColor = "var(--wishlisted)"
+                        cardBodyClass = "card-body-wishlisted"
 
-                    sajat_series_list.innerHTML += `
-                        <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
-                            <div class="imgkeret">
-                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        sajat_series_wishlisted.innerHTML += `
+                            <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
+                                <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                                <div class="imgkeret">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                                </div>
+                                <div class="card-body ${cardBodyClass}">
+                                    <h5 class="card-title"><b>${el.name}</b></h5>
+                                    <i class="bi bi-journal-arrow-up showtexticon"></i>
+                                    <p class="card-text">${el.overview}</p>
+                                    <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                                    <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
+                                </div>
                             </div>
-                            <div class="card-body ${cardBodyClass}">
-                                <h5 class="card-title"><b>${el.name}</b></h5>
-                                <i class="bi bi-journal-arrow-up showtexticon"></i>
-                                <p class="card-text">${el.overview}</p>
-                                <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
-                                <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
-                            </div>
-                            <div class="card-footer">
-                                <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
-                            </div>
-                        </div>
-                    `
+                        `
+                    }
                 }
-            }
 
 
-            searched_series_list.innerHTML += `
-                <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
-                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
-                    <div class="imgkeret">
-                        <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                searched_series_list.innerHTML += `
+                    <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
+                        <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
+                        <div class="imgkeret">
+                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        </div>
+                        <div class="card-body ${cardBodyClass}">
+                            <h5 class="card-title"><b>${el.name}</b></h5>
+                            <i class="bi bi-journal-arrow-up showtexticon"></i>
+                            <p class="card-text">${el.overview}</p>
+                            <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                            <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
+                        </div>
                     </div>
-                    <div class="card-body ${cardBodyClass}">
-                        <h5 class="card-title"><b>${el.name}</b></h5>
-                        <i class="bi bi-journal-arrow-up showtexticon"></i>
-                        <p class="card-text">${el.overview}</p>
-                        <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
-                        <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-body-secondary">Megjelenés: ${el.first_air_date}</small>
-                    </div>
-                </div>
-            `
-          });
+                `
+            });
 
 
           GiveHrefToAdatlapButton()
@@ -291,17 +300,28 @@ async function searching(tartalom) {
 
 
 
-          if (searched_series_list.innerHTML == "") {
-            searched_series_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
-          }
+            if (searched_series_list.innerHTML == "") {
+                searched_series_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
+            }
 
-          if (sajat_series_list.innerHTML == "") {
-            sajat_series_list.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+
+
+            if (sajat_series_partial.innerHTML == "") {
+                sajat_series_partial.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+            }
+
+            if (sajat_series_wishlisted.innerHTML == "") {
+                sajat_series_wishlisted.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+            }
+
+            if (sajat_series_watched.innerHTML == "") {
+                sajat_series_watched.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+            }
+
 
             if (search.length == 0) {
                 fillSajatSeries()
             }
-          }
         }
     } catch(e) {
         console.error(e)
@@ -328,39 +348,6 @@ function GiveHrefToAdatlapButton() {
 
 //megkapni az összes cuccot
 
-async function getWatched() {
-    var amiMegy = {
-        user_id: JSON.parse(localStorage.user).user_id,
-        tipus: "tv"
-    }
-
-    try {
-        const response = await fetch(`${location.origin}/getWatched`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(amiMegy)
-        })
-    
-        const result = await response.json()
-    
-        if (response.ok) {
-            for(i in result.dataVissza) {
-                if (watchedSeries.includes(result.dataVissza[i].media_id)) {
-                    
-                } else {
-                    watchedSeries.push(result.dataVissza[i].media_id)
-                }
-            }
-        }
-    } catch(e) {
-        console.error(e)
-    }
-}
-
-getWatched()
-
-
-
 async function getWishlisted() {
     var amiMegy = {
         user_id: JSON.parse(localStorage.user).user_id,
@@ -377,7 +364,7 @@ async function getWishlisted() {
         const result = await response.json()
     
         if (response.ok) {
-            for(i in result.dataVissza) {
+            for(let i in result.dataVissza) {
                 if (watchedSeries.includes(result.dataVissza[i].media_id)) {
                     
                 } else {
@@ -397,37 +384,90 @@ getWishlisted()
 
 
 
-async function getPartiallyWatched() {
+
+async function getWatched() {
+    var SorozatokAmikVoltak = []
+
+
+    var amiMegy = {
+        user_id: JSON.parse(localStorage.user).user_id,
+        tipus: "tv"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getWatched`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(let i in result.dataVissza) {
+                if (!SorozatokAmikVoltak.includes(result.dataVissza[i].media_id)) {
+                    SorozatokAmikVoltak.push(result.dataVissza[i].media_id)
+                }
+            }
+
+
+            for(let x in SorozatokAmikVoltak) {
+                var sori = SorozatokAmikVoltak[x]
+                var fullmegnezte = await isFullyWatched(sori)
+
+                if (fullmegnezte) {
+                    if (!partiallWatched.includes(sori)) { //csak a biztonság kedvéért
+                        watchedSeries.push(sori)
+                    }
+                } else {
+                    if (!watchedSeries.includes(sori)) {
+                        partiallWatched.push(sori)
+                    }
+                }
+            }
+
+        }
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+getWatched()
+
+
+
+
+async function isFullyWatched(elem) {
     var allEpisodes = 0
     var watchedEpisodes = 0
 
-    for (let ids = 0; ids < watchedSeries.length; ids++) {
-        const elem = watchedSeries[ids];
-
-
+    try {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${elem}?api_key=${API_KEY}&language=${language}`)
 
         const adatok = await getData.json()
         if (adatok) {
             var now = new Date()
-            var utcsoevaddatum = new Date(adatok.seasons[adatok.seasons.length - 1].air_date)
 
-            if (adatok.seasons[0].season_number == 1 && utcsoevaddatum <= now) {
+
+            if (adatok.seasons[0].season_number == 1) {
                 for (let seasons = 0; seasons < adatok.seasons.length; seasons++) {
                     const element = adatok.seasons[seasons];
-                                
-                    allEpisodes += element.episode_count
+
+                    if (new Date(element.air_date) <= now) {
+                        allEpisodes += element.episode_count
+                    }
                 }
-            } else if(adatok.seasons[0].season_number != 1 && utcsoevaddatum <= now) {
+            } else if(adatok.seasons[0].season_number != 1) {
                 for (let seasons = 1; seasons < adatok.seasons.length; seasons++) {
                     const element = adatok.seasons[seasons];
-                                
-                    allEpisodes += element.episode_count
+                    
+                    if (new Date(element.air_date) <= now) {
+                        allEpisodes += element.episode_count
+                    }
                 }
             }
 
             
-
 
             var amiMegy = {
                 user_id: JSON.parse(localStorage.user).user_id,
@@ -445,7 +485,7 @@ async function getPartiallyWatched() {
             
                 if (response.ok) {
                     
-                    for(i in result.dataVissza) {
+                    for(let i in result.dataVissza) {
                         if (result.dataVissza[i].media_id == elem) {
                             watchedEpisodes += 1
                         }
@@ -456,28 +496,17 @@ async function getPartiallyWatched() {
             }
 
 
-            for (let s = 0; s < watchedSeries.length; s++) {
-                const element = watchedSeries[s];
-                
-                if (element == elem) {
-                    if (watchedEpisodes >= allEpisodes) {
+            //console.log(allEpisodes, adatok.name)
+            //console.log(watchedEpisodes)
 
-                    } else {
-                        //console.log(s)
-                        partiallWatched.push(elem)
-                    }
-                }
+            if (watchedEpisodes >= allEpisodes) {
+                return true
+            } else {
+                return false
             }
-
-
-
-            allEpisodes = 0
-            watchedEpisodes = 0
         }
 
-    }
-
-    watchedSeries = watchedSeries.filter(item => !partiallWatched.includes(item))
+    } catch(e) {return false}
 
 }
 
@@ -491,16 +520,33 @@ async function getPartiallyWatched() {
 
 async function fillSajatSeries() {
 
-    if (wishlistedSeries.length > 0 || watchedSeries.length > 0 || partiallWatched.length > 0) {
-        sajat_series_list.innerHTML = ""
+    sajat_series_list.innerHTML = ""
+
+
+    if (wishlistedSeries.length > 0) {
+        sajat_series_wishlisted.innerHTML = ""
     } else {
-        sajat_series_list.innerHTML = '<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>'
+        sajat_series_wishlisted.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+    }
+
+
+    if (watchedSeries.length > 0) {
+        sajat_series_watched.innerHTML = ""
+    } else {
+        sajat_series_watched.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+    }
+
+
+    if (partiallWatched.length > 0) {
+        sajat_series_partial.innerHTML = ""
+    } else {
+        sajat_series_partial.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
     }
 
 
 
 
-    for(i in partiallWatched) {
+    for(let i in partiallWatched) {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${partiallWatched[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
@@ -509,7 +555,7 @@ async function fillSajatSeries() {
             
             var cardColor = "var(--started-series-lathatobb-bg)"
     
-            sajat_series_list.innerHTML += `
+            sajat_series_partial.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
@@ -533,7 +579,7 @@ async function fillSajatSeries() {
 
 
 
-    for(i in wishlistedSeries) {
+    for(let i in wishlistedSeries) {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${wishlistedSeries[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
@@ -542,7 +588,7 @@ async function fillSajatSeries() {
             
             var cardColor = "var(--wishlisted)"
     
-            sajat_series_list.innerHTML += `
+            sajat_series_wishlisted.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
@@ -565,7 +611,7 @@ async function fillSajatSeries() {
 
 
 
-    for(i in watchedSeries) {
+    for(let i in watchedSeries) {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${watchedSeries[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
@@ -574,7 +620,7 @@ async function fillSajatSeries() {
             
             var cardColor = "var(--watched)"
     
-            sajat_series_list.innerHTML += `
+            sajat_series_watched.innerHTML += `
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
@@ -631,3 +677,37 @@ async function fillSajatSeries() {
 setTimeout(() => {
     fillSajatSeries()
 }, 2000);
+
+
+
+
+function toggleWishlisted() {
+    if(sajat_series_wishlisted.style.display == "none") {
+        sajat_series_wishlisted.style.display = "flex"
+        document.getElementById("wishlistedSeriesToggleBtn").innerHTML = "Kívánságlistás sorozataid elrejtése"
+    } else {
+        sajat_series_wishlisted.style.display = "none"
+        document.getElementById("wishlistedSeriesToggleBtn").innerHTML = "Kívánságlistás sorozataid megjelenítése"
+    }
+}
+
+
+function toggleWatched() {
+    if(sajat_series_watched.style.display == "none") {
+        sajat_series_watched.style.display = "flex"
+        document.getElementById("watchedSeriesToggleBtn").innerHTML = "Megnézett sorozataid elrejtése"
+    } else {
+        sajat_series_watched.style.display = "none"
+        document.getElementById("watchedSeriesToggleBtn").innerHTML = "Megnézett sorozataid megjelenítése"
+    }
+}
+
+function togglePartial() {
+    if(sajat_series_partial.style.display == "none") {
+        sajat_series_partial.style.display = "flex"
+        document.getElementById("partialSeriesToggleBtn").innerHTML = "Elkezdett sorozataid elrejtése"
+    } else {
+        sajat_series_partial.style.display = "none"
+        document.getElementById("partialSeriesToggleBtn").innerHTML = "Elkezdett sorozataid megjelenítése"
+    }
+}

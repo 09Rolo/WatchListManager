@@ -420,7 +420,6 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
     
 
 
-
     if (document.getElementById(`timeline-items_${daysFromToday}`)) { //már van
 
         document.getElementById(`timeline-items_${daysFromToday}`).innerHTML += `
@@ -437,7 +436,7 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
     } else { //még nincs az nap, első cucc
 
         var item = document.createElement("div") //és ez ugye nem a card hanem a card containerje
-        item.id = `#timeline-items_${daysFromToday}`
+        item.id = `timeline-items_${daysFromToday}`
         item.className = "timeline-items"
         item.style.left = `${leftPx}px`
 
@@ -554,7 +553,7 @@ function ManageTimelineAfterData() {
 
     GiveClickFunctionToMonths()
 
-    switchMonth(formatDate(now, true, "year_and_month"))
+    switchMonth(formatDate(now, true, "year_and_month"), true)
 }
 
 
@@ -568,7 +567,7 @@ function GiveClickFunctionToMonths() {
 }
 
 
-function switchMonth(date) {
+function switchMonth(date, dontscroll) {
     document.querySelector(".idovonalak").style.display = "none"
     document.querySelectorAll(".idovonal").forEach(vonal => {vonal.style.display = "none"})
 
@@ -579,6 +578,28 @@ function switchMonth(date) {
 
                 document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
                 document.querySelector(`#honap_${date}`).classList.add("selected")
+
+                
+                if (!dontscroll) {
+                    document.querySelector(`#idovonal_${date} .timeline-items`).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    }); //és ez valamiért elbassza az évek locationját :DDDD
+                    document.getElementById("evek").style.bottom = "-20px"
+
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: document.getElementById("evek").getBoundingClientRect().top + window.scrollY,
+                            behavior: 'smooth'
+                        });
+                    }, 10);
+
+                    console.log()
+                }
+
+                
+
+
         } else {
             notify("Ebben a hónapban nem jelenik meg semmi!", "info")
 

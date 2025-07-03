@@ -160,6 +160,19 @@
             <div id="sajat">
                 <h3 class="cant_select">Saját Filmek</h3>
 
+                
+                <div class="moviesContainer">
+                    <button onclick="toggleWishlisted()" id="wishlistedMoviesToggleBtn">Kívánságlistás filmeid elrejtése</button>
+                    <div id="sajat_movies_wishlisted" style="display: flex;"></div>
+                </div>
+
+                <div class="moviesContainer">
+                    <hr>
+                    <button onclick="toggleWatched()" id="watchedMoviesToggleBtn">Megnézett filmeid megjelenítése</button>
+                    <div id="sajat_movies_watched" style="display: none;"></div>
+                </div>
+                
+
                 <div id="sajat_movies_list">
                     <!--<p class="info">Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>-->
 

@@ -188,6 +188,24 @@ app.post("/recoverPass", async (req, res) => {
     }
 
 
+
+    try {
+        //nem lehet duplikált email ezért töröljük le először, de csak ha lejárt már
+        const removeIfAlreadyGivenAndExpired = db.getConnection().query("DELETE FROM password_reset_tokens WHERE email = ? AND expires_at < NOW()", [email], function (err, result) {
+            if (!err) {
+                if (result.affectedRows > 0) {
+                    //oksa
+                    console.log(`Törölve lett a lejárt token.`);
+                }
+            } else {
+                console.error("Error a token törlésénél:", err);
+            }
+        });
+
+    } catch(e) {console.error(e)}
+
+
+
     try {
         const userRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
             if (!err) {
@@ -310,7 +328,7 @@ async function sendResetEmail(to, token, url) {
 
 
 
-cron.schedule('0 */10 * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
     console.log("⏰ Token törlések folyamatban...");
 
     try {
