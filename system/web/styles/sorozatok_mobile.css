@@ -24,3 +24,41 @@
         width: 80vw !important;
     }
 }
+
+/* Kisebb Koncepció (kettő férjen el egymás mellett, de ennél még kisebb kell majd)
+@media screen and (max-width: 618px) {
+    .card {
+        width: 150px;
+        min-height: 500px;
+        max-height: 550px;
+    }
+
+    .card-text {
+        max-height: 200px;
+    }
+
+    .card-title {
+        text-align: center;
+    }
+
+    .bluredimg {
+        width: 170px;
+        left: -8%;
+        height: fit-content;
+    }
+
+    .card-body a, .rating {
+        position: relative;
+        top: 0px;
+        bottom: 0px;
+        left: 15%;
+        margin: auto;
+        margin-bottom: 10px !important;
+    }
+
+    .rating {
+        left: 0;
+    } 
+
+}
+*/

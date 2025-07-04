@@ -52,6 +52,15 @@ async function loggedIn() {
         if (response.ok) {
             API_KEY = result.apiKey
 
+            getWishlisted()
+            getWatched()
+
+            
+            setTimeout(() => {
+                fillSajatSeries()
+            }, 2000);
+
+
         } else {
             notify("Hiba történt az API-al", "error")
         }
@@ -166,7 +175,7 @@ async function searching(tartalom) {
                 var cardBodyClass = ""
                 
                 for(let i in watchedSeries) {
-                    if (watchedSeries[i] == el.id) {
+                    if (watchedSeries[i] == el.id && el.name != undefined) {
                         //sajátba is
                         cardColor = "var(--watched)"
                         cardBodyClass = "card-body-watched"
@@ -194,7 +203,7 @@ async function searching(tartalom) {
 
 
                 for(let i in partiallWatched) {
-                    if (partiallWatched[i] == el.id) {
+                    if (partiallWatched[i] == el.id && el.name != undefined) {
                         //sajátba is
                         cardColor = "var(--started-series-lathatobb-bg)"
                         cardBodyClass = "card-body-watched_partially"
@@ -222,7 +231,7 @@ async function searching(tartalom) {
 
 
                 for(let i in wishlistedSeries) {
-                    if (wishlistedSeries[i] == el.id) {
+                    if (wishlistedSeries[i] == el.id && el.name != undefined) {
                         //sajátba is
                         cardColor = "var(--wishlisted)"
                         cardBodyClass = "card-body-wishlisted"
@@ -378,8 +387,6 @@ async function getWishlisted() {
     }
 }
 
-getWishlisted()
-
 
 
 
@@ -412,18 +419,22 @@ async function getWatched() {
 
 
             for(let x in SorozatokAmikVoltak) {
-                var sori = SorozatokAmikVoltak[x]
-                var fullmegnezte = await isFullyWatched(sori)
 
-                if (fullmegnezte) {
-                    if (!partiallWatched.includes(sori)) { //csak a biztonság kedvéért
-                        watchedSeries.push(sori)
+                setTimeout(async () => {
+                    var sori = SorozatokAmikVoltak[x]
+                    var fullmegnezte = await isFullyWatched(sori)
+
+                    if (fullmegnezte) {
+                        if (!partiallWatched.includes(sori)) { //csak a biztonság kedvéért
+                            watchedSeries.push(sori)
+                        }
+                    } else {
+                        if (!watchedSeries.includes(sori)) {
+                            partiallWatched.push(sori)
+                        }
                     }
-                } else {
-                    if (!watchedSeries.includes(sori)) {
-                        partiallWatched.push(sori)
-                    }
-                }
+                }, 100);
+
             }
 
         }
@@ -431,8 +442,6 @@ async function getWatched() {
         console.error(e)
     }
 }
-
-getWatched()
 
 
 
@@ -550,7 +559,7 @@ async function fillSajatSeries() {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${partiallWatched[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
-        if (adatok) {
+        if (adatok && adatok.name != undefined) {
             //console.log(adatok);
             
             var cardColor = "var(--started-series-lathatobb-bg)"
@@ -583,7 +592,7 @@ async function fillSajatSeries() {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${wishlistedSeries[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
-        if (adatok) {
+        if (adatok && adatok.name != undefined) {
             //console.log(adatok);
             
             var cardColor = "var(--wishlisted)"
@@ -615,7 +624,7 @@ async function fillSajatSeries() {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${watchedSeries[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
-        if (adatok) {
+        if (adatok && adatok.name != undefined) {
             //console.log(adatok);
             
             var cardColor = "var(--watched)"
@@ -672,11 +681,6 @@ async function fillSajatSeries() {
     }, 100);
     
 }
-
-
-setTimeout(() => {
-    fillSajatSeries()
-}, 2000);
 
 
 

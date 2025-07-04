@@ -330,7 +330,11 @@ async function getWatched() {
     
         if (response.ok) {
             for(i in result.dataVissza) {
-                watchedMovies.push(result.dataVissza[i].media_id)
+
+                setTimeout(() => {
+                    watchedMovies.push(result.dataVissza[i].media_id)
+                }, 100);
+                
             }
         }
     } catch(e) {
