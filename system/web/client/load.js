@@ -53,6 +53,8 @@ function checkImgLoaded(diffTime) {
 
 
 //-------------------------------------------------------------------------------Kurzor
+//var mouseButtonState
+
 function kurzor() {
     let body = document.querySelector("body")
     body.id = "body"
@@ -90,6 +92,19 @@ function kurzor() {
             top: posY + "px"
         }, {duration: 500, fill: "forwards"})
     })
+
+
+
+/*
+    document.addEventListener("mousedown", (merre) => {
+        mouseButtonState = "Down"
+    })
+
+
+    document.addEventListener("mouseup", (merre) => {
+        mouseButtonState = "Up"
+    })
+*/
 
 
 
@@ -186,10 +201,14 @@ function kurzor() {
 }
 
 
+
+
 const handleOnMove = e => {
     const p = e.clientX / window.innerWidth * 100
 }
 document.ontouchmove = e => handleOnMove(e.touches[0])
+
+
 
 //-------------------------------------------------------------------------------
 

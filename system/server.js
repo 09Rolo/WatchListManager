@@ -61,7 +61,6 @@ require("./sorozatok_filmek.js")
 
 
 
-
 //A végére kell rakni, eddig azért nem működött
 
 app.use((req, res) => {
