@@ -47,6 +47,10 @@ app.get('/sorozat/:section?/:section?', async(req, res) => {
 app.get('/u/:section?/:section?', async(req, res) => {
   res.sendFile(path.join(__dirname, "web", "user.html"));
 });
+
+app.get('/admin/:section?', async(req, res) => {//ott hagyom a sectiont hátha kell még valamire :D
+  res.sendFile(path.join(__dirname, "web", "admin.html"));
+});
 //-------------------------------------------------------
 
 

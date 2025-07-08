@@ -176,6 +176,29 @@ app.post("/getUserID", async (req, res) => {
 
 
 
+//get group
+app.post("/getUserGroup", async (req, res) => {
+    const { username } = req.body;
+
+    try {
+        const user = db.getConnection().query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
+            if (!err) {
+                if (result.length == 0) {
+                    res.status(401).json({ message: "Hiba", type: "error" })
+                } else {
+                    res.status(200).json({ message: "siker", type: "success", group: result[0].group });
+                }
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Szerver hiba!", type: "error", error: "Szerver hiba!" });
+    }
+});
+
+
+
+
 //elfelejtett jelszó visszaállítás cucc
 app.post("/recoverPass", async (req, res) => {
     const { email, url } = req.body;

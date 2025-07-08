@@ -12,6 +12,7 @@ const filmek_starthere_button = document.getElementById("filmek_starthere_button
 
 var API_KEY = ""
 var isLoggedin = false
+var userGroup
 
 
 window.onload = async () => {
@@ -73,6 +74,27 @@ async function loggedIn() {
 
 
     getMedia()
+
+
+
+    try {
+        const response = await fetch(`${location.origin}/getUserGroup`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({username: JSON.parse(localStorage.getItem("user")).username})
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            userGroup = result.group
+
+            manageUserByGroup()
+        }
+
+    } catch(e) {
+        console.error(e)
+    }
 }
 
 
@@ -234,7 +256,7 @@ if(isLoggedin) {
     }
 
 
-    console.log(allSeries)
+    //console.log(allSeries)
     
     
 
@@ -594,7 +616,7 @@ function switchMonth(date, dontscroll) {
                         });
                     }, 10);
 
-                    console.log()
+                    //console.log()
                 }
 
                 
@@ -608,6 +630,29 @@ function switchMonth(date, dontscroll) {
         }
     } else {
         document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
+    }
+}
+
+
+
+
+
+
+function manageUserByGroup() {
+    if(userGroup && userGroup != "user") {
+        var ujElement = document.createElement("div")
+        ujElement.classList = "kartya big cant_select"
+        ujElement.innerHTML = `
+            <button id="adminPanel">Admin Panel</button>
+        `
+
+        document.querySelector(".main").insertBefore(ujElement, document.querySelector(".main").firstChild)
+
+
+        
+        document.getElementById("adminPanel").addEventListener("click", (e) => {
+            window.location.pathname = "/admin"
+        })
     }
 }
 

@@ -591,3 +591,23 @@ body {
     white-space: nowrap;
     pointer-events: none;
 }
+
+
+
+
+#adminPanel {
+    width: fit-content;
+    margin: auto;
+    padding: 5px 10px;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--red-underline);
+    border-radius: 20px;
+
+    transition: 0.3s;
+}
+
+#adminPanel:hover {
+    scale: 1.1;
+    transition: 0.3s;
+}
