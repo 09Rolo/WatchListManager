@@ -160,7 +160,7 @@ async function searching(tartalom) {
             var cardColor = ""
             var cardBodyClass = ""
 
-            for(i in watchedMovies) {
+            for(let i in watchedMovies) {
                 if (watchedMovies[i] == el.id && el.title != undefined) {
                     //sajátba is
                     cardColor = "var(--watched)"
@@ -187,7 +187,7 @@ async function searching(tartalom) {
                 }
             }
 
-            for(i in wishlistedMovies) {
+            for(let i in wishlistedMovies) {
                 if (wishlistedMovies[i] == el.id && el.title != undefined) {
                     //sajátba is
                     cardColor = "var(--wishlisted)"
@@ -329,7 +329,8 @@ async function getWatched() {
         const result = await response.json()
     
         if (response.ok) {
-            for(i in result.dataVissza) {
+
+            for(let i in result.dataVissza) {
 
                 setTimeout(() => {
                     watchedMovies.push(result.dataVissza[i].media_id)
@@ -362,7 +363,7 @@ async function getWishlisted() {
         const result = await response.json()
     
         if (response.ok) {
-            for(i in result.dataVissza) {
+            for(let i in result.dataVissza) {
                 wishlistedMovies.push(result.dataVissza[i].media_id)
             }
         }
@@ -395,7 +396,7 @@ async function fillSajatMovies() {
     }
 
 
-    for(i in wishlistedMovies) {
+    for(let i in wishlistedMovies) {
         const getData = await fetch(`https://api.themoviedb.org/3/movie/${wishlistedMovies[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
@@ -427,7 +428,7 @@ async function fillSajatMovies() {
     }
 
 
-    for(i in watchedMovies) {
+    for(let i in watchedMovies) {
         const getData = await fetch(`https://api.themoviedb.org/3/movie/${watchedMovies[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
         
