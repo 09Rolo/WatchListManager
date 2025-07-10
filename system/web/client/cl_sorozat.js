@@ -1957,7 +1957,7 @@ function startEpsObserver() {
 
                     ep.classList.add("showing")
                     ep_observer.unobserve(entry.target)
-                }, 150);
+                }, 10);
 
             }
         })

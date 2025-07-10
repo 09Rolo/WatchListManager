@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    group VARCHAR(50) NOT NULL DEFAULT 'user',
+    `group` VARCHAR(50) NOT NULL DEFAULT 'user',
     password_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -79,4 +79,14 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
     token VARCHAR(255) UNIQUE NOT NULL,
     expires_at DATETIME NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Server Links table
+CREATE TABLE IF NOT EXISTS server_links (
+    server_link_id INT AUTO_INCREMENT PRIMARY KEY,
+    movie_id INT DEFAULT NULL,
+    series_id INT DEFAULT NULL,
+    link TEXT NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

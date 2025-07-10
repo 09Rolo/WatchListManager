@@ -63,7 +63,7 @@ cron.schedule('0 3 * * *', () => {
     const filePath = path.join(BACKUP_DIR, fileName);
 
     // Dump command (no username/pass)
-    const dumpCommand = `mysqldump ${DATABASE_NAME} > "${filePath}"`;
+    const dumpCommand = `mysqldump --user=root ${DATABASE_NAME} > "${filePath}"`;
 
     exec(dumpCommand, (error, stdout, stderr) => {
         if (error) {

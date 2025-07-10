@@ -469,7 +469,7 @@ button, button *, a, a * {
     opacity: 0 !important;
     filter: blur(5px) !important;
     transform: translateX(-100%) !important;
-    transition: all 1s;
+    transition: all 0.8s;
     pointer-events: none !important;
 }
 
@@ -477,7 +477,7 @@ button, button *, a, a * {
     opacity: 1 !important;
     filter: blur(0px) !important;
     transform: translateX(0%) !important;
-    transition: all 1s;
+    transition: all 0.8s;
     pointer-events: all !important;
 }
 

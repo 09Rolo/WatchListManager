@@ -1,8 +1,7 @@
 #container {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
     align-items: center;
 
     min-width: 100vw !important;
@@ -29,4 +28,87 @@
 .top * {
     width: fit-content;
     margin: 10px auto;
+}
+
+
+#content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px;
+    margin: 20px auto;
+}
+
+
+
+
+.box {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    padding: 10px;
+    margin: auto;
+    width: 90vw;
+}
+
+.searchbar {
+    max-width: 300px;
+    margin: auto !important;
+}
+
+
+
+.searchedThings {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.searchedThings img {
+    position: relative;
+    max-height: 200px;
+    width: 100%;
+}
+
+
+.mediaSor {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 20px 10px;
+    border: 2px solid white;
+}
+
+.imgResz {
+    border: 2px solid white;
+}
+
+.adatokResz, .kezeloResz {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid white;
+    padding: 15px;
+}
+
+.serverLinkKezelo {
+    padding: 5px;
+    text-align: center;
+}
+
+
+button {
+    padding: 2px 7px;
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+}
+button:hover {
+    scale: 1.05;
+    border-color: var(--red-underline);
+    transition: 0.3s;
 }
