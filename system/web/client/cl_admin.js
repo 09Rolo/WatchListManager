@@ -119,7 +119,7 @@ async function mediaKezeloSetup() {
 var language = 'en'
 
 function manageLang() {
-    if (getLanguageCookie() != null && !section) {
+    if (getLanguageCookie() != null) {
         language = getLanguageCookie()
     }
 }
@@ -141,17 +141,6 @@ function debounce(func) {
 }
 
 
-document.querySelectorAll(".searchbar").forEach(sbar => {
-    sbar.onkeydown = function(e) {
-        if (e.keyCode == 13) {
-            sbar.blur()
-            e.preventDefault()
-        }
-    }
-})
-
-
-
 
 
 
@@ -161,6 +150,18 @@ async function searchKezeles() {
         sbar.addEventListener("input", debounce((e) => {
             searching(e.target)
         }))
+    })
+
+
+    document.querySelectorAll(".searchbar").forEach(sbar => {
+        sbar.addEventListener("input", (e) => {
+            sbar.onkeydown = function(e) {
+                if (e.keyCode == 13) {
+                    sbar.blur()
+                    e.preventDefault()
+                }
+            }
+        })
     })
 }
 

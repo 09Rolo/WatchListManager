@@ -198,6 +198,7 @@ async function getData() {
                     <div class="bottominteractions">
                         <div id="linkbox" class="cant_select">
                             <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
+                            <a href="" target="_blank" rel="noopener noreferrer" id="serverLink"></a>
                             <hr>
                             <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">Hivatalos oldala</span></a>
                             <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
@@ -589,6 +590,7 @@ async function getData() {
         startDragFigyeles()
         checkImgLoaded()
         SpecialSeriesThings()
+        manageServerLink()
 
         dataAdded = true
 
@@ -2209,6 +2211,12 @@ if (isSpecial){
         SpecialThingsAudioManage(season)
     }
 
+
+    document.querySelectorAll("a").forEach(a => { // ha rámegy egy a-ra akkor állítsa meg a zenét, mert akkor a háttérben menne tovább
+        a.addEventListener("click", (e) => {
+            nav_musicbutton("", true)
+        })
+    })
 }
 }
 
@@ -2254,4 +2262,47 @@ if (isSpecial) {
         }
     }
 }
+}
+
+
+
+//Server Link cucc
+
+async function manageServerLink() {
+    const serverLink = document.getElementById("serverLink")
+    var serverLinkURL = undefined
+
+
+    var amiMegy = {
+        tipus: "tv"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getServerLink`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(i in result.dataVissza) {
+                if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+
+                    serverLinkURL = result.dataVissza[i].link
+
+                }
+            }
+        }
+    } catch(e) {
+        console.error(e)
+    }
+
+
+    if (serverLinkURL != undefined) {
+        //van link
+        serverLink.innerHTML = "<span class='bold'>Nézd itt</span>"
+        serverLink.href = `${window.origin}/watch/tv/${id}`
+    }
 }

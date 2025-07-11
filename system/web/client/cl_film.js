@@ -173,6 +173,7 @@ async function getData() {
                     <div class="bottominteractions">
                         <div id="linkbox" class="cant_select">
                             <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
+                            <a href="" target="_blank" rel="noopener noreferrer" id="serverLink"></a>
                             <hr>
                             <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
                             <a href="https://www.google.com/search?q=${adatok.title}+teljes+film+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold">Google Keresés</span></a>
@@ -239,6 +240,7 @@ async function getData() {
 
         setUpcomingErtekelesCucc()
         checkImgLoaded()
+        manageServerLink()
     }
 
 }
@@ -866,4 +868,49 @@ async function putInVideok() {
         console.error(e)
     }
 
+}
+
+
+
+
+
+//Server Link cucc
+
+async function manageServerLink() {
+    const serverLink = document.getElementById("serverLink")
+    var serverLinkURL = undefined
+
+
+    var amiMegy = {
+        tipus: "movie"
+    }
+
+    try {
+        const response = await fetch(`${location.origin}/getServerLink`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            for(i in result.dataVissza) {
+                if (result.dataVissza[i].media_id == parseInt(id, 10)) {
+
+                    serverLinkURL = result.dataVissza[i].link
+
+                }
+            }
+        }
+    } catch(e) {
+        console.error(e)
+    }
+
+
+    if (serverLinkURL != undefined) {
+        //van link
+        serverLink.innerHTML = "<span class='bold'>Nézd itt</span>"
+        serverLink.href = `${window.origin}/watch/movie/${id}`
+    }
 }

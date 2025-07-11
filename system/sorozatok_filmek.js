@@ -1097,7 +1097,7 @@ app.post("/changeServerLink", async (req, res) => {
 
 
 app.post("/getServerLink", async (req, res) => {
-    const {user_id, tipus} = req.body
+    const {tipus} = req.body
 
     if(tipus == "movie") {
         try {
