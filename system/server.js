@@ -48,6 +48,10 @@ app.get('/u/:section?/:section?', async(req, res) => {
   res.sendFile(path.join(__dirname, "web", "user.html"));
 });
 
+app.get('/watch/:section?/:section?/:section?/:section?/:section?/:section?', async(req, res) => { //csomót hagyok, hogyha esetleg kellene :D
+  res.sendFile(path.join(__dirname, "web", "watch.html"));
+});
+
 app.get('/admin/:section?', async(req, res) => {//ott hagyom a sectiont hátha kell még valamire :D
   res.sendFile(path.join(__dirname, "web", "admin.html"));
 });

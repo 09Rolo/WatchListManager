@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express")
+const fs = require('fs');
+const path = require('path');
 
 const db = require("./db.js")
 const app = require("./server.js")
@@ -1158,5 +1160,47 @@ app.post("/getServerLink", async (req, res) => {
             res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
         }
     }
+});
+
+
+
+
+//Kilistázáshoz kell
+
+const BASE_DIR = process.env.SERVER_DOWNLOADS_BASE_DIR.replace(/\\/g, '/')
+
+app.post("/listDIR", async (req, res) => {
+    const relativePath = req.body.path || ''
+    const absolutePath = path.join(BASE_DIR, relativePath).replace(/\\/g, '/')
+
+    console.log(BASE_DIR, absolutePath)
+    
+    // Prevent path traversal
+    if (!absolutePath.startsWith(BASE_DIR)) {
+        return res.status(403).json({ message: 'Engedély megtagadva!', type: "error" })
+    }
+
+
+    fs.readdir(absolutePath, { withFileTypes: true }, (err, items) => {
+        if (err) {
+            return res.status(500).json({ message: 'Hiba történt a mappa beolvasásánál', type: "error" })
+        }
+
+        const result = {
+            folders: [],
+            files: [],
+        }
+
+
+        for (const item of items) {
+            if (item.isDirectory()) {
+                result.folders.push(item.name)
+            } else if (item.isFile()) {
+                result.files.push(item.name)
+            }
+        }
+
+        res.status(200).json(result);
+    });
 });
 
