@@ -116,9 +116,8 @@ async function getDIR(pathja) {
         if (result.hibaok && result.hibaok == "esetleg file") {
 
             console.log("FILE")
-            document.getElementById("videoContainer").innerHTML = `
-                <video src="/media/${PathTraveling}" controls></video>
-            `
+            
+            videoKezelese()
 
         } else {
     
@@ -131,14 +130,14 @@ async function getDIR(pathja) {
                 for (let i in result.files) {
                     //if (result.files[i].split(".")[result.files[i].split(".").length - 1] != "mkv") {
                         files.innerHTML += `
-                            <div class="file" id="folder_${result.files[i]}"> <i class="bi bi-file-earmark-play"></i> <b>${result.files[i]}</b> </div>
+                            <div class="file" id="folder:${result.files[i]}"> <i class="bi bi-file-earmark-play"></i> <b>${result.files[i]}</b> </div>
                         `
                     //}
                 }
 
                 for (let i in result.folders) {
                     folders.innerHTML += `
-                        <div class="folder" id="file_${result.folders[i]}"> <i class="bi bi-folder-symlink-fill"></i> <b>${result.folders[i]}</b> </div>
+                        <div class="folder" id="file:${result.folders[i]}"> <i class="bi bi-folder-symlink-fill"></i> <b>${result.folders[i]}</b> </div>
                     `
                 }
 
@@ -158,7 +157,7 @@ async function getDIR(pathja) {
 function makeClickableDivs() {
     document.querySelectorAll(".folder").forEach(folder => {
         folder.addEventListener("click", (e) => {
-            window.location.pathname = (window.location.pathname + "/" + folder.id.split("_")[1]).replace(/([^:])\/{2,}/g, '$1/').replace(/([^:])\/{2,}/g, '$1/')
+            window.location.pathname = (window.location.pathname + "/" + folder.id.split(":")[1]).replace(/([^:])\/{2,}/g, '$1/').replace(/([^:])\/{2,}/g, '$1/')
         })
     })
 
@@ -166,7 +165,66 @@ function makeClickableDivs() {
 
     document.querySelectorAll(".file").forEach(file => {
         file.addEventListener("click", (e) => {
-            window.location.pathname = (window.location.pathname + "/" + file.id.split("_")[1]).replace(/([^:])\/{2,}/g, '$1/')
+            window.location.pathname = (window.location.pathname + "/" + file.id.split(":")[1]).replace(/([^:])\/{2,}/g, '$1/')
         })
     })
+}
+
+
+
+
+async function videoKezelese() {
+    document.getElementById("boldInfo").innerHTML = "Kérlek szépen várj egy pár percet itt vagy vissza is jöhetsz később!"
+
+
+    try {
+        const response = await fetch(`${location.origin}/videoKezeles`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({vidPath: PathTraveling})
+        })
+
+
+    
+        const result = await response.json()
+    
+
+
+        if(result.type && result.type == "oksa") {
+            createVid(result.message)
+            document.getElementById("boldInfo").innerHTML = ""
+
+        } else if(result.type && result.type == "vidlink") {
+            createVid(result.message)
+            document.getElementById("boldInfo").innerHTML = ""
+
+        } else if(result.type && result.type == "lepjenvissza") {
+            let pathssplitted = window.location.pathname.split("/")
+            let pathspopped = pathssplitted.pop()
+            let newpath = ""
+
+            for(let i in pathssplitted) {
+                newpath += pathssplitted[i] + "/"
+            }
+
+            window.location.pathname = newpath
+
+        } else if (result.type) {
+            notify(result.message, result.type)
+        }
+            
+    } catch(e) {
+        console.error(e)
+    }
+
+}
+
+
+async function createVid(videoSRC) {
+    console.log(videoSRC)
+    document.getElementById("boldInfo").innerHTML = ""
+
+    document.getElementById("videoContainer").innerHTML = `
+        <video src="/media/${videoSRC}" controls></video>
+    `
 }

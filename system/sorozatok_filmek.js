@@ -1206,10 +1206,18 @@ app.post("/listDIR", async (req, res) => {
 });
 
 
+
+
+
 //Media hozzáférés clientről
 
-app.get('/media/*', (req, res) => {
-    const relativeFilePath = req.params[0].replace(/\\/g, '/')
+const activeConversions = new Set(); //ez kell, hogy ne konvertálódjon egyszerre több dolog
+
+
+app.post("/videoKezeles", async (req, res) => {
+    const { vidPath } = req.body
+
+    const relativeFilePath = vidPath.replace(/\\/g, '/')
     const absoluteFilePath = path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/')
 
     // Prevent path traversal
@@ -1219,7 +1227,86 @@ app.get('/media/*', (req, res) => {
 
 
 
-    // Stream the file
+    //Convert
+    var isFileConverted = absoluteFilePath.split(".")[absoluteFilePath.split(".").length - 2]
+    
+    if ((isFileConverted && isFileConverted != "converted") || !isFileConverted) {
+
+        var outputDirSplitted = absoluteFilePath.split("/")
+        var outputDirPopped = outputDirSplitted.pop()
+        var outputDir = ""
+
+        for (let i in outputDirSplitted) {
+            outputDir += outputDirSplitted[i] + "/"
+        }
+
+
+        var outputFileNameSplitted = (absoluteFilePath.split("/")[absoluteFilePath.split("/").length - 1]).split(".")
+        var outputFileNamePopped = outputFileNameSplitted.pop()
+        var outputFileName = ""
+
+        for (let i in outputFileNameSplitted) {
+            outputFileName += outputFileNameSplitted[i] + "."
+        }
+        outputFileName += "converted.mp4"
+        const outputFile = path.join(outputDir, outputFileName);
+
+
+
+        var ujRelativeSplitted = relativeFilePath.split(".")
+        var ujRelativePopped = ujRelativeSplitted.pop()
+        var ujRelativeLoc = ""
+        
+        for (let i in ujRelativeSplitted) {
+            ujRelativeLoc += ujRelativeSplitted[i] + "."
+        }
+    
+        ujRelativeLoc = ujRelativeLoc + "converted.mp4"
+
+
+
+        if (activeConversions.has(absoluteFilePath)) {
+            return res.status(429).json({ message: 'Már elkezdődött ennek a filenak a konvertálása. Kérlek gyere vissza egy pár percen belül.', type: "info" });
+        }
+
+
+        activeConversions.add(absoluteFilePath);
+        
+        const command = `ffmpeg -i ${absoluteFilePath} -map 0 -c:v copy -c:a aac -b:a 192k -c:s mov_text ${outputFile}`;
+
+        exec(command, (err, stdout, stderr) => {
+            activeConversions.delete(absoluteFilePath); // Clear lock
+
+            if (err) {
+                return res.status(502).json({ message: 'A file nem található.', type: "lepjenvissza" });
+            }
+
+            
+            fs.unlink(absoluteFilePath, (err) => {
+                if (err) console.warn('[!] Nem lehet törlöni az eredeti MKV filet: ', err.message);
+                else console.log(`[-] Eredeti file törölve: ${absoluteFilePath}`);
+            });
+
+
+            return res.status(200).json({ message: ujRelativeLoc, type: "vidlink" });
+        });
+
+
+    } else {
+        return res.status(200).json({ message: relativeFilePath, type: "oksa" });
+    }
+});
+
+
+
+
+app.get('/media/*', (req, res) => {
+    // Előtte kell a conver cucc itt felül azták ha onnan oké a message vagy valami akkor jöhet ez :D
+
+
+    const relativeFilePath = req.params[0].replace(/\\/g, '/')
+    const absoluteFilePath = path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/')
+
     res.sendFile(absoluteFilePath, err => {
         if (err) {
             if (!res.headersSent) {
@@ -1227,5 +1314,4 @@ app.get('/media/*', (req, res) => {
             }
         }
     });
-
 });
