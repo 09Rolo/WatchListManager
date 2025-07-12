@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express")
+const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -1173,7 +1174,7 @@ app.post("/listDIR", async (req, res) => {
     const relativePath = req.body.path || ''
     const absolutePath = path.join(BASE_DIR, relativePath).replace(/\\/g, '/')
 
-    console.log(BASE_DIR, absolutePath)
+    //console.log(BASE_DIR, absolutePath)
     
     // Prevent path traversal
     if (!absolutePath.startsWith(BASE_DIR)) {
@@ -1183,7 +1184,7 @@ app.post("/listDIR", async (req, res) => {
 
     fs.readdir(absolutePath, { withFileTypes: true }, (err, items) => {
         if (err) {
-            return res.status(500).json({ message: 'Hiba történt a mappa beolvasásánál', type: "error" })
+            return res.status(500).json({ message: 'Hiba történt a mappa beolvasásánál', type: "error", hibaok: "esetleg file" })
         }
 
         const result = {
@@ -1204,3 +1205,27 @@ app.post("/listDIR", async (req, res) => {
     });
 });
 
+
+//Media hozzáférés clientről
+
+app.get('/media/*', (req, res) => {
+    const relativeFilePath = req.params[0].replace(/\\/g, '/')
+    const absoluteFilePath = path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/')
+
+    // Prevent path traversal
+    if (!absoluteFilePath.startsWith(BASE_DIR)) {
+        return res.status(403).json({ message: 'Engedély megtagadva!', type: "error" });
+    }
+
+
+
+    // Stream the file
+    res.sendFile(absoluteFilePath, err => {
+        if (err) {
+            if (!res.headersSent) {
+                return res.status(404).json({ message: 'A file nem található :(', type: "error" });
+            }
+        }
+    });
+
+});
