@@ -115,7 +115,7 @@ async function getDIR(pathja) {
 
         if (result.hibaok && result.hibaok == "esetleg file") {
 
-            console.log("FILE")
+            //console.log("FILE")
             
             videoKezelese()
 

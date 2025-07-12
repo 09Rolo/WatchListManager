@@ -1168,11 +1168,11 @@ app.post("/getServerLink", async (req, res) => {
 
 //Kilistázáshoz kell
 
-const BASE_DIR = process.env.SERVER_DOWNLOADS_BASE_DIR.replace(/\\/g, '/')
+const BASE_DIR = process.env.SERVER_DOWNLOADS_BASE_DIR.replace(/\\/g, '/').replace(/\\\\/g, '\\')
 
 app.post("/listDIR", async (req, res) => {
-    const relativePath = req.body.path || ''
-    const absolutePath = path.join(BASE_DIR, relativePath).replace(/\\/g, '/')
+    const relativePath = decodeURIComponent(req.body.path || '')
+    const absolutePath = decodeURIComponent(path.join(BASE_DIR, relativePath).replace(/\\/g, '/').replace(/\\\\/g, '\\'))
 
     //console.log(BASE_DIR, absolutePath)
     
@@ -1217,8 +1217,8 @@ const activeConversions = new Set(); //ez kell, hogy ne konvertálódjon egyszer
 app.post("/videoKezeles", async (req, res) => {
     const { vidPath } = req.body
 
-    const relativeFilePath = vidPath.replace(/\\/g, '/')
-    const absoluteFilePath = path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/')
+    const relativeFilePath = decodeURIComponent(vidPath.replace(/\\/g, '/').replace(/\\\\/g, '\\'))
+    const absoluteFilePath = decodeURIComponent(path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/').replace(/\\\\/g, '\\'))
 
     // Prevent path traversal
     if (!absoluteFilePath.startsWith(BASE_DIR)) {
@@ -1271,8 +1271,9 @@ app.post("/videoKezeles", async (req, res) => {
 
 
         activeConversions.add(absoluteFilePath);
+
         
-        const command = `ffmpeg -i ${absoluteFilePath} -map 0 -c:v copy -c:a aac -b:a 192k -c:s mov_text ${outputFile}`;
+        const command = `ffmpeg -i "${absoluteFilePath}" -map 0 -c:v copy -c:a aac -b:a 192k -c:s mov_text -movflags +faststart "${outputFile}"`;
 
         exec(command, (err, stdout, stderr) => {
             activeConversions.delete(absoluteFilePath); // Clear lock
@@ -1304,8 +1305,8 @@ app.get('/media/*', (req, res) => {
     // Előtte kell a conver cucc itt felül azták ha onnan oké a message vagy valami akkor jöhet ez :D
 
 
-    const relativeFilePath = req.params[0].replace(/\\/g, '/')
-    const absoluteFilePath = path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/')
+    const relativeFilePath = decodeURIComponent(req.params[0].replace(/\\/g, '/').replace(/\\\\/g, '\\'))
+    const absoluteFilePath = decodeURIComponent(path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/').replace(/\\\\/g, '\\'))
 
     res.sendFile(absoluteFilePath, err => {
         if (err) {
