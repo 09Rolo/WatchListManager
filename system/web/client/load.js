@@ -262,8 +262,10 @@ async function notify(message, type, time) {
 var previousOrientation = window.orientation;
 var checkOrientation = function(){
     if(window.orientation !== previousOrientation){
-        previousOrientation = window.orientation;
-        window.location.reload()
+        if (window.location.pathname.split("/")[1] != "watch") {
+            previousOrientation = window.orientation;
+            window.location.reload()
+        }
     }
 };
 

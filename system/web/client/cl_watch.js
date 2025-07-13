@@ -119,6 +119,8 @@ async function getDIR(pathja) {
             
             videoKezelese()
 
+            makeClickableDivs()
+
         } else {
     
             if (response.ok) {
@@ -155,6 +157,29 @@ async function getDIR(pathja) {
 
 
 function makeClickableDivs() {
+
+    document.getElementById("visszalepes").addEventListener("click", (e) => {
+        let pathssplitted = window.location.pathname.split("/")
+
+        if (pathssplitted[pathssplitted.length-1] == "") {
+            let pop1 = pathssplitted.pop()
+        }
+
+
+        if (pathssplitted.length > 4) {
+            let newpath = ""
+
+            for(let i in pathssplitted) {
+                if (i < pathssplitted.length - 1)
+                newpath += pathssplitted[i] + "/"
+            }
+
+            window.location.pathname = newpath
+        }
+    })
+
+
+
     document.querySelectorAll(".folder").forEach(folder => {
         folder.addEventListener("click", (e) => {
             window.location.pathname = (window.location.pathname + "/" + folder.id.split(":")[1]).replace(/([^:])\/{2,}/g, '$1/').replace(/([^:])\/{2,}/g, '$1/')
@@ -174,7 +199,7 @@ function makeClickableDivs() {
 
 
 async function videoKezelese() {
-    document.getElementById("boldInfo").innerHTML = "Kérlek szépen várj egy pár percet itt vagy vissza is jöhetsz később!"
+    document.getElementById("boldInfo").innerHTML = "Kérlek szépen <span class='bigger'>várj</span> egy pár percet itt vagy vissza is jöhetsz később!"
 
 
     try {
@@ -192,11 +217,12 @@ async function videoKezelese() {
 
         if(result.type && result.type == "oksa") {
             createVid(result.message)
-            document.getElementById("boldInfo").innerHTML = ""
 
-        } else if(result.type && result.type == "vidlink") {
+        } else if(result.type && result.type == "playlistbe") { 
+            createPlaylistesVid(result.message)
+
+        }else if(result.type && result.type == "vidlink") {
             createVid(result.message)
-            document.getElementById("boldInfo").innerHTML = ""
 
         } else if(result.type && result.type == "lepjenvissza") {
             let pathssplitted = window.location.pathname.split("/")
@@ -221,10 +247,47 @@ async function videoKezelese() {
 
 
 async function createVid(videoSRC) {
-    console.log(videoSRC)
     document.getElementById("boldInfo").innerHTML = ""
+
+    let titlenakSplitted = videoSRC.split(".")
+    let titlenakPopped = titlenakSplitted.pop()
+    let titlenak = ""
+
+    for (let i in titlenakSplitted) {
+        titlenak += "." + titlenakSplitted[i]
+    }
+
+    document.getElementById("vidTitle").innerHTML = titlenak
 
     document.getElementById("videoContainer").innerHTML = `
         <video src="/media/${videoSRC}" controls></video>
+    `
+}
+
+
+
+async function createPlaylistesVid(videoSRC) {
+    document.getElementById("boldInfo").innerHTML = "Mivel ez egy nem támogatott videó formátumban van, ezért ha letöltöd ezt a filet (vagy az egész videót) akkor meg tudod nyitni <span class='bigger'>VLC</span> program használatával"
+
+    let titlenakSplitted = videoSRC.split(".")
+    let titlenakPopped = titlenakSplitted.pop()
+    let titlenak = ""
+
+    for (let i in titlenakSplitted) {
+        titlenak += "." + titlenakSplitted[i]
+    }
+
+    document.getElementById("vidTitle").innerHTML = titlenak
+
+    document.getElementById("videoContainer").innerHTML = `
+        <video src="/media/${videoSRC}" controls></video>
+    `
+
+    document.getElementById("downgomb").innerHTML = `
+        <a href="/playlist/${window.location.origin}|${videoSRC}" download>Nyisd meg VLC-vel</a>
+        <hr>
+        <a href="/media/${videoSRC}" download>Teljes videó letöltése</a>
+
+        <br><br>
     `
 }

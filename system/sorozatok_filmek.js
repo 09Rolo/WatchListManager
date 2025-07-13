@@ -1228,10 +1228,11 @@ app.post("/videoKezeles", async (req, res) => {
 
 
     //Convert
-    var isFileConverted = absoluteFilePath.split(".")[absoluteFilePath.split(".").length - 2]
+    var isFileMP4 = absoluteFilePath.split(".")[absoluteFilePath.split(".").length - 1]
     
-    if ((isFileConverted && isFileConverted != "converted") || !isFileConverted) {
+    if ((isFileMP4 && isFileMP4 != "mp4") || !isFileMP4) {
 
+        /*
         var outputDirSplitted = absoluteFilePath.split("/")
         var outputDirPopped = outputDirSplitted.pop()
         var outputDir = ""
@@ -1248,7 +1249,7 @@ app.post("/videoKezeles", async (req, res) => {
         for (let i in outputFileNameSplitted) {
             outputFileName += outputFileNameSplitted[i] + "."
         }
-        outputFileName += "converted.mp4"
+        outputFileName += "mp4"
         const outputFile = path.join(outputDir, outputFileName);
 
 
@@ -1261,7 +1262,7 @@ app.post("/videoKezeles", async (req, res) => {
             ujRelativeLoc += ujRelativeSplitted[i] + "."
         }
     
-        ujRelativeLoc = ujRelativeLoc + "converted.mp4"
+        ujRelativeLoc = ujRelativeLoc + "mp4"
 
 
 
@@ -1291,6 +1292,10 @@ app.post("/videoKezeles", async (req, res) => {
 
             return res.status(200).json({ message: ujRelativeLoc, type: "vidlink" });
         });
+        */
+
+
+        return res.status(200).json({ message: relativeFilePath, type: "playlistbe" });
 
 
     } else {
@@ -1316,3 +1321,22 @@ app.get('/media/*', (req, res) => {
         }
     });
 });
+
+
+
+// vlc-vel meg lehet nyitni ezt az m3u filet, szóval ha letölti akkor tudja nézni
+
+app.get("/playlist/*", (req, res) => {
+    fullParams = decodeURIComponent(req.params[0].replace(/\\/g, '/').replace(/\\\\/g, '\\'))
+
+    const url = fullParams.split("|")[0]
+    const videoName = fullParams.split("|")[1]
+    const videoURL = `${url}/media/${videoName}`;
+
+    const playlist = `#EXTM3U\n${videoURL}`;
+
+    res.setHeader("Content-Disposition", `attachment; filename="${videoName}.m3u"`);
+    res.setHeader("Content-Type", "audio/x-mpegurl");
+    res.send(playlist);
+});
+
