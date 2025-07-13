@@ -134,7 +134,7 @@
 
 
 
-#videoContainer:has(video) {
+#mediaContainer:has(video) {
     margin: 50px auto;
     max-width: 80vw;
     max-height: 80vh;

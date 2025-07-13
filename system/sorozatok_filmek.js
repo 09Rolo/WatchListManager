@@ -603,39 +603,60 @@ app.post("/changeLink", async (req, res) => {
             const linkekbeUser = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
                 if (!err) {
                     if (result.length == 0) {
-                        //oksa, nincs benne a linkekbe, mehet bele
+                        if (link_url.length > 0) {//írt valamit egyáltalán
+                            //oksa, nincs benne a linkekbe, mehet bele
     
-                        try {
-                            const addUser = db.getConnection().query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
-        
-                            const newUserRow = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
-                                if (!err) {
-                                    if (result.length == 1) {
-                                        //oksa, benne van
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                            try {
+                                const addUser = db.getConnection().query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
+                            
+                                const newUserRow = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.length == 1) {
+                                            //oksa, benne van
+                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Hiba", type: "error"});
+                                        }
                                     } else {
                                         res.status(500).json({ message: "Hiba", type: "error"});
                                     }
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
-                        } catch(e) {console.log(e)}
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     } else {
-                        //UPDATE ha már van
-                        try {
+                        //UPDATE vagy DELETE ha már van
 
-                            const updatedUserRow = db.getConnection().query("UPDATE user_links SET link_url = ? WHERE movie_id = ?", [link_url, media_id], function (err, result) {
-                                if(err) throw err;
-                                
-                                if (result.affectedRows > 0) {
-                                    res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
+                        if (link_url.length > 0) { //UPDATE
+                            try {
 
-                        } catch(e) {console.log(e)}
+                                const updatedUserRow = db.getConnection().query("UPDATE user_links SET link_url = ? WHERE user_id = ? AND movie_id = ?", [link_url, user_id, media_id], function (err, result) {
+                                    if(err) throw err;
+
+                                    if (result.affectedRows > 0) {
+                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+
+                            } catch(e) {console.log(e)}
+
+                        } else { //DELETE
+                            try {
+                                const deleteFromLinks = db.getConnection().query("DELETE FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.affectedRows > 0) {
+                                            //oksa
+                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        }
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     }
                 }
             });
@@ -654,38 +675,59 @@ app.post("/changeLink", async (req, res) => {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a linkekbe, mehet bele
-    
-                        try {
-                            const addUser = db.getConnection().query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
-        
-                            const newUserRow = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
-                                if (!err) {
-                                    if (result.length == 1) {
-                                        //oksa, benne van
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+
+                        if (link_url.length > 0) {
+                            try {
+                                const addUser = db.getConnection().query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
+                            
+                                const newUserRow = db.getConnection().query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.length == 1) {
+                                            //oksa, benne van
+                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Hiba", type: "error"});
+                                        }
                                     } else {
                                         res.status(500).json({ message: "Hiba", type: "error"});
                                     }
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
-                        } catch(e) {console.log(e)}
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     } else {
-                        //UPDATE ha már van
-                        try {
+                        //UPDATE vagy DELETE ha már van
 
-                            const updatedUserRow = db.getConnection().query("UPDATE user_links SET link_url = ? WHERE series_id = ?", [link_url, media_id], function (err, result) {
-                                if(err) throw err;
-                                
-                                if (result.affectedRows > 0) {
-                                    res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
+                        if (link_url.length > 0) { //UPDATE
+                            try {
 
-                        } catch(e) {console.log(e)}
+                                const updatedUserRow = db.getConnection().query("UPDATE user_links SET link_url = ? WHERE user_id = ? AND series_id = ?", [link_url, user_id, media_id], function (err, result) {
+                                    if(err) throw err;
+
+                                    if (result.affectedRows > 0) {
+                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+
+                            } catch(e) {console.log(e)}
+
+                        } else { //Delete
+                            try {
+                                const deleteFromLinks = db.getConnection().query("DELETE FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.affectedRows > 0) {
+                                            //oksa
+                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        }
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     }
                 }
             });
@@ -784,37 +826,58 @@ app.post("/changeNote", async (req, res) => {
                     if (result.length == 0) {
                         //oksa, nincs benne a noteokba, mehet bele
     
-                        try {
-                            const addUser = db.getConnection().query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
-        
-                            const newUserRow = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
-                                if (!err) {
-                                    if (result.length == 1) {
-                                        //oksa, benne van
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                        if(note.length > 0) {//írt egyáltalán valamit
+                            try {
+                                const addUser = db.getConnection().query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
+                                
+                                const newUserRow = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.length == 1) {
+                                            //oksa, benne van
+                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Hiba", type: "error"});
+                                        }
                                     } else {
                                         res.status(500).json({ message: "Hiba", type: "error"});
                                     }
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
-                        } catch(e) {console.log(e)}
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     } else {
-                        //UPDATE ha már van
-                        try {
+                        //UPDATE vagy DELETE ha már van
 
-                            const updatedUserRow = db.getConnection().query("UPDATE user_notes SET note = ? WHERE movie_id = ?", [note, media_id], function (err, result) {
-                                if(err) throw err;
-                                
-                                if (result.affectedRows > 0) {
-                                    res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
+                        if(note.length > 0) { //UPDATE
+                            try {
 
-                        } catch(e) {console.log(e)}
+                                const updatedUserRow = db.getConnection().query("UPDATE user_notes SET note = ? WHERE user_id = ? AND movie_id = ?", [note, user_id, media_id], function (err, result) {
+                                    if(err) throw err;
+
+                                    if (result.affectedRows > 0) {
+                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+
+                            } catch(e) {console.log(e)}
+
+                        } else { //DELETE
+                            try {
+                                const deleteFromUserNotes = db.getConnection().query("DELETE FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.affectedRows > 0) {
+                                            //oksa
+                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        }
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     }
                 }
             });
@@ -833,38 +896,57 @@ app.post("/changeNote", async (req, res) => {
                 if (!err) {
                     if (result.length == 0) {
                         //oksa, nincs benne a noteokba, mehet bele
-    
-                        try {
-                            const addUser = db.getConnection().query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
-        
-                            const newUserRow = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
-                                if (!err) {
-                                    if (result.length == 1) {
-                                        //oksa, benne van
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                        if(note.length > 0) {
+                            try {
+                                const addUser = db.getConnection().query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
+                            
+                                const newUserRow = db.getConnection().query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.length == 1) {
+                                            //oksa, benne van
+                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Hiba", type: "error"});
+                                        }
                                     } else {
                                         res.status(500).json({ message: "Hiba", type: "error"});
                                     }
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
-                        } catch(e) {console.log(e)}
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     } else {
-                        //UPDATE ha már van
-                        try {
+                        //UPDATE vagy DELETE ha már van
 
-                            const updatedUserRow = db.getConnection().query("UPDATE user_notes SET note = ? WHERE series_id = ?", [note, media_id], function (err, result) {
-                                if(err) throw err;
-                                
-                                if (result.affectedRows > 0) {
-                                    res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
-                                } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
-                                }
-                            });
+                        if(note.length > 0) { //UPDATE
+                            try {
 
-                        } catch(e) {console.log(e)}
+                                const updatedUserRow = db.getConnection().query("UPDATE user_notes SET note = ? WHERE user_id = ? AND series_id = ?", [note, user_id, media_id], function (err, result) {
+                                    if(err) throw err;
+
+                                    if (result.affectedRows > 0) {
+                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+
+                            } catch(e) {console.log(e)}
+                        } else { //DELETE
+                            try {
+                                const deleteFromNotes = db.getConnection().query("DELETE FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                    if (!err) {
+                                        if (result.affectedRows > 0) {
+                                            //oksa
+                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        } else {
+                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        }
+                                    } else {
+                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                    }
+                                });
+                            } catch(e) {console.log(e)}
+                        }
                     }
                 }
             });
@@ -1307,12 +1389,10 @@ app.post("/videoKezeles", async (req, res) => {
 
 
 app.get('/media/*', (req, res) => {
-    // Előtte kell a conver cucc itt felül azták ha onnan oké a message vagy valami akkor jöhet ez :D
-
-
     const relativeFilePath = decodeURIComponent(req.params[0].replace(/\\/g, '/').replace(/\\\\/g, '\\'))
     const absoluteFilePath = decodeURIComponent(path.join(BASE_DIR, relativeFilePath).replace(/\\/g, '/').replace(/\\\\/g, '\\'))
 
+    
     res.sendFile(absoluteFilePath, err => {
         if (err) {
             if (!res.headersSent) {

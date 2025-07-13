@@ -130,11 +130,15 @@ async function getDIR(pathja) {
                 files.innerHTML = ""
 
                 for (let i in result.files) {
-                    //if (result.files[i].split(".")[result.files[i].split(".").length - 1] != "mkv") {
+                    if (getExtension(result.files[i]) == "png" || getExtension(result.files[i]) == "txt" || getExtension(result.files[i]) == "mp4" || getExtension(result.files[i]) == "jpg") {
+                        files.innerHTML += `
+                            <div class="file" id="folder:${result.files[i]}"> <i class="bi bi-filetype-${getExtension(result.files[i])}"></i> <b>${result.files[i]}</b> </div>
+                        `
+                    } else {//<i class="bi bi-file-earmark-play"></i>
                         files.innerHTML += `
                             <div class="file" id="folder:${result.files[i]}"> <i class="bi bi-file-earmark-play"></i> <b>${result.files[i]}</b> </div>
                         `
-                    //}
+                    }
                 }
 
                 for (let i in result.folders) {
@@ -152,6 +156,12 @@ async function getDIR(pathja) {
     } catch(e) {
         console.error(e)
     }
+}
+
+
+
+function getExtension(path) {
+    return path.split(".")[path.split(".").length - 1]
 }
 
 
@@ -175,6 +185,8 @@ function makeClickableDivs() {
             }
 
             window.location.pathname = newpath
+        } else {
+            window.close()
         }
     })
 
@@ -216,10 +228,22 @@ async function videoKezelese() {
 
 
         if(result.type && result.type == "oksa") {
-            createVid(result.message)
+            if (getExtension(result.message) == "mp4") {
+                createVid(result.message)
+            } else if (getExtension(result.message) == "txt") {
+                createText(result.message)
+            } else {
+                createPic(result.message)
+            }
 
-        } else if(result.type && result.type == "playlistbe") { 
-            createPlaylistesVid(result.message)
+        } else if(result.type && result.type == "playlistbe") {
+            if (getExtension(result.message) == "mkv" || getExtension(result.message) == "mp4" || getExtension(result.message) == "webm") {
+                createPlaylistesVid(result.message)
+            } else if(getExtension(result.message) == "txt") {
+                createText(result.message)
+            } else {
+                createPic(result.message)
+            }
 
         }else if(result.type && result.type == "vidlink") {
             createVid(result.message)
@@ -259,9 +283,16 @@ async function createVid(videoSRC) {
 
     document.getElementById("vidTitle").innerHTML = titlenak
 
-    document.getElementById("videoContainer").innerHTML = `
-        <video src="/media/${videoSRC}" controls></video>
+    document.getElementById("mediaContainer").innerHTML = `
+        <video id="vid" src="/media/${videoSRC}" controls></video>
     `
+
+
+    //Subtitles?
+    const vid = document.getElementById("vid")
+
+    console.log(vid.textTracks)
+
 }
 
 
@@ -279,7 +310,7 @@ async function createPlaylistesVid(videoSRC) {
 
     document.getElementById("vidTitle").innerHTML = titlenak
 
-    document.getElementById("videoContainer").innerHTML = `
+    document.getElementById("mediaContainer").innerHTML = `
         <video src="/media/${videoSRC}" controls></video>
     `
 
@@ -289,5 +320,19 @@ async function createPlaylistesVid(videoSRC) {
         <a href="/media/${videoSRC}" download>Teljes videó letöltése</a>
 
         <br><br>
+    `
+}
+
+
+
+function createPic(path) {
+    document.getElementById("mediaContainer").innerHTML = `
+        <img id="img" src="/media/${path}"></img>
+    `
+}
+
+function createText(path) {
+    document.getElementById("mediaContainer").innerHTML = `
+        <p>${window.location.origin}/media/${path}</p>
     `
 }

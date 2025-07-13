@@ -492,7 +492,7 @@ async function fillSajatMovies() {
 
 setTimeout(() => {
     fillSajatMovies()
-}, 2000);
+}, 1500);
 
 
 

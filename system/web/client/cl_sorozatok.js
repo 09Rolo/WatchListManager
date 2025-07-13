@@ -58,7 +58,7 @@ async function loggedIn() {
             
             setTimeout(() => {
                 fillSajatSeries()
-            }, 2000);
+            }, 1500);
 
 
         } else {

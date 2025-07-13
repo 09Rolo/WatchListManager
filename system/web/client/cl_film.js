@@ -475,6 +475,8 @@ async function linkManage() {
         sajaturl.innerHTML = '<span class="bold">Saját link</span>'
         linkbutton.innerHTML = "Link változtatása"
         datumok.innerHTML += ` | Link adva: ${linkAddolva} | `
+
+        link.value = haslink
     } else {
         sajaturl.innerHTML = ""
     }
@@ -638,10 +640,38 @@ watched.onclick = async() => {
 
 linkbutton.onclick = async() => {
 
-    if (link.value.length > 0) {
-        const pattern = /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+[^\s]*$/i;
+    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+[^\s]*$/i;
+    var haslink = await checkLink(id)
+
+    if (pattern.test(link.value) && link.value != haslink) {
+        try {
+            var details = {
+                user_id: JSON.parse(localStorage.user).user_id,
+                media_id: id,
+                media_type: "movie",
+                link_url: link.value
+            }
         
-        if (pattern.test(link.value)) {
+            const response = await fetch(`${location.origin}/changeLink`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(details)
+            })
+        
+            const result = await response.json()
+        
+            notify(result.message, result.type)
+        
+            if(result.type == "success") {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000);
+            }
+        } catch(e) {
+            console.log("Error:", e)
+        }
+    } else {
+        if (link.value.length == 0) {
             try {
                 var details = {
                     user_id: JSON.parse(localStorage.user).user_id,
@@ -668,13 +698,14 @@ linkbutton.onclick = async() => {
             } catch(e) {
                 console.log("Error:", e)
             }
+            
+        } else if(link.value == haslink) {
+            notify("A link ugyan az", "info")
+
         } else {
             notify("Helytelen URL", "error")
         }
-    } else {
-        notify("Írj be valamit előtte", "error")
     }
-
 }
 
 
@@ -682,7 +713,7 @@ linkbutton.onclick = async() => {
 
 notebutton.onclick = async() => {
 
-    if (note.value.length > 0 && note.value != "Jegyzet" && note.value != belepesnelNote) {
+    if (note.value != "Jegyzet" && note.value != belepesnelNote) {
         try {
             var details = {
                 user_id: JSON.parse(localStorage.user).user_id,
