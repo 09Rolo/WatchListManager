@@ -153,3 +153,58 @@ video {
     border-radius: 15px;
 }
 
+
+
+#subgomb:has(label) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    width: fit-content;
+    gap: 20px;
+
+    border-radius: 20px;
+    border: 2px solid var(--red-theme);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+}
+
+#subgomb label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    padding: 10px;
+    border: 2px solid rgb(50, 50, 50);
+    border-radius: 50px;
+    cursor: pointer;
+
+    transition: 0.5s;
+}
+
+
+input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+#labeltext:hover {
+    background-color: var(--red-theme);
+}
+
+
+.filename {
+    font-weight: bolder;
+}
+
+video {
+    cursor: pointer !important;
+}

@@ -272,6 +272,7 @@ async function videoKezelese() {
 
 async function createVid(videoSRC) {
     document.getElementById("boldInfo").innerHTML = ""
+    document.getElementById("extraInfo1").innerHTML = "Böngészőtől függ, de lehet, hogy csak a <span class='bigger'>.vtt</span> feliratokat támogatja a böngésző"
 
     let titlenakSplitted = videoSRC.split(".")
     let titlenakPopped = titlenakSplitted.pop()
@@ -297,6 +298,15 @@ async function createVid(videoSRC) {
             document.getElementById("mediaContainer").innerHTML = `
                 <video id="vid" src="/media/${videoSRC}" controls></video>
             `
+
+
+            document.getElementById("subgomb").innerHTML += `
+                <label for="subfile" class="cant_select" id="labeltext">Felirat Feltöltése</label>
+                <input type="file" name="subfile" id="subfile" accept=".vtt,.srt,.sbv,.sub,.ass,.ssa,.dfxp,.ttml" />
+            `
+
+            subFunctionality()
+
         }
     } catch(e) {
         document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
@@ -308,6 +318,8 @@ async function createVid(videoSRC) {
 
 async function createPlaylistesVid(videoSRC) {
     document.getElementById("boldInfo").innerHTML = "Mivel ez egy nem támogatott videó formátumban van, ezért ha letöltöd ezt a filet (vagy az egész videót) akkor meg tudod nyitni <span class='bigger'>VLC</span> program használatával"
+    document.getElementById("extraInfo1").innerHTML = "Ha VLC-ben nézed akkor elérhetővé válik az összes felirat / hangsáv ami a file-ban benne van. Csak sajnos kb egyik böngésző sem támogatja ezeket 🙁"
+    document.getElementById("extraInfo2").innerHTML = "Böngészőtől függ, de lehet, hogy csak a <span class='bigger'>.vtt</span> feliratokat támogatja a böngésző"
 
     let titlenakSplitted = videoSRC.split(".")
     let titlenakPopped = titlenakSplitted.pop()
@@ -323,7 +335,7 @@ async function createPlaylistesVid(videoSRC) {
             method: "HEAD"
         })
 
-        console.log(response.status)
+        //console.log(response.status)
 
         if (!response.ok) {
             document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
@@ -331,7 +343,7 @@ async function createPlaylistesVid(videoSRC) {
             document.getElementById("mediaTitle").innerHTML = titlenak
 
             document.getElementById("mediaContainer").innerHTML = `
-                <video if="video" src="/media/${videoSRC}" controls></video>
+                <video id="vid" src="/media/${videoSRC}" controls></video>
             `
 
             document.getElementById("downgomb").innerHTML = `
@@ -341,6 +353,14 @@ async function createPlaylistesVid(videoSRC) {
 
                 <br><br>
             `
+
+
+            document.getElementById("subgomb").innerHTML += `
+                <label for="subfile" class="cant_select" id="labeltext">Felirat Feltöltése</label>
+                <input type="file" name="subfile" id="subfile" accept=".vtt,.srt,.sbv,.sub,.ass,.ssa,.dfxp,.ttml" />
+            `
+
+            subFunctionality()
         }
     } catch(e) {
         document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
@@ -389,4 +409,42 @@ function createText(path) {
         .catch(error => {
             document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
         });
+}
+
+
+
+
+function subFunctionality() {
+    document.getElementById("subfile").addEventListener("change", () => {
+        let file = document.getElementById("subfile").files[0]
+
+        document.getElementById("labeltext").innerHTML = 'Felirat: <span class="filename">' + file.name + "</span>"
+        
+
+        const subtitleURL = URL.createObjectURL(file)
+        const vid = document.getElementById("vid")
+
+
+        const tracks = vid.querySelectorAll("track");
+        tracks.forEach(t => {
+            t.remove()
+        })
+
+
+
+        const track = document.createElement("track");
+        track.kind = "subtitles";
+        track.label = "Feltöltött Felirat";
+        track.srclang = "hu";
+        track.src = subtitleURL;
+        track.default = true;
+        vid.appendChild(track);
+
+        
+        const textTracks = vid.textTracks;
+        if (textTracks.length > 0) {
+            textTracks[0].mode = "showing";
+        }
+
+    })
 }
