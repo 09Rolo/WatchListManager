@@ -133,7 +133,7 @@ body {
 #fuggony {
     height: 100%;
     z-index: 1000;
-    position: absolute;
+    position: fixed;
     top: 0px;
     right: 0px;
 }

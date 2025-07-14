@@ -60,7 +60,7 @@ async function getLink() {
 
     if (amiMegy && amiMegy.tipus) {
         try {
-            const response = await fetch(`${location.origin}/getServerLink`, {
+            const response = await fetch(`${location.origin}/getServerLinks`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(amiMegy)
@@ -281,17 +281,26 @@ async function createVid(videoSRC) {
         titlenak += "." + titlenakSplitted[i]
     }
 
-    document.getElementById("vidTitle").innerHTML = titlenak
 
-    document.getElementById("mediaContainer").innerHTML = `
-        <video id="vid" src="/media/${videoSRC}" controls></video>
-    `
+    try {
+        const response = await fetch(`${location.origin}/media/${videoSRC}`, {
+            method: "HEAD"
+        })
 
+        console.log(response.status)
 
-    //Subtitles?
-    const vid = document.getElementById("vid")
+        if (!response.ok) {
+            document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+        } else {
+            document.getElementById("mediaTitle").innerHTML = titlenak
 
-    console.log(vid.textTracks)
+            document.getElementById("mediaContainer").innerHTML = `
+                <video id="vid" src="/media/${videoSRC}" controls></video>
+            `
+        }
+    } catch(e) {
+        document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+    }
 
 }
 
@@ -308,31 +317,76 @@ async function createPlaylistesVid(videoSRC) {
         titlenak += "." + titlenakSplitted[i]
     }
 
-    document.getElementById("vidTitle").innerHTML = titlenak
 
-    document.getElementById("mediaContainer").innerHTML = `
-        <video src="/media/${videoSRC}" controls></video>
-    `
+    try {
+        const response = await fetch(`${location.origin}/media/${videoSRC}`, {
+            method: "HEAD"
+        })
 
-    document.getElementById("downgomb").innerHTML = `
-        <a href="/playlist/${window.location.origin}|${videoSRC}" download>Nyisd meg VLC-vel</a>
-        <hr>
-        <a href="/media/${videoSRC}" download>Teljes videó letöltése</a>
+        console.log(response.status)
 
-        <br><br>
-    `
+        if (!response.ok) {
+            document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+        } else {
+            document.getElementById("mediaTitle").innerHTML = titlenak
+
+            document.getElementById("mediaContainer").innerHTML = `
+                <video if="video" src="/media/${videoSRC}" controls></video>
+            `
+
+            document.getElementById("downgomb").innerHTML = `
+                <a href="/playlist/${window.location.origin}|${videoSRC}" download>Nyisd meg VLC-vel</a>
+                <hr>
+                <a href="/media/${videoSRC}" download>Teljes videó letöltése</a>
+
+                <br><br>
+            `
+        }
+    } catch(e) {
+        document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+    }
 }
 
 
 
 function createPic(path) {
+    let titlenakSplitted = path.split(".")
+    let titlenakPopped = titlenakSplitted.pop()
+    let titlenak = ""
+
+    for (let i in titlenakSplitted) {
+        titlenak += "." + titlenakSplitted[i]
+    }
+
+    document.getElementById("mediaTitle").innerHTML = titlenak
+
+
     document.getElementById("mediaContainer").innerHTML = `
         <img id="img" src="/media/${path}"></img>
     `
 }
 
 function createText(path) {
-    document.getElementById("mediaContainer").innerHTML = `
-        <p>${window.location.origin}/media/${path}</p>
-    `
+    let titlenakSplitted = path.split(".")
+    let titlenakPopped = titlenakSplitted.pop()
+    let titlenak = ""
+
+    for (let i in titlenakSplitted) {
+        titlenak += "." + titlenakSplitted[i]
+    }
+
+    document.getElementById("mediaTitle").innerHTML = titlenak
+
+
+    fetch(`${window.location.origin}/media/${path}`)
+        .then(response => response.text())
+
+        .then(text => {
+            document.getElementById("mediaContainer").innerHTML = `
+                <pre>${text}</pre>
+            `
+        })
+        .catch(error => {
+            document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+        });
 }

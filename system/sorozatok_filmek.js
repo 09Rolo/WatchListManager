@@ -1181,7 +1181,7 @@ app.post("/changeServerLink", async (req, res) => {
 
 
 
-app.post("/getServerLink", async (req, res) => {
+app.post("/getServerLinks", async (req, res) => {
     const {tipus} = req.body
 
     if(tipus == "movie") {
@@ -1314,7 +1314,8 @@ app.post("/videoKezeles", async (req, res) => {
     
     if ((isFileMP4 && isFileMP4 != "mp4") || !isFileMP4) {
 
-        /*
+        /* //Esetleg később jól jöhet? Converter
+
         var outputDirSplitted = absoluteFilePath.split("/")
         var outputDirPopped = outputDirSplitted.pop()
         var outputDir = ""

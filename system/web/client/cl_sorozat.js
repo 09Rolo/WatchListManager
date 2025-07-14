@@ -2310,7 +2310,7 @@ async function manageServerLink() {
     }
 
     try {
-        const response = await fetch(`${location.origin}/getServerLink`, {
+        const response = await fetch(`${location.origin}/getServerLinks`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(amiMegy)

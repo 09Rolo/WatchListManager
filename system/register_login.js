@@ -176,6 +176,34 @@ app.post("/getUserID", async (req, res) => {
 
 
 
+//összes user visszamegy
+app.get("/getUsers", async (req, res) => {
+    try {
+        const users = db.getConnection().query("SELECT * FROM users WHERE user_id IS NOT NULL", async function (err, result) {
+            if (!err) {
+                if (result.length == 0) {
+                    res.status(401).json({ message: "Hiba", type: "error" })
+                } else {
+                    var users = []
+
+                    for (let u in result) {
+                        users.push(result[u])
+                    }
+
+                    res.status(200).json({ message: "siker", type: "success", users: users });
+                }
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Szerver hiba!", type: "error", error: "Szerver hiba!" });
+    }
+});
+
+
+
+
+
 //get group
 app.post("/getUserGroup", async (req, res) => {
     const { username } = req.body;
