@@ -435,7 +435,7 @@ function subFunctionality() {
         const track = document.createElement("track");
         track.kind = "subtitles";
         track.label = "Feltöltött Felirat";
-        track.srclang = "hu";
+        track.srclang = "hu"; //hát detectelni nem lehet, jó lesz a magyar mindegyikre
         track.src = subtitleURL;
         track.default = true;
         vid.appendChild(track);

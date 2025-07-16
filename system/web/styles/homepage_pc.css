@@ -385,6 +385,16 @@ body {
 }
 
 
+
+.tobbdolog {
+    font-weight: bolder;
+    font-size: 14px;
+    width: fit-content;
+    margin: 20px auto;
+    scroll-snap-align: start;
+}
+
+
 /* Timeline item (show) */
 .timeline-item {
     position: relative;

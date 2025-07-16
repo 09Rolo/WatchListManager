@@ -582,13 +582,24 @@ async function fillInUsers() {
                     <p>Csatlakozás: ${formatDate(user.created_at)}</p>
                 </div>
                 <div class="kezeles" id="kezeles_${user.user_id}">
-                    <p>Ide madj valami</p>
+                    <label for="actions_${user.user_id}">Válaszd ki mit szeretnél átírni:</label>
+                    <select id="actions_${user.user_id}" class="actionsSelector">
+                        <option value="username">Felhasználónév</option>
+                        <option value="email">Email</option>
+                        <option value="group">Csoport</option>
+                    </select>
                 </div>
             </div>
         `
     }
+
+    giveFuncToActionSelectors()
    
 }
 
 
+
+function giveFuncToActionSelectors() {
+    console.log("Még nincs kész!")
+}
 

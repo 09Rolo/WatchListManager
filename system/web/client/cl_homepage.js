@@ -53,6 +53,9 @@ async function loggedIn() {
     filmek_starthere_button.innerHTML = "Kezeld őket itt"
 
 
+    document.getElementById("infoBox").style.display = "none" //Levi mondta, hogy szerinte tűnjön el
+
+
     try {
         const response = await fetch(`${location.origin}/getAPIinfo`, {
             method: "GET",
@@ -455,6 +458,14 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
             </div>
         `
 
+        if (!document.querySelector(`#timeline-items_${daysFromToday} .tobbdolog`)) {
+            var tobbdologSzoveg = document.createElement("p")
+            tobbdologSzoveg.classList = "tobbdolog"
+            tobbdologSzoveg.innerHTML = "Több megjelenés!"
+
+            document.getElementById(`timeline-items_${daysFromToday}`).insertBefore(tobbdologSzoveg, document.getElementById(`timeline-items_${daysFromToday}`).firstChild)
+        }
+
     } else { //még nincs az nap, első cucc
 
         var item = document.createElement("div") //és ez ugye nem a card hanem a card containerje
@@ -635,7 +646,7 @@ function switchMonth(date, dontscroll) {
 
 
 
-
+//--------------------------------------------------------------------------------------------------------------------------------
 
 
 function manageUserByGroup() {
