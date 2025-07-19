@@ -227,6 +227,49 @@ app.post("/getUserGroup", async (req, res) => {
 
 
 
+
+//Change User's things
+app.post("/changeUser", async (req, res) => {
+    const { kinek, mit, mire } = req.body;
+
+
+    if (mit == "email") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(mire)) {
+            return res.status(400).json({ message: "Érvénytelen email formátum", type: "error" });
+        }
+    }
+
+
+    if (mit == "username") {
+        const usernameRegex = /^[a-zA-Z0-9._áéíóöőúüűÁÉÍÓÖŐÚÜŰ]{3,15}$/;
+        if (!usernameRegex.test(mire)) {
+            return res.status(400).json({ message: "A felhasználónévnek 3 és 15 karakter között kell lennie, space nélkül. Illetve csak . és _ használható", type: "error" });
+        }
+    }
+
+
+
+    try {
+        const updatedUserRow = db.getConnection().query("UPDATE users SET `" + mit + "`= ? WHERE user_id = ?", [mire, kinek], function (err, result) { //muszáj lesz sajna +-al, mert a ` bezavar a groupnál :D
+            if(err) throw err;
+            
+            if (result.affectedRows > 0) {
+                res.status(201).json({ message: "Sikeresen megváltoztatva!", type: "success"});
+            } else {
+                res.status(500).json({ message: "Hiba!", type: "error"});
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+
+
+
 //elfelejtett jelszó visszaállítás cucc
 app.post("/recoverPass", async (req, res) => {
     const { email, url } = req.body;

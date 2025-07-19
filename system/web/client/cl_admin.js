@@ -546,8 +546,8 @@ async function userSearching(input) {
     if (input.value.length == 0 || input.value == " " || input.value == undefined) {
         fillInUsers()
     } else {
-        //searchUsers()
-        document.getElementById("userLista").innerHTML = ""
+        searchUsers(search)
+        //document.getElementById("userLista").innerHTML = ""
     }
 }
 
@@ -573,33 +573,180 @@ async function fillInUsers() {
         var user = users_json[u]
 
         document.getElementById("userLista").innerHTML += `
-            <div id="user_${user.user_id}" class="user">
+            <div id="user_${user.user_id}" class="user" data-id="${user.user_id}" data-username="${user.username}" data-email="${user.email}" data-group="${user.group}" data-join="${formatDate(user.created_at)}">
                 <div class="adatok">
-                    <p class="big bold">ID: ${user.user_id}</p
-                    <p class="bold">Name: ${user.username}</p>
-                    <p>Email: ${user.email}</p>
-                    <p class="bold">Group: ${user.group}</p>
-                    <p>Csatlakozás: ${formatDate(user.created_at)}</p>
+                    <p class="uID big bold">ID: ${user.user_id}</p>
+                    <p class="uName bold">Name: ${user.username}</p>
+                    <p class="uEmail">Email: ${user.email}</p>
+                    <p class="uGroup bold">Group: ${user.group}</p>
+                    <p class="uJoin">Csatlakozás: ${formatDate(user.created_at)}</p>
                 </div>
                 <div class="kezeles" id="kezeles_${user.user_id}">
                     <label for="actions_${user.user_id}">Válaszd ki mit szeretnél átírni:</label>
-                    <select id="actions_${user.user_id}" class="actionsSelector">
+                    <select id="actions_${user.user_id}" class="actionsSelector" onchange="selectorChanged(this)">
+                        <option value="-">-</option>
                         <option value="username">Felhasználónév</option>
                         <option value="email">Email</option>
                         <option value="group">Csoport</option>
                     </select>
+
+                    <div class="ebbeMegyAzAppend"></div>
                 </div>
             </div>
         `
     }
-
-    giveFuncToActionSelectors()
    
 }
 
 
 
-function giveFuncToActionSelectors() {
-    console.log("Még nincs kész!")
+
+function searchUsers(search) {
+    const searchTerm = search.toLowerCase();
+    const users = document.querySelectorAll("#userLista .user");
+
+    users.forEach(user => {
+        const id = user.getAttribute("data-id").toLowerCase();
+        const username = user.getAttribute("data-username").toLowerCase();
+        const email = user.getAttribute("data-email").toLowerCase();
+        const group = user.getAttribute("data-group").toLowerCase();
+        const join = user.getAttribute("data-join").toLowerCase()
+
+        if (id.includes(searchTerm)) {
+            user.style.display = "";
+            user.querySelector(".uID").style.color = "orange"
+            user.querySelector(".uID").style.backgroundColor = "purple"
+        }
+
+        if (username.includes(searchTerm)) {
+            user.style.display = "";
+            user.querySelector(".uName").style.color = "orange"
+            user.querySelector(".uName").style.backgroundColor = "purple"
+        }
+
+        if (email.includes(searchTerm)) {
+            user.style.display = "";
+            user.querySelector(".uEmail").style.color = "orange"
+            user.querySelector(".uEmail").style.backgroundColor = "purple"
+        }
+
+        if (group.includes(searchTerm)) {
+            user.style.display = "";
+            user.querySelector(".uGroup").style.color = "orange"
+            user.querySelector(".uGroup").style.backgroundColor = "purple"
+        }
+
+        if (join.includes(searchTerm)) {
+            user.style.display = "";
+            user.querySelector(".uJoin").style.color = "orange"
+            user.querySelector(".uJoin").style.backgroundColor = "purple"
+        }
+
+
+
+        if (
+            id.includes(searchTerm) ||
+            username.includes(searchTerm) ||
+            email.includes(searchTerm) ||
+            group.includes(searchTerm) ||
+            join.includes(searchTerm)
+        ) {
+            user.style.display = "";
+        } else {
+            user.style.display = "none";
+        }
+    });
 }
 
+
+
+
+function selectorChanged(element) {
+    var tipus = element.value
+    var appendElni = element.parentElement.querySelector(".ebbeMegyAzAppend")
+
+    appendElni.innerHTML = ""
+    
+
+    if (tipus != "-") {
+    if (tipus == "group") {
+        var newSelector = document.createElement("select")
+        newSelector.id = `${element.id}_groupSelector` //actions_ID_groupSelector lesz belőle, amit splittelhetek _-ként
+
+        newSelector.innerHTML = `
+            <option value="user">Felhasználó</option>
+            <option value="admin">Admin</option>
+        `
+
+        if (userGroup == "owner") {
+            newSelector.innerHTML += `
+                <option value="owner">Tulaj</option>
+            `
+        }
+
+        var okButton = document.createElement("button")
+        okButton.innerHTML = "Oké"
+        okButton.setAttribute("onclick", `userManageOKButtonClicked(this.parentElement, "${tipus}")`)
+
+
+        appendElni.appendChild(newSelector)
+        appendElni.appendChild(okButton)
+
+    } else {
+
+        var newInput = document.createElement("input")
+        newInput.id = `${element.id}_${tipus}Input` //actions_ID_VALAMIInput lesz belőle, amit splittelhetek _-ként
+        newInput.setAttribute("type", "text")
+
+        var okButton = document.createElement("button")
+        okButton.innerHTML = "Oké"
+        okButton.setAttribute("onclick", `userManageOKButtonClicked(this.parentElement, "${tipus}")`)
+
+
+        appendElni.appendChild(newInput)
+        appendElni.appendChild(okButton)
+
+    }
+    }
+
+}
+
+
+
+async function userManageOKButtonClicked(elemparent, mit) {
+    var mit = mit //ugye
+
+    if (mit == "group") {
+        var mire = elemparent.querySelector("select").value
+        var kinek = elemparent.querySelector("select").id.split("_")[1]
+    } else {
+        var mire = elemparent.querySelector("input").value
+        var kinek = elemparent.querySelector("input").id.split("_")[1]
+    }
+
+    console.log(kinek, mit, mire)
+
+    try {
+        var details = {
+            kinek: kinek,
+            mit: mit,
+            mire: mire
+        }
+    
+        const response = await fetch(`${location.origin}/changeUser`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(details)
+        })
+    
+        const result = await response.json()
+
+        notify(result.message, result.type)
+
+        if(result.type == "success") {
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000);
+        }
+    } catch(e) {console.error(e)}
+}
