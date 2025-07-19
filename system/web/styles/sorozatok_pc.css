@@ -102,7 +102,7 @@
 
 
 #sajat {
-    width: calc(95vw - 30px);
+    /*width: calc(95vw - 30px);*/
     margin-top: 30px;
 }
 
@@ -165,7 +165,7 @@
 
     overflow-y: visible;
     overflow-x: auto;
-    width: calc(94vw - 20px);
+    width: 100%;
     padding-top: 40px;
     padding-bottom: 20px;
     gap: 20px;
@@ -188,7 +188,7 @@
 
     overflow-y: auto;
     overflow-x: hidden;
-    width: calc(94vw - 20px);
+    width: 100%;
     padding-top: 40px;
     padding-bottom: 20px;
     gap: 30px;
@@ -201,7 +201,7 @@
 .card {
     flex: 0 0 auto; /* Prevents the cards from shrinking or growing */
     width: 250px; /* Set a fixed width for cards */
-    margin-right: 15px; /* Optional: space between cards */
+    margin: 10px 7px;
 
     min-height: 650px;
     max-height: 650px;

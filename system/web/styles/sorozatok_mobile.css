@@ -25,13 +25,25 @@
     }
 }
 
-/* Kisebb Koncepció (kettő férjen el egymás mellett, de ennél még kisebb kell majd)
-@media screen and (max-width: 618px) {
+
+
+
+
+@media (min-width: 390px) and (max-width: 618px) {
     .card {
         width: 150px;
         min-height: 500px;
         max-height: 550px;
+        margin: 0 auto !important;
     }
+
+
+    .seriesContainer > div {
+        gap: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
 
     .card-text {
         max-height: 200px;
@@ -39,6 +51,8 @@
 
     .card-title {
         text-align: center;
+        max-height: 100px !important;
+        overflow: overlay;
     }
 
     .bluredimg {
@@ -46,6 +60,7 @@
         left: -8%;
         height: fit-content;
     }
+
 
     .card-body a, .rating {
         position: relative;
@@ -61,4 +76,3 @@
     } 
 
 }
-*/

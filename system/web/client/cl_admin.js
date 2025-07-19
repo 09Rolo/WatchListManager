@@ -521,13 +521,6 @@ async function userKezeloSetup() {
 
 async function userSearchKezeles() {
     document.querySelectorAll(".userSearchbar").forEach(sbar => {
-        sbar.addEventListener("input", debounce((e) => {
-            userSearching(e.target)
-        }))
-    })
-
-
-    document.querySelectorAll(".userSearchbar").forEach(sbar => {
         sbar.addEventListener("input", (e) => {
             sbar.onkeydown = function(e) {
                 if (e.keyCode == 13) {
@@ -535,6 +528,8 @@ async function userSearchKezeles() {
                     e.preventDefault()
                 }
             }
+
+            userSearching(e.target)
         })
     })
 }
@@ -662,51 +657,61 @@ function searchUsers(search) {
 
 
 function selectorChanged(element) {
-    var tipus = element.value
-    var appendElni = element.parentElement.querySelector(".ebbeMegyAzAppend")
-
-    appendElni.innerHTML = ""
+    var selectedEmberkeGroupja = element.parentElement.parentElement.getAttribute("data-group")
     
+    if (selectedEmberkeGroupja == "owner" && userGroup == "admin") {
+        notify("Nincs jogod ezt az embert módosítani")
 
-    if (tipus != "-") {
-    if (tipus == "group") {
-        var newSelector = document.createElement("select")
-        newSelector.id = `${element.id}_groupSelector` //actions_ID_groupSelector lesz belőle, amit splittelhetek _-ként
-
-        newSelector.innerHTML = `
-            <option value="user">Felhasználó</option>
-            <option value="admin">Admin</option>
-        `
-
-        if (userGroup == "owner") {
-            newSelector.innerHTML += `
-                <option value="owner">Tulaj</option>
-            `
-        }
-
-        var okButton = document.createElement("button")
-        okButton.innerHTML = "Oké"
-        okButton.setAttribute("onclick", `userManageOKButtonClicked(this.parentElement, "${tipus}")`)
-
-
-        appendElni.appendChild(newSelector)
-        appendElni.appendChild(okButton)
+        var appendElni = element.parentElement.querySelector(".ebbeMegyAzAppend")
+        appendElni.innerHTML = ""
 
     } else {
+        var tipus = element.value
+        var appendElni = element.parentElement.querySelector(".ebbeMegyAzAppend")
 
-        var newInput = document.createElement("input")
-        newInput.id = `${element.id}_${tipus}Input` //actions_ID_VALAMIInput lesz belőle, amit splittelhetek _-ként
-        newInput.setAttribute("type", "text")
+        appendElni.innerHTML = ""
+        
 
-        var okButton = document.createElement("button")
-        okButton.innerHTML = "Oké"
-        okButton.setAttribute("onclick", `userManageOKButtonClicked(this.parentElement, "${tipus}")`)
+        if (tipus != "-") {
+        if (tipus == "group") {
+            var newSelector = document.createElement("select")
+            newSelector.id = `${element.id}_groupSelector` //actions_ID_groupSelector lesz belőle, amit splittelhetek _-ként
+
+            newSelector.innerHTML = `
+                <option value="user">Felhasználó</option>
+                <option value="admin">Admin</option>
+            `
+
+            if (userGroup == "owner") {
+                newSelector.innerHTML += `
+                    <option value="owner">Tulaj</option>
+                `
+            }
+
+            var okButton = document.createElement("button")
+            okButton.innerHTML = "Oké"
+            okButton.setAttribute("onclick", `userManageOKButtonClicked(this.parentElement, "${tipus}")`)
 
 
-        appendElni.appendChild(newInput)
-        appendElni.appendChild(okButton)
+            appendElni.appendChild(newSelector)
+            appendElni.appendChild(okButton)
 
-    }
+        } else {
+
+            var newInput = document.createElement("input")
+            newInput.id = `${element.id}_${tipus}Input` //actions_ID_VALAMIInput lesz belőle, amit splittelhetek _-ként
+            newInput.setAttribute("type", "text")
+
+            var okButton = document.createElement("button")
+            okButton.innerHTML = "Oké"
+            okButton.setAttribute("onclick", `userManageOKButtonClicked(this.parentElement, "${tipus}")`)
+
+
+            appendElni.appendChild(newInput)
+            appendElni.appendChild(okButton)
+
+        }
+        }
     }
 
 }
