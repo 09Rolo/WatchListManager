@@ -1421,3 +1421,28 @@ app.get("/playlist/*", (req, res) => {
     res.send(playlist);
 });
 
+
+
+
+
+//Admin panelhez kell
+
+app.post("/getSQLElozmenyek", async (req, res) => {
+    const { sql_table } = req.body
+
+
+    if(sql_table) {
+        try {
+            const linkekbenne = db.getConnection().query("SELECT * FROM `" + sql_table + "`", function (err, result) {
+                if (!err) {
+                    if (result.length > 0) {
+                        res.status(200).json({ message: "Előzmények sikeresen lekérve", type: "success", sql_table: sql_table, tartalom: result});
+                    }
+                }
+            });
+
+        } catch(e) {
+            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+        }
+    }
+});

@@ -91,6 +91,16 @@ function manageUserByGroup() {
 
         userKezeloSetup()
 
+
+
+        var sqlElozmenyWatchedEps = document.createElement("div")
+        sqlElozmenyWatchedEps.id = "sqlElozmenyWatchedEps"
+        sqlElozmenyWatchedEps.classList = "box"
+
+        document.getElementById("content").appendChild(sqlElozmenyWatchedEps)
+
+        sqlElozmenyWatchedEpsFill()
+
     }
 
 
@@ -103,6 +113,16 @@ function manageUserByGroup() {
         document.getElementById("content").appendChild(userKezelo)
 
         userKezeloSetup()
+
+
+
+        var sqlElozmenyWatchedEps = document.createElement("div")
+        sqlElozmenyWatchedEps.id = "sqlElozmenyWatchedEps"
+        sqlElozmenyWatchedEps.classList = "box"
+
+        document.getElementById("content").appendChild(sqlElozmenyWatchedEps)
+
+        sqlElozmenyWatchedEpsFill()
 
     }
 }
@@ -755,3 +775,71 @@ async function userManageOKButtonClicked(elemparent, mit) {
         }
     } catch(e) {console.error(e)}
 }
+
+//--------------------------------------------------------------------------------------------------User Kezelő rész vége--
+
+
+
+//--------------------------------------------------------------------------------------------------Adatbázis előzmények rész--
+
+async function sqlElozmenyWatchedEpsFill() {
+    console.log("A")
+
+    try {
+        var amiMegy = {
+            sql_table: "user_watched_episodes"
+        }
+
+        const response = await fetch(`${location.origin}/getSQLElozmenyek`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(amiMegy)
+        })
+
+        const result = await response.json()
+
+
+        if (result) {
+            
+            document.getElementById("sqlElozmenyWatchedEps").innerHTML += `
+                <h3>user_watched_episodes Előzmények:</h3>
+                <table class="watchedEps_table">
+                    <thead>
+                        <tr>
+                            <td>Hanyadik</td>
+                            <td>watched_episode_id</td>
+                            <td>user_id</td>
+                            <td>series_id</td>
+                            <td>episode_id</td>
+                            <td>watched_at</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            `
+
+            for (let r in result.tartalom) {
+                if (r > (result.tartalom.length - 50)) {
+                    var sor = result.tartalom[r]
+
+                    document.querySelector("#sqlElozmenyWatchedEps .watchedEps_table tbody").innerHTML += `
+                        <tr>
+                            <td>${result.tartalom.length - r}.</td>
+                            <td>${sor.watched_episode_id}</td>
+                            <td>${sor.user_id}</td>
+                            <td>${sor.series_id}</td>
+                            <td>${sor.episode_id}</td>
+                            <td>${formatDate(sor.watched_at)}</td>
+                        </tr>
+                    `
+                }
+            }
+        }
+        
+    } catch(e) {
+        console.log("Error:", e)
+    }
+}
+
