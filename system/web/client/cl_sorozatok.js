@@ -775,7 +775,7 @@ function showAvailableInfo() {
         iBetuInfoBox.id = "iBetuInfoBox"
         iBetuInfoBox.style.opacity = 0
         iBetuInfoBox.innerHTML = `
-            <div class="box cant_select" style="border-bottom: none;" onclick="toggleIBetuInfo()">
+            <div class="box cant_select" style="border-bottom: none;">
                 <h4>Információ</h4>
                 <h5>X</h5>
                 <hr>
@@ -790,6 +790,14 @@ function showAvailableInfo() {
 
         document.getElementById("main").appendChild(ibetu)
         document.getElementById("main").appendChild(iBetuInfoBox)
+
+
+
+        document.getElementById("iBetuInfoBox").addEventListener("click", (e) => {
+            if (document.getElementById("iBetuInfoBox").style.opacity == 1) {
+                toggleIBetuInfo()
+            }
+        })
     }
 
 }

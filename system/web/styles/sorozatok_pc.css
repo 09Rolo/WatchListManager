@@ -400,6 +400,8 @@
 
     text-align: center;
 
+    z-index: 999 !important;
+
     transition: 1s opacity;
 }
 
