@@ -39,8 +39,11 @@ var sumMinutes = 0
 var watchedMinutes = 0
 
 var episodesWatched = []
+var episodesInMainSeasonsWatched = []
 
 var seriesTitle = ""
+
+var userGroup = "user"
 
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
@@ -71,6 +74,26 @@ async function loggedIn() {
             notify("Hiba történt az API-al", "error")
         }
     
+    } catch(e) {
+        console.error(e)
+    }
+
+
+
+
+    try {
+        const response = await fetch(`${location.origin}/getUserGroup`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({username: JSON.parse(localStorage.getItem("user")).username})
+        })
+    
+        const result = await response.json()
+    
+        if (response.ok) {
+            userGroup = result.group
+        }
+
     } catch(e) {
         console.error(e)
     }
@@ -156,7 +179,7 @@ async function getData() {
 
     const adatok = await getData.json()
     if (adatok) {
-        //console.log(adatok)
+        console.log(adatok)
 
         if (adatok.last_air_date && adatok.status == "Ended") {
             var idotartam = adatok.first_air_date + "-től | " + adatok.last_air_date + "-ig"
@@ -742,6 +765,10 @@ async function checkWatched(id) {
                     
 
                     
+                    if (allEpisodes.includes(result.dataVissza[i].episode_id)) {
+                        episodesInMainSeasonsWatched.push(result.dataVissza[i].episode_id) //progress-barba csak akkor tegye bele ha nem a specialsból való vagy hasonlók
+                    }
+
                     episodesWatched.push(result.dataVissza[i].episode_id)
                 }
             }
@@ -754,7 +781,7 @@ async function checkWatched(id) {
 
             fillInLastWatched(lastEpisodeWatched)
             //console.log(watchlistbeAddolvaUtoljara)
-            progressBars(episodesWatched.length, allEpisodes.length, "Látott epizódok")
+            progressBars(episodesInMainSeasonsWatched.length, allEpisodes.length, "Látott epizódok")
 
             checkWatchedMinutes()
 
@@ -946,6 +973,10 @@ async function linkManage() {
     } else {
         sajaturl.innerHTML = ""
     }
+
+    link.addEventListener("focusin", () => {
+        link.select()
+    })
 }
 
 linkManage()
@@ -1464,21 +1495,47 @@ function loadSeasonData(s) {
 
         }
 
-        episodes_container.innerHTML += `
-            <div class="episode hidden" id="${ep.id}" onclick="selectEpisode(this)">
-                <div class="data">
-                    <p class="ep_num">${epnumtext}.</p>
-                    <p>${ep.name}</p>
-                    <p>(${ep.air_date}, ${hossz})</p>
-                    <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
-                    <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
+
+
+        if (userGroup == "user") {
+            
+            episodes_container.innerHTML += `
+                <div class="episode hidden" id="${ep.id}" onclick="selectEpisode(this)">
+                    <div class="data">
+                        <p class="ep_num">${epnumtext}.</p>
+                        <p>${ep.name}</p>
+                        <p>(${ep.air_date}, ${hossz})</p>
+                        <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
+                        <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
+                    </div>
+                    <div class="overview">
+                        <p>${ep.overview}${overviewinfo}</p>
+                    </div>
                 </div>
-                <div class="overview">
-                    <p>${ep.overview}${overviewinfo}</p>
-                </div>
-            </div>
         
-        `
+            `
+
+        } else {
+
+            episodes_container.innerHTML += `
+                <div class="episode hidden" id="${ep.id}" onclick="selectEpisode(this)">
+                    <div class="data">
+                        <p class="ep_num">${epnumtext}.</p>
+                        <p>${ep.name}</p>
+                        <i>${ep.id}</i>
+                        <p>(${ep.air_date}, ${hossz})</p>
+                        <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
+                        <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
+                    </div>
+                    <div class="overview">
+                        <p>${ep.overview}${overviewinfo}</p>
+                    </div>
+                </div>
+        
+            `
+
+        }
+        
     }
 
     episodes_container.innerHTML += `
@@ -1490,19 +1547,26 @@ function loadSeasonData(s) {
     `
 
 
+    var utoljaraMegnezettEp
     let ListedEpisodes = document.getElementsByClassName("episode")
 
     Array.prototype.forEach.call(ListedEpisodes, function(ep) {
         if (episodesWatched.includes(parseInt(ep.id, 10))) {
             ep.classList.add("watched")
+            utoljaraMegnezettEp = ep
         }
     });
+
 
     setUpcomingErtekelesCucc()
     startEpsObserver()
     checkImgLoaded()
 
     container.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => {
+        utoljaraMegnezettEp.scrollIntoView({ behavior: 'smooth' });
+    }, 1000);
 
 }
 
@@ -1594,6 +1658,7 @@ async function addEpsToWatched() {
 
 
     for (let i = 0; i < selectedEpisodes.length; i++) {
+        var isAdded = false
         const ep = selectedEpisodes[i];
 
 
@@ -1622,7 +1687,9 @@ async function addEpsToWatched() {
                         const result = await response.json()
                     
                         //notify(result.message, result.type)
-                    
+                        isAdded = true
+
+
                         if(result.type == "success") {
                             console.log("Siker")
                         }
@@ -1634,6 +1701,37 @@ async function addEpsToWatched() {
         }
 
 
+
+        if (!isAdded) {
+            //Valószínűleg a Special Seasonből való rész lett bejelölve
+
+            try {
+                var details = {
+                    user_id: JSON.parse(localStorage.user).user_id,
+                    media_id: id,
+                    media_type: "tv",
+                    ep_id: ep,
+                }
+            
+                const response = await fetch(`${location.origin}/addWatched`, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(details)
+                })
+            
+                const result = await response.json()
+            
+                //notify(result.message, result.type)
+                isAdded = true
+            
+            
+                if(result.type == "success") {
+                    console.log("Siker")
+                }
+            } catch(e) {
+                console.log("Error:", e)
+            }
+        }
 
 
     }

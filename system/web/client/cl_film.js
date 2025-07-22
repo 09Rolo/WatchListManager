@@ -480,6 +480,11 @@ async function linkManage() {
     } else {
         sajaturl.innerHTML = ""
     }
+
+
+    link.addEventListener("focusin", () => {
+        link.select()
+    })
 }
 
 linkManage()

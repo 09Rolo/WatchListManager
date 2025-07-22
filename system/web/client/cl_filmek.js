@@ -104,6 +104,25 @@ manageLang()
 
 
 
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+        
+            checkImgLoaded(2000)
+            //observer.unobserve(img);
+        } else {
+            const img = entry.target;
+            img.src = "./imgs/placeholder.png";
+        }
+    });
+});
+//observer.observe(img); //hozzáadni így lehet
+
+
+
 function debounce(func) {
     let delay = 300
 
@@ -234,6 +253,10 @@ async function searching(tartalom) {
                         </div>
                     </div>
                 `
+
+                document.querySelectorAll(`.card img`).forEach(image => {
+                    observer.observe(image)
+                })
             }
 
           });
@@ -244,29 +267,6 @@ async function searching(tartalom) {
           setUpcomingErtekelesCucc()
 
           checkImgLoaded()
-
-
-
-          setTimeout(() => {
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-
-                        checkImgLoaded(2000)
-                        //observer.unobserve(img);
-                    } else {
-                        const img = entry.target;
-                        img.src = "./imgs/placeholder.png";
-                    }
-                });
-            });
-              
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                observer.observe(img);
-            });
-        }, 100);
 
 
 
@@ -424,6 +424,10 @@ async function fillSajatMovies() {
                     </div>
                 </div>
             `
+
+            document.querySelectorAll(`.card img`).forEach(image => {
+                observer.observe(image)
+            })
         }
     }
 
@@ -456,6 +460,10 @@ async function fillSajatMovies() {
                     </div>
                 </div>
             `
+
+            document.querySelectorAll(`.card img`).forEach(image => {
+                observer.observe(image)
+            })
         }
     }
 
@@ -464,28 +472,6 @@ async function fillSajatMovies() {
     setUpcomingErtekelesCucc()
 
     checkImgLoaded()
-
-
-    setTimeout(() => {
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-
-                    checkImgLoaded(2000)
-                    //observer.unobserve(img);
-                } else {
-                    const img = entry.target;
-                    img.src = "./imgs/placeholder.png";
-                }
-            });
-        });
-          
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            observer.observe(img);
-        });
-    }, 100);
 
 }
 

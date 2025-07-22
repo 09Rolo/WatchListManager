@@ -248,3 +248,8 @@ table tr:hover td {
     color: black;
     transition: 0.3s;
 }
+
+#sqlElozmenyWatchedEps {
+    max-height: 90vh !important;
+    overflow: auto;
+}

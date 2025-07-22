@@ -72,6 +72,14 @@
     iframe {
         margin: auto;
     }
+
+
+    #kovi_ep_to_air {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 

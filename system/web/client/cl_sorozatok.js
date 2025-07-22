@@ -116,6 +116,30 @@ manageLang()
 
 
 
+
+//image observer cucc, hogy ne buggoljon annyira a weboldal elvileg?
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+        
+            checkImgLoaded(2000)
+            //observer.unobserve(img);
+        } else {
+            const img = entry.target;
+            img.src = "./imgs/placeholder.png";
+        }
+    });
+});
+//observer.observe(img); //hozzáadni így lehet
+
+
+
+
+
+
+
 function debounce(func) {
     let delay = 300
 
@@ -184,7 +208,7 @@ async function searching(tartalom) {
                             <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                                 <div class="imgkeret">
-                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                                 </div>
                                 <div class="card-body ${cardBodyClass}">
                                     <h5 class="card-title"><b>${el.name}</b></h5>
@@ -212,7 +236,7 @@ async function searching(tartalom) {
                             <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                                 <div class="imgkeret">
-                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                                 </div>
                                 <div class="card-body ${cardBodyClass}">
                                     <h5 class="card-title"><b>${el.name}</b></h5>
@@ -240,7 +264,7 @@ async function searching(tartalom) {
                             <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
                                 <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                                 <div class="imgkeret">
-                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                                 </div>
                                 <div class="card-body ${cardBodyClass}">
                                     <h5 class="card-title"><b>${el.name}</b></h5>
@@ -262,7 +286,7 @@ async function searching(tartalom) {
                     <div class="card" style="background-color: ${cardColor};" id="${el.id}" style="width: 18rem;">
                         <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                         <div class="imgkeret">
-                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                            <img data-src="https://image.tmdb.org/t/p/w500${el.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                         </div>
                         <div class="card-body ${cardBodyClass}">
                             <h5 class="card-title"><b>${el.name}</b></h5>
@@ -276,6 +300,10 @@ async function searching(tartalom) {
                         </div>
                     </div>
                 `
+
+                document.querySelectorAll(`.card img`).forEach(image => {
+                    observer.observe(image)
+                })
             });
 
 
@@ -284,28 +312,6 @@ async function searching(tartalom) {
           setUpcomingErtekelesCucc()
 
           checkImgLoaded()
-
-
-          setTimeout(() => {
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-
-                        checkImgLoaded(2000)
-                        //observer.unobserve(img);
-                    } else {
-                      const img = entry.target;
-                      img.src = "./imgs/placeholder.png";
-                    }
-                });
-            });
-              
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                observer.observe(img);
-            });
-        }, 100);
 
 
 
@@ -449,6 +455,8 @@ async function getWatched() {
 async function isFullyWatched(elem) {
     var allEpisodes = 0
     var watchedEpisodes = 0
+    var vanSpecialSeasonje = false
+    var s0asEpizodok = []
 
     try {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${elem}?api_key=${API_KEY}&language=${language}`)
@@ -467,6 +475,8 @@ async function isFullyWatched(elem) {
                     }
                 }
             } else if(adatok.seasons[0].season_number != 1) {
+                vanSpecialSeasonje = true
+
                 for (let seasons = 1; seasons < adatok.seasons.length; seasons++) {
                     const element = adatok.seasons[seasons];
                     
@@ -493,10 +503,37 @@ async function isFullyWatched(elem) {
                 const result = await response.json()
             
                 if (response.ok) {
+
+                    if (vanSpecialSeasonje) {
+                        //lekérés
+                        try {
+                            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${elem}/season/0?api_key=${API_KEY}&language=${language}`)
+                            const season = await getData_seasons.json()
+                        
+                            for (let e in season.episodes) {
+                                s0asEpizodok.push(season.episodes[e].id)
+                            }
+                        } catch (e) {
+                            console.error(e)
+                        }
+                    }
+
+
                     
                     for(let i in result.dataVissza) {
                         if (result.dataVissza[i].media_id == elem) {
-                            watchedEpisodes += 1
+                            //le kell kérni a 0 seasont hogyha van, és megnézni, hogy benne van e a result.dataVissza[i].episode_id
+                            if (vanSpecialSeasonje) {
+                                if (s0asEpizodok && s0asEpizodok.length > 0) {
+                                    if (!s0asEpizodok.includes(result.dataVissza[i].episode_id)) {
+                                        watchedEpisodes += 1
+                                    }
+                                } else {
+                                    watchedEpisodes += 1
+                                }
+                            } else {
+                                watchedEpisodes += 1
+                            }
                         }
                     }
                 }
@@ -554,7 +591,6 @@ async function fillSajatSeries() {
 
 
 
-
     for(let i in partiallWatched) {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${partiallWatched[i]}?api_key=${API_KEY}&language=${language}`)
         const adatok = await getData.json()
@@ -568,7 +604,7 @@ async function fillSajatSeries() {
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                     </div>
                     <div class="card-body card-body-watched_partially">
                         <h5 class="card-title"><b>${adatok.name}</b></h5>
@@ -582,6 +618,10 @@ async function fillSajatSeries() {
                     </div>
                 </div>
             `
+
+            document.querySelectorAll(`.card img`).forEach(image => {
+                observer.observe(image)
+            })
         }
     }
 
@@ -601,7 +641,7 @@ async function fillSajatSeries() {
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                     </div>
                     <div class="card-body card-body-wishlisted">
                         <h5 class="card-title"><b>${adatok.name}</b></h5>
@@ -615,6 +655,10 @@ async function fillSajatSeries() {
                     </div>
                 </div>
             `
+
+            document.querySelectorAll(`.card img`).forEach(image => {
+                observer.observe(image)
+            })
         }
     }
 
@@ -633,7 +677,7 @@ async function fillSajatSeries() {
                 <div class="card" style="background-color: ${cardColor};" id="${adatok.id}" style="width: 18rem;">
                     <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="bluredimg" alt="poszter">
                     <div class="imgkeret">
-                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="film poszter">
+                        <img data-src="https://image.tmdb.org/t/p/w500${adatok.poster_path}" src="./imgs/placeholder.png" loading="lazy" class="card-img-top" alt="Sorozat Poszter">
                     </div>
                     <div class="card-body card-body-watched">
                         <h5 class="card-title"><b>${adatok.name}</b></h5>
@@ -647,6 +691,10 @@ async function fillSajatSeries() {
                     </div>
                 </div>
             `
+
+            document.querySelectorAll(`.card img`).forEach(image => {
+                observer.observe(image)
+            })
         }
     }
 
@@ -657,28 +705,6 @@ async function fillSajatSeries() {
     setUpcomingErtekelesCucc()
 
     checkImgLoaded()
-
-
-    setTimeout(() => {
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-
-                    checkImgLoaded(2000)
-                    //observer.unobserve(img);
-                } else {
-                    const img = entry.target;
-                    img.src = "./imgs/placeholder.png";
-                }
-            });
-        });
-          
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            observer.observe(img);
-        });
-    }, 100);
     
 }
 
