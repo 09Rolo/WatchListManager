@@ -11,6 +11,12 @@ var watchedSeries = []
 var wishlistedSeries = []
 var partiallWatched = []
 
+var sumOfMegnezettSorozatok = 0
+var sumOfElkezdettSorozatok = 0
+var sumOfWishlistesSorozatok = 0
+var sumOfMegnezettEpizodok = 0
+
+
 
 window.onload = async () => {
     menu_account.style.display = "none"
@@ -544,6 +550,7 @@ async function isFullyWatched(elem) {
 
             //console.log(allEpisodes, adatok.name)
             //console.log(watchedEpisodes)
+            sumOfMegnezettEpizodok += watchedEpisodes
 
             if (watchedEpisodes >= allEpisodes) {
                 return true
@@ -622,6 +629,9 @@ async function fillSajatSeries() {
             document.querySelectorAll(`.card img`).forEach(image => {
                 observer.observe(image)
             })
+
+
+            sumOfElkezdettSorozatok += 1
         }
     }
 
@@ -659,6 +669,9 @@ async function fillSajatSeries() {
             document.querySelectorAll(`.card img`).forEach(image => {
                 observer.observe(image)
             })
+
+
+            sumOfWishlistesSorozatok += 1
         }
     }
 
@@ -695,6 +708,9 @@ async function fillSajatSeries() {
             document.querySelectorAll(`.card img`).forEach(image => {
                 observer.observe(image)
             })
+
+
+            sumOfMegnezettSorozatok += 1
         }
     }
 
@@ -706,6 +722,7 @@ async function fillSajatSeries() {
 
     checkImgLoaded()
     
+    showAvailableInfo()
 }
 
 
@@ -740,4 +757,51 @@ function togglePartial() {
         sajat_series_partial.style.display = "none"
         document.getElementById("partialSeriesToggleBtn").innerHTML = "Elkezdett sorozataid megjelenítése"
     }
+}
+
+
+
+
+function showAvailableInfo() {
+
+    if (sumOfElkezdettSorozatok > 0 || sumOfMegnezettSorozatok > 0 || sumOfWishlistesSorozatok > 0) {
+        let ibetu = document.createElement("div")
+        ibetu.id = "infoIBetu"
+        ibetu.innerHTML = `
+            <button onclick="toggleIBetuInfo()"><i class="bi bi-info-circle"></i></button>
+        `
+
+        let iBetuInfoBox = document.createElement("div")
+        iBetuInfoBox.id = "iBetuInfoBox"
+        iBetuInfoBox.style.opacity = 0
+        iBetuInfoBox.innerHTML = `
+            <div class="box cant_select" style="border-bottom: none;" onclick="toggleIBetuInfo()">
+                <h4>Információ</h4>
+                <h5>X</h5>
+                <hr>
+                <div><p>Összes hozzáadott sorozatok száma: </p><p>${sumOfElkezdettSorozatok + sumOfMegnezettSorozatok + sumOfWishlistesSorozatok}</p></div>
+                <div><p>Megnézett sorozatok száma: </p><p>${sumOfMegnezettSorozatok}</p></div>
+                <div><p>Elkezdett sorozatok száma: </p><p>${sumOfElkezdettSorozatok}</p></div>
+                <div><p>Kívánságlistás sorozatok száma: </p><p>${sumOfWishlistesSorozatok}</p></div>
+                <br>
+                <div><p>Összesen megnézett epizódok száma: </p><p>${sumOfMegnezettEpizodok}</p></div>
+            </div>
+        `
+
+        document.getElementById("main").appendChild(ibetu)
+        document.getElementById("main").appendChild(iBetuInfoBox)
+    }
+
+}
+
+
+function toggleIBetuInfo() {
+    const iBetuInfoBox = document.getElementById("iBetuInfoBox")
+
+    if (iBetuInfoBox.style.opacity == 0) {
+        iBetuInfoBox.style.opacity = 1
+    } else if(iBetuInfoBox.style.opacity == 1) {
+        iBetuInfoBox.style.opacity = 0
+    }
+
 }
