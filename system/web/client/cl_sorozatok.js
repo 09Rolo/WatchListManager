@@ -774,6 +774,7 @@ function showAvailableInfo() {
         let iBetuInfoBox = document.createElement("div")
         iBetuInfoBox.id = "iBetuInfoBox"
         iBetuInfoBox.style.opacity = 0
+        iBetuInfoBox.style.pointerEvents = "none"
         iBetuInfoBox.innerHTML = `
             <div class="box cant_select" style="border-bottom: none;">
                 <h4>Információ</h4>
@@ -796,6 +797,8 @@ function showAvailableInfo() {
         document.getElementById("iBetuInfoBox").addEventListener("click", (e) => {
             if (document.getElementById("iBetuInfoBox").style.opacity == 1) {
                 toggleIBetuInfo()
+            } else {
+                document.getElementById("iBetuInfoBox").style.pointerEvents = "none"
             }
         })
     }
@@ -807,8 +810,10 @@ function toggleIBetuInfo() {
     const iBetuInfoBox = document.getElementById("iBetuInfoBox")
 
     if (iBetuInfoBox.style.opacity == 0) {
+        document.getElementById("iBetuInfoBox").style.pointerEvents = "all"
         iBetuInfoBox.style.opacity = 1
     } else if(iBetuInfoBox.style.opacity == 1) {
+        document.getElementById("iBetuInfoBox").style.pointerEvents = "none"
         iBetuInfoBox.style.opacity = 0
     }
 
