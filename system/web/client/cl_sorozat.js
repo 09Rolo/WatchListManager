@@ -1230,7 +1230,7 @@ var collapse_button = document.getElementById("collapse_button")
 var collapse_links = document.getElementById("collapse_links")
 
 collapse_button.addEventListener("click", (e) => {
-    console.log(collapse_links.style.height)
+    //console.log(collapse_links.style.height)
 
     if (collapse_links.style.height == "0px" || collapse_links.style.height == "") {
 
@@ -1300,8 +1300,8 @@ var selectedEpisodes = []
 
 
 async function changeSeason(btn, seasonnum, eptoselect) {
-
-    if (seasonnum) {
+    
+    if (seasonnum) { //tehát ha összesítőből
         var canDoIt = false
         var haveToClearSelection = true
 
@@ -1540,11 +1540,59 @@ function loadSeasonData(s) {
 
     episodes_container.innerHTML += `
         <hr>
-        <div class="buttons" id="kezelobtns" style="display: none;">
-            <button onclick="addEpsToWatched()">Jelölés megnézettnek</button>
-            <button onclick="removeEpsFromWatched()">Jelölés nem megnézettnek</button>
+        <div class="alsoResz">
+            <div class="buttons" id="kezelobtns" style="display: none;">
+                <button onclick="addEpsToWatched()">Jelölés megnézettnek</button>
+                <button onclick="removeEpsFromWatched()">Jelölés nem megnézettnek</button>
+            </div>
+
+            <div id="backBtnContainer">
+                <button id="backToSeasonSelection" data-direction="top"><i class="bi bi-arrow-up-circle"></i></button>
+            </div>
         </div>
     `
+
+
+
+    var arrowBtn = document.getElementById("backToSeasonSelection")
+
+    window.addEventListener("scroll", (e) => {
+        let currLoc = container.getBoundingClientRect().top
+        //console.log(currLoc)
+
+        if (currLoc < 100) { //minuszba fog majd menni ugye ha kimegy a képből, és akkor mehet le a legaljára, de ez a kb érték(100) kell neki most
+            arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+            arrowBtn.dataset.direction = "top"
+
+        } else {
+            arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+            arrowBtn.dataset.direction = "bottom"
+
+        }
+    })
+
+    
+    arrowBtn.addEventListener("click", (e) => {
+        var arrowBtn = document.getElementById("backToSeasonSelection")
+
+        if (arrowBtn.dataset.direction == "bottom") {
+            document.querySelector("#episodes hr").scrollIntoView({ behavior: 'smooth' });
+
+            arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+            arrowBtn.dataset.direction = "top"
+
+        } else if (arrowBtn.dataset.direction == "top") {
+            document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
+
+            setTimeout(() => {
+                arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                arrowBtn.dataset.direction = "bottom"
+            }, 1000);
+
+        }
+    })
+
+
 
 
     var utoljaraMegnezettEp
@@ -1566,7 +1614,7 @@ function loadSeasonData(s) {
 
     setTimeout(() => {
         utoljaraMegnezettEp.scrollIntoView({ behavior: 'smooth' });
-    }, 1000);
+    }, 500);
 
 }
 
@@ -1599,6 +1647,7 @@ function showOverview(parent) {
     }, 100);
 
 }
+
 
 
 
@@ -1668,7 +1717,8 @@ async function addEpsToWatched() {
             if (json.id == ep) {
                 var epDate = new Date(json.air_date)
                 var currDate = new Date()
-                console.log(json)
+                //console.log(json)
+
                 if (currDate >= epDate && json.runtime > 0) {
                     try {
                         var details = {
@@ -2193,7 +2243,13 @@ async function putInVideok() {
             videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
 
             videos_container.innerHTML += `
-            <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer">Videók keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer">Videók keresése YouTube-on</a>
+            `
+        } else {
+
+            videos_container.innerHTML += `
+                <p></p>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer">További videók keresése YouTube-on</a>
             `
         }
 
@@ -2202,6 +2258,12 @@ async function putInVideok() {
 
             trailers_container.innerHTML += `
                 <a href="https://www.youtube.com/results?search_query=${seriesTitle}+trailer" target="_blank" rel="noopener noreferrer">Trailer keresése YouTube-on</a>
+            `
+        } else {
+            
+            trailers_container.innerHTML += `
+                <p></p>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}+trailer" target="_blank" rel="noopener noreferrer">További trailerek keresése YouTube-on</a>
             `
         }
     } catch(e) {

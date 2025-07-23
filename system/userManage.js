@@ -38,17 +38,17 @@ app.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
 
-        const userRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+        const userRow = db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     try {
-                        const unamecheck = db.getConnection().query("SELECT * FROM users WHERE username = ?", [username], function (err, result) {
+                        const unamecheck = db.query("SELECT * FROM users WHERE username = ?", [username], function (err, result) {
                             if (!err) {
                                 if (result.length == 0) {
                                     //mehet be
-                                    const addUser = db.getConnection().query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", [username, email, hashedPassword])
+                                    const addUser = db.query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", [username, email, hashedPassword])
 
-                                    const newUserRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+                                    const newUserRow = db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
                                         if (!err) {
                                             if (result.length == 1) {
                                                 //oksa, benne van
@@ -98,7 +98,7 @@ app.post("/login", async (req, res) => {
     try {
         //Check if user exists
 
-        const user = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], async function (err, result) {
+        const user = db.query("SELECT * FROM users WHERE email = ?", [email], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "Helytelen adatok", type: "error" })
@@ -158,7 +158,7 @@ app.post("/getUserID", async (req, res) => {
     const { username } = req.body;
 
     try {
-        const user = db.getConnection().query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
+        const user = db.query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "Hiba", type: "error" })
@@ -179,7 +179,7 @@ app.post("/getUserID", async (req, res) => {
 //összes user visszamegy
 app.get("/getUsers", async (req, res) => {
     try {
-        const users = db.getConnection().query("SELECT * FROM users WHERE user_id IS NOT NULL", async function (err, result) {
+        const users = db.query("SELECT * FROM users WHERE user_id IS NOT NULL", async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "Hiba", type: "error" })
@@ -209,7 +209,7 @@ app.post("/getUserGroup", async (req, res) => {
     const { username } = req.body;
 
     try {
-        const user = db.getConnection().query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
+        const user = db.query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "Hiba", type: "error" })
@@ -251,7 +251,7 @@ app.post("/changeUser", async (req, res) => {
 
 
     try {
-        const updatedUserRow = db.getConnection().query("UPDATE users SET `" + mit + "`= ? WHERE user_id = ?", [mire, kinek], function (err, result) { //muszáj lesz sajna +-al, mert a ` bezavar a groupnál :D
+        const updatedUserRow = db.query("UPDATE users SET `" + mit + "`= ? WHERE user_id = ?", [mire, kinek], function (err, result) { //muszáj lesz sajna +-al, mert a ` bezavar a groupnál :D
             if(err) throw err;
             
             if (result.affectedRows > 0) {
@@ -285,7 +285,7 @@ app.post("/recoverPass", async (req, res) => {
 
     try {
         //nem lehet duplikált email ezért töröljük le először, de csak ha lejárt már
-        const removeIfAlreadyGivenAndExpired = db.getConnection().query("DELETE FROM password_reset_tokens WHERE email = ? AND expires_at < NOW()", [email], function (err, result) {
+        const removeIfAlreadyGivenAndExpired = db.query("DELETE FROM password_reset_tokens WHERE email = ? AND expires_at < NOW()", [email], function (err, result) {
             if (!err) {
                 if (result.affectedRows > 0) {
                     //oksa
@@ -301,20 +301,20 @@ app.post("/recoverPass", async (req, res) => {
 
 
     try {
-        const userRow = db.getConnection().query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
+        const userRow = db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result) {
             if (!err) {
                 if (result.length != 0) {
                     try {
-                        const existscheck = db.getConnection().query("SELECT * FROM password_reset_tokens WHERE email = ?", [email], function (err, result) {
+                        const existscheck = db.query("SELECT * FROM password_reset_tokens WHERE email = ?", [email], function (err, result) {
                             if (!err) {
                                 if (result.length == 0) {
                                     //mehet be
                                     const resetToken = crypto.randomBytes(32).toString('hex');
                                     var expireTime = new Date(Date.now() + 60 * 60 * 1000) //egy óra mulva, csak ms ben kell megadni neki
 
-                                    const addRecover = db.getConnection().query("INSERT INTO password_reset_tokens (email, token, expires_at) VALUES (?, ?, ?)", [email, resetToken, expireTime])
+                                    const addRecover = db.query("INSERT INTO password_reset_tokens (email, token, expires_at) VALUES (?, ?, ?)", [email, resetToken, expireTime])
                                 
-                                    const newUserRow = db.getConnection().query("SELECT * FROM password_reset_tokens WHERE email = ?", [email], function (err, result) {
+                                    const newUserRow = db.query("SELECT * FROM password_reset_tokens WHERE email = ?", [email], function (err, result) {
                                         if (!err) {
                                             if (result.length == 1) {
                                                 //oksa, benne van
@@ -357,17 +357,17 @@ app.post("/doRecover", async (req, res) => {
     //console.log(token, newpass, email)
 
     try {
-        const userRow = db.getConnection().query("SELECT * FROM password_reset_tokens WHERE email = ? AND token = ? AND expires_at > NOW()", [email, token], function (err, result) {
+        const userRow = db.query("SELECT * FROM password_reset_tokens WHERE email = ? AND token = ? AND expires_at > NOW()", [email, token], function (err, result) {
             if (!err) {
                 if (result.length != 0) {
                     try {
                         
-                        const updatedUserRow = db.getConnection().query("UPDATE users SET password_hash = ? WHERE email = ?", [newlyhashedPassword, email], function (err, result) {
+                        const updatedUserRow = db.query("UPDATE users SET password_hash = ? WHERE email = ?", [newlyhashedPassword, email], function (err, result) {
                             if(err) throw err;
                             
                             if (result.affectedRows > 0) {
 
-                                const deleteFromDB = db.getConnection().query("DELETE FROM password_reset_tokens WHERE email = ? AND token = ?", [email, token], function (err, result) {
+                                const deleteFromDB = db.query("DELETE FROM password_reset_tokens WHERE email = ? AND token = ?", [email, token], function (err, result) {
                                     if (!err) {
                                         if (result.affectedRows > 0) {
                                             //oksa
@@ -426,7 +426,7 @@ cron.schedule('0 0 * * *', async () => {
     console.log("⏰ Token törlések folyamatban...");
 
     try {
-        const deleteFromDB = db.getConnection().query("DELETE FROM password_reset_tokens WHERE expires_at < NOW()", [], function (err, result) {
+        const deleteFromDB = db.query("DELETE FROM password_reset_tokens WHERE expires_at < NOW()", [], function (err, result) {
             if (!err) {
                 console.log(`🧹 Törölve lett ${result.affectedRows} lejárt token.`);
             } else {

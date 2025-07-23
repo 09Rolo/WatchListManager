@@ -203,6 +203,8 @@ async function searching(tartalom) {
                             </div>
                         </div>
                     `
+
+                    GiveHrefToAdatlapButton()
                 }
             }
 
@@ -230,6 +232,8 @@ async function searching(tartalom) {
                             </div>
                         </div>
                     `
+
+                    GiveHrefToAdatlapButton()
                 }
             }
 
@@ -257,12 +261,13 @@ async function searching(tartalom) {
                 document.querySelectorAll(`.card img`).forEach(image => {
                     observer.observe(image)
                 })
+
+                GiveHrefToAdatlapButton()
             }
 
           });
 
 
-          GiveHrefToAdatlapButton()
 
           setUpcomingErtekelesCucc()
 
@@ -428,6 +433,8 @@ async function fillSajatMovies() {
             document.querySelectorAll(`.card img`).forEach(image => {
                 observer.observe(image)
             })
+
+            GiveHrefToAdatlapButton()
         }
     }
 
@@ -464,10 +471,11 @@ async function fillSajatMovies() {
             document.querySelectorAll(`.card img`).forEach(image => {
                 observer.observe(image)
             })
+
+            GiveHrefToAdatlapButton()
         }
     }
 
-    GiveHrefToAdatlapButton()
 
     setUpcomingErtekelesCucc()
 

@@ -145,6 +145,18 @@ function GiveHrefToAdatlapButton() {
 
 
 
+function checkHashtag() {
+    const urlHash = window.location.hash.substr(1)
+    if (urlHash.includes("info")) {
+        document.getElementById("infoBox").style.display = ""
+    }
+}
+
+setTimeout(() => {
+    checkHashtag()
+}, 1000);
+
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------TIMELINE Újra------------------------------------------------------------------------------

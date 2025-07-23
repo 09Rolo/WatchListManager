@@ -762,13 +762,20 @@ note.addEventListener("focusin", (e) => {
 
 
 
+var videokPuttedIn = false
+
 var videokLoad_btn = document.getElementById("videokLoad_btn")
 var x_videok = document.getElementById("x_videok")
 var videok_container = document.getElementById("videok_container")
 
-putInVideok()
+//putInVideok()
 
 videokLoad_btn.addEventListener("click", (e) => {
+    if (!videokPuttedIn) {
+        putInVideok()
+        videokPuttedIn = true
+    }
+
     if (videok_container.style.opacity == "0" || videok_container.style.opacity == "") {
         document.querySelector(".bgpreventclickandfade").style.display = "flex"
 
@@ -789,7 +796,7 @@ x_videok.addEventListener("click", (e) => {
     var iframek = document.querySelectorAll("iframe")
 
     iframek.forEach(iframe => {
-        console.log(iframe)
+        //console.log(iframe)
         iframe.src = iframe.src
     })
 })
@@ -849,7 +856,7 @@ async function putInVideok() {
 
                 } else {
                     
-                    console.log(vid)
+                    //console.log(vid)
                     if (vid.site == "YouTube") {
                         var Tkey = vid.key
                         var YTURL = `https://www.youtube.com/embed/${Tkey}`
@@ -885,11 +892,17 @@ async function putInVideok() {
 
         }
 
+
         if (videos_container.innerHTML == "") {
             videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
 
             videos_container.innerHTML += `
                 <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">Videók keresése YouTube-on</a>
+            `
+        } else {
+            videos_container.innerHTML += `
+                <p></p>
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">További videók keresése YouTube-on</a>
             `
         }
 
@@ -898,6 +911,11 @@ async function putInVideok() {
 
             trailers_container.innerHTML += `
                 <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">Trailer keresése YouTube-on</a>
+            `
+        } else {
+            trailers_container.innerHTML += `
+                <p></p>
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">További trailerek keresése YouTube-on</a>
             `
         }
     } catch(e) {

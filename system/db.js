@@ -1,40 +1,53 @@
 const mysql = require('mysql');
 
-let connection;
 
-function handleDisconnect() {
-    connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "watchlistmanager"
-    });
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: process.env.DATABASE_NAME || 'watchlistmanager',
+    connectionLimit: 50
+});
 
-    connection.connect(function(err) {
+pool.getConnection((err, connection) => {
+    if (err) {
+        console.error('❌ Nem sikerült csatlakozni az adatbázishoz:', err);
+    } else {
+        console.log('✅ Adatbázishoz csatlakozva (pool)');
+        connection.release();
+    }
+});
+
+// Export pool directly
+module.exports =  pool
+
+
+
+
+let dbUp = false;
+
+function checkDbConnection() {
+    pool.getConnection((err, connection) => {
         if (err) {
-            console.log('Error connecting to DB:', err);
-            setTimeout(handleDisconnect, 2000);
-            return;
-        }
-        console.log("Adatbázishoz csatlakozva ✅");
-    });
+            if (dbUp) {
+                console.error('❌ Adatbázis lecsatlakozva: ', err.code);
+                dbUp = false;
+            }
 
-    connection.on('error', function(err) {
-        console.log('DB error', err);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
-            handleDisconnect();
         } else {
-            throw err;
+            connection.release();
+            if (!dbUp) {
+                console.log('✅ Az adatbázishoz mükszik');
+                dbUp = true;
+            }
         }
     });
 }
 
-handleDisconnect();
+// Check DB connection
+setInterval(checkDbConnection, 1200000);
 
-// Export a function that always returns the current connection
-module.exports = {
-    getConnection: () => connection
-};
+checkDbConnection();
 
 
 
@@ -71,6 +84,27 @@ cron.schedule('0 3 * * *', () => {
         } else {
             console.log(`[✅] Backup sikeresen létrehozva: ${fileName}`);
         }
+    });
+
+
+    // And we can delete older backups
+
+    const MAX_DAYS = 7;
+    const cutoff = Date.now() - MAX_DAYS * 24 * 60 * 60 * 1000;
+
+    fs.readdir(BACKUP_DIR, (err, files) => {
+        if (err) return console.error('Backup cleanup error:', err);
+
+        files.forEach(file => {
+            const filePath = path.join(BACKUP_DIR, file);
+            fs.stat(filePath, (err, stats) => {
+                if (!err && stats.mtime.getTime() < cutoff) {
+                    fs.unlink(filePath, err => {
+                        if (!err) console.log(`[🗑️] Régi mentés törölve: ${file}`);
+                    });
+                }
+            });
+        });
     });
 });
 

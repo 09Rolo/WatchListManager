@@ -325,7 +325,7 @@ async function doTheRecovering() {
 
 function giveEnterAFunction() {
     emailLogin.addEventListener("keypress", (e) => {
-        console.log(e.key)
+        //console.log(e.key)
         if(e.key == "Enter") {
             e.preventDefault()
             loginButton.click()
@@ -333,7 +333,7 @@ function giveEnterAFunction() {
     })
 
     passwordLogin.addEventListener("keypress", (e) => {
-        console.log(e.key)
+        //console.log(e.key)
         if(e.key == "Enter") {
             e.preventDefault()
             loginButton.click()
@@ -342,7 +342,7 @@ function giveEnterAFunction() {
 
 
     emailRegister.addEventListener("keypress", (e) => {
-        console.log(e.key)
+        //console.log(e.key)
         if(e.key == "Enter") {
             e.preventDefault()
             registerButton.click()
@@ -350,7 +350,7 @@ function giveEnterAFunction() {
     })
 
     usernameRegister.addEventListener("keypress", (e) => {
-        console.log(e.key)
+        //console.log(e.key)
         if(e.key == "Enter") {
             e.preventDefault()
             registerButton.click()
@@ -358,7 +358,7 @@ function giveEnterAFunction() {
     })
 
     passwordRegister.addEventListener("keypress", (e) => {
-        console.log(e.key)
+        //console.log(e.key)
         if(e.key == "Enter") {
             e.preventDefault()
             registerButton.click()

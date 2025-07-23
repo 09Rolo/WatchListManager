@@ -228,6 +228,8 @@ async function searching(tartalom) {
                                 </div>
                             </div>
                         `
+
+                        GiveHrefToAdatlapButton()
                     }
                 }
 
@@ -256,6 +258,8 @@ async function searching(tartalom) {
                                 </div>
                             </div>
                         `
+
+                        GiveHrefToAdatlapButton()
                     }
                 }
 
@@ -285,6 +289,8 @@ async function searching(tartalom) {
                             </div>
                         `
                     }
+
+                    GiveHrefToAdatlapButton()
                 }
 
 
@@ -310,10 +316,11 @@ async function searching(tartalom) {
                 document.querySelectorAll(`.card img`).forEach(image => {
                     observer.observe(image)
                 })
+
+                GiveHrefToAdatlapButton()
             });
 
 
-          GiveHrefToAdatlapButton()
 
           setUpcomingErtekelesCucc()
 
@@ -632,6 +639,7 @@ async function fillSajatSeries() {
 
 
             sumOfElkezdettSorozatok += 1
+            GiveHrefToAdatlapButton()
         }
     }
 
@@ -672,6 +680,7 @@ async function fillSajatSeries() {
 
 
             sumOfWishlistesSorozatok += 1
+            GiveHrefToAdatlapButton()
         }
     }
 
@@ -711,12 +720,10 @@ async function fillSajatSeries() {
 
 
             sumOfMegnezettSorozatok += 1
+            GiveHrefToAdatlapButton()
         }
     }
 
-    
-
-    GiveHrefToAdatlapButton()
 
     setUpcomingErtekelesCucc()
 

@@ -154,7 +154,7 @@
 .card {
     flex: 0 0 auto; /* Prevents the cards from shrinking or growing */
     width: 250px; /* Set a fixed width for cards */
-    margin-right: 15px; /* Optional: space between cards */
+    margin: 10px 7px;
 
     min-height: 650px;
     max-height: 650px;
@@ -189,7 +189,7 @@
     top: 0;
     left: -7%;
     height: 430px;
-    border-radius: 20%;
+    border-radius: 15px;
 
     filter: blur(15px);
     z-index: -1;
@@ -240,10 +240,13 @@
     opacity: 0;
     transform: translateY(50%);
 
+    pointer-events: none;
+
     transition: all 0.3s ease-in-out;
 }
 
 .card:hover .card-text {
+    pointer-events: all;
     background-color: rgba(20, 20, 20, 0.9);
     transform: translateY(0);
     opacity: 1;

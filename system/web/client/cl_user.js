@@ -311,9 +311,26 @@ adjustSwitcherToSpecial()
 
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////
 
 const movies_list = document.getElementById("movies_list")
+
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+        
+            checkImgLoaded(2000)
+            //observer.unobserve(img);
+        } else {
+            const img = entry.target;
+            img.src = "/imgs/placeholder.png";
+        }
+    });
+});
+
 
 async function displayFilmek() {
     if (wishlistedMovies.length > 0) {
@@ -347,36 +364,18 @@ async function displayFilmek() {
                     </div>
                 </div>
             `
+
+            document.querySelectorAll(`.card img`).forEach(image => {
+                observer.observe(image)
+            })
+
+            GiveHrefToAdatlapButton()
         }
     }
 
-    GiveHrefToAdatlapButton()
 
     setUpcomingErtekelesCucc()
 
     checkImgLoaded()
-
-
-
-    setTimeout(() => {
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-
-                    checkImgLoaded(2000)
-                    //observer.unobserve(img);
-                } else {
-                    const img = entry.target;
-                    img.src = "./imgs/placeholder.png";
-                }
-            });
-        });
-          
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            observer.observe(img);
-        });
-    }, 100);
 }
 
