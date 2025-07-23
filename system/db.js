@@ -9,15 +9,6 @@ const pool = mysql.createPool({
     connectionLimit: 50
 });
 
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('❌ Nem sikerült csatlakozni az adatbázishoz:', err);
-    } else {
-        console.log('✅ Adatbázishoz csatlakozva (pool)');
-        connection.release();
-    }
-});
-
 // Export pool directly
 module.exports =  pool
 
@@ -29,23 +20,16 @@ let dbUp = false;
 function checkDbConnection() {
     pool.getConnection((err, connection) => {
         if (err) {
-            if (dbUp) {
-                console.error('❌ Adatbázis lecsatlakozva: ', err.code);
-                dbUp = false;
-            }
-
+            console.error('❌ Nem sikerült csatlakozni az adatbázishoz:', err);
         } else {
+            console.log('✅ Adatbázishoz csatlakozva (pool)');
             connection.release();
-            if (!dbUp) {
-                console.log('✅ Az adatbázishoz mükszik');
-                dbUp = true;
-            }
         }
     });
 }
 
 // Check DB connection
-setInterval(checkDbConnection, 1200000);
+setInterval(checkDbConnection, 3600000);
 
 checkDbConnection();
 
