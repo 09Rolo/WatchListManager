@@ -298,7 +298,8 @@ if(isLoggedin) {
                 //datum nagyobb mint a mostani vagy egyenlő VAGY null, mert lehet még nincs megadva, akkor is kellenek az előző epek miatt a seasonok
         
                 //console.log(season, new Date(season.episodes[season.episodes.length -1].air_date) >= now)
-                if (season.episodes[season.episodes.length -1].air_date == null || formatDate(new Date(season.episodes[season.episodes.length -1].air_date)) >= formatDate(now)) {
+                
+                if (season.episodes[season.episodes.length -1] && (season.episodes[season.episodes.length -1].air_date == null || formatDate(new Date(season.episodes[season.episodes.length -1].air_date)) >= formatDate(now))) {
                     Seasons.push(season)
                 }
             }

@@ -782,7 +782,14 @@ h2 {
     width: fit-content;
     max-width: 100% !important;
     margin: auto;
+
+    pointer-events: none;
 }
+
+.alsoResz * {
+    pointer-events: all;
+}
+
 
 
 #kezelobtns {

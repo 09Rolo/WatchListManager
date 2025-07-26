@@ -22,7 +22,7 @@ function checkDbConnection() {
         if (err) {
             console.error('❌ Nem sikerült csatlakozni az adatbázishoz:', err);
         } else {
-            console.log('✅ Adatbázishoz csatlakozva (pool)');
+            console.log('✅ Az Adatbázishoz csatlakozva van (pool)');
             connection.release();
         }
     });
@@ -80,14 +80,18 @@ cron.schedule('0 3 * * *', () => {
         if (err) return console.error('Backup cleanup error:', err);
 
         files.forEach(file => {
-            const filePath = path.join(BACKUP_DIR, file);
-            fs.stat(filePath, (err, stats) => {
-                if (!err && stats.mtime.getTime() < cutoff) {
-                    fs.unlink(filePath, err => {
-                        if (!err) console.log(`[🗑️] Régi mentés törölve: ${file}`);
-                    });
-                }
-            });
+            if (file.includes(`backup-${DATABASE_NAME}-`)) {
+
+                const filePath = path.join(BACKUP_DIR, file);
+
+                fs.stat(filePath, (err, stats) => {
+                    if (!err && stats.mtime.getTime() < cutoff) {
+                        fs.unlink(filePath, err => {
+                            if (!err) console.log(`[🗑️] Régi mentés törölve: ${file}`);
+                        });
+                    }
+                });
+            }
         });
     });
 });

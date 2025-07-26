@@ -322,6 +322,7 @@ body {
     height: 4px;
     background: #888;
     min-width: 3720px; /* 120px per day */
+    margin-right: auto !important;
 }
 
 

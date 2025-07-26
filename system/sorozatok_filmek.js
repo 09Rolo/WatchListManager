@@ -41,26 +41,20 @@ app.post("/addWishlist", async (req, res) => {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
-                        
-                                            const newUserRow = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, movie_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    if (result.length == 1) {
-                                                        //oksa, benne van
-                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                                    } else {
-                                                        res.status(500).json({ message: "Hiba", type: "error"});
-                                                    }
+                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                                 }
-                                            });
+                                            })
+                                            
                                         } catch(e) {console.log(e)}
                                     } else {
                                         res.status(500).json({ message: "Már benne van a kívánságlistádban", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "Hiba 3", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
@@ -91,20 +85,14 @@ app.post("/addWishlist", async (req, res) => {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, series_id) VALUES (?, ?)", [user_id, media_id])
-                        
-                                            const newUserRow = db.query("SELECT * FROM user_wishlist WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                            const addUser = db.query("INSERT INTO user_wishlist (user_id, series_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    if (result.length == 1) {
-                                                        //oksa, benne van
-                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                                    } else {
-                                                        res.status(500).json({ message: "Hiba", type: "error"});
-                                                    }
+                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                                 }
-                                            });
+                                            })
+                        
                                         } catch(e) {console.log(e)}
                                     } else {
                                         res.status(500).json({ message: "Már benne van a kívánságlistádban", type: "error"});
@@ -296,20 +284,14 @@ app.post("/addWatched", async (req, res) => {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
-                        
-                                            const newUserRow = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    if (result.length == 1) {
-                                                        //oksa, benne van
-                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                                    } else {
-                                                        res.status(500).json({ message: "Hiba", type: "error"});
-                                                    }
+                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                                 }
-                                            });
+                                            })
+                        
                                         } catch(e) {console.log(e)}
                                     } else {
                                         res.status(500).json({ message: "Már benne van a megnézett listában", type: "error"});
@@ -328,20 +310,14 @@ app.post("/addWatched", async (req, res) => {
                                     if (result.affectedRows > 0) {
                                         //oksa
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id])
-                        
-                                            const newUserRow = db.query("SELECT * FROM user_watched_movies WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                            const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    if (result.length == 1) {
-                                                        //oksa, benne van
-                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                                    } else {
-                                                        res.status(500).json({ message: "Hiba", type: "error"});
-                                                    }
+                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                                 }
-                                            });
+                                            })
+                        
                                         } catch(e) {console.log(e)}
                                     } else {
                                         res.status(500).json({ message: "Sikertelen törlés a kívánságlistából", type: "error"});
@@ -377,20 +353,14 @@ app.post("/addWatched", async (req, res) => {
                                         //oksa, nincs benne már alapból, szóval most mehet bele
     
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id])
-                        
-                                            const newUserRow = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+                                            const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id], function(err, result) {
                                                 if (!err) {
-                                                    if (result.length == 1) {
-                                                        //oksa, benne van
-                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                                    } else {
-                                                        res.status(500).json({ message: "Hiba", type: "error"});
-                                                    }
+                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                                 }
-                                            });
+                                            })
+                        
                                         } catch(e) {console.log(e)}
                                     } else {
                                         res.status(500).json({ message: "Már benne van a megnézett listában", type: "error"});
@@ -409,20 +379,14 @@ app.post("/addWatched", async (req, res) => {
                                     if (result.affectedRows > 0) {
                                         //oksa
                                         try {
-                                            const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id])
-                        
-                                            const newUserRow = db.query("SELECT * FROM user_watched_episodes WHERE user_id = ? AND episode_id = ?", [user_id, ep_id], function (err, result) {
+                                            const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id], function(err, result) {
                                                 if (!err) {
-                                                    if (result.length == 1) {
-                                                        //oksa, benne van
-                                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                                    } else {
-                                                        res.status(500).json({ message: "Hiba", type: "error"});
-                                                    }
+                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                                 }
-                                            });
+                                            })
+                        
                                         } catch(e) {console.log(e)}
                                     } else {
                                         res.status(500).json({ message: "Sikertelen törlés a kívánságlistából", type: "error"});
@@ -607,20 +571,14 @@ app.post("/changeLink", async (req, res) => {
                             //oksa, nincs benne a linkekbe, mehet bele
     
                             try {
-                                const addUser = db.query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
-                            
-                                const newUserRow = db.query("SELECT * FROM user_links WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                const addUser = db.query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url], function(err, result) {
                                     if (!err) {
-                                        if (result.length == 1) {
-                                            //oksa, benne van
-                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                        } else {
-                                            res.status(500).json({ message: "Hiba", type: "error"});
-                                        }
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                     }
-                                });
+                                })
+                            
                             } catch(e) {console.log(e)}
                         }
                     } else {
@@ -678,20 +636,14 @@ app.post("/changeLink", async (req, res) => {
 
                         if (link_url.length > 0) {
                             try {
-                                const addUser = db.query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url])
-                            
-                                const newUserRow = db.query("SELECT * FROM user_links WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                const addUser = db.query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url], function(err, result) {
                                     if (!err) {
-                                        if (result.length == 1) {
-                                            //oksa, benne van
-                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                        } else {
-                                            res.status(500).json({ message: "Hiba", type: "error"});
-                                        }
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                     }
-                                });
+                                })
+                            
                             } catch(e) {console.log(e)}
                         }
                     } else {
@@ -828,20 +780,14 @@ app.post("/changeNote", async (req, res) => {
     
                         if(note.length > 0) {//írt egyáltalán valamit
                             try {
-                                const addUser = db.query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
-                                
-                                const newUserRow = db.query("SELECT * FROM user_notes WHERE user_id = ? AND movie_id = ?", [user_id, media_id], function (err, result) {
+                                const addUser = db.query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note], function(err, result) {
                                     if (!err) {
-                                        if (result.length == 1) {
-                                            //oksa, benne van
-                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                        } else {
-                                            res.status(500).json({ message: "Hiba", type: "error"});
-                                        }
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                     }
-                                });
+                                })
+                                
                             } catch(e) {console.log(e)}
                         }
                     } else {
@@ -898,20 +844,14 @@ app.post("/changeNote", async (req, res) => {
                         //oksa, nincs benne a noteokba, mehet bele
                         if(note.length > 0) {
                             try {
-                                const addUser = db.query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note])
-                            
-                                const newUserRow = db.query("SELECT * FROM user_notes WHERE user_id = ? AND series_id = ?", [user_id, media_id], function (err, result) {
+                                const addUser = db.query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note], function(err, result) {
                                     if (!err) {
-                                        if (result.length == 1) {
-                                            //oksa, benne van
-                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                        } else {
-                                            res.status(500).json({ message: "Hiba", type: "error"});
-                                        }
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                     }
-                                });
+                                })
+                            
                             } catch(e) {console.log(e)}
                         }
                     } else {
@@ -1048,20 +988,14 @@ app.post("/changeServerLink", async (req, res) => {
                             //oksa, nincs benne a linkekbe, mehet bele
                         
                             try {
-                                const addLink = db.query("INSERT INTO server_links (movie_id, link) VALUES (?, ?)", [media_id, link])
-                            
-                                const newLinkRow = db.query("SELECT * FROM server_links WHERE movie_id = ?", [media_id], function (err, result) {
+                                const addLink = db.query("INSERT INTO server_links (movie_id, link) VALUES (?, ?)", [media_id, link], function(err, result) {
                                     if (!err) {
-                                        if (result.length == 1) {
-                                            //oksa, benne van
-                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                        } else {
-                                            res.status(500).json({ message: "Hiba", type: "error"});
-                                        }
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                     }
-                                });
+                                })
+
                             } catch(e) {console.log(e)}
                         } else {
                             //UPDATE ha már van
@@ -1118,20 +1052,14 @@ app.post("/changeServerLink", async (req, res) => {
                             //oksa, nincs benne a linkekbe, mehet bele
                         
                             try {
-                                const addLink = db.query("INSERT INTO server_links (series_id, link) VALUES (?, ?)", [media_id, link])
-                            
-                                const newLinkRow = db.query("SELECT * FROM server_links WHERE series_id = ?", [media_id], function (err, result) {
+                                const addLink = db.query("INSERT INTO server_links (series_id, link) VALUES (?, ?)", [media_id, link], function(err, result) {
                                     if (!err) {
-                                        if (result.length == 1) {
-                                            //oksa, benne van
-                                            res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
-                                        } else {
-                                            res.status(500).json({ message: "Hiba", type: "error"});
-                                        }
+                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
                                     }
-                                });
+                                })
+                            
                             } catch(e) {console.log(e)}
                         } else {
                             //UPDATE ha már van
