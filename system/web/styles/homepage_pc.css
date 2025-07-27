@@ -440,6 +440,11 @@ body {
     margin: 5px auto !important;
 }
 
+.timeline-item h6 {
+    font-size: smaller;
+    margin: 0 auto;
+}
+
 
 .timeline-item a {
     text-decoration: none;

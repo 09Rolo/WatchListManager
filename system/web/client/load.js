@@ -263,8 +263,13 @@ var previousOrientation = window.orientation;
 var checkOrientation = function(){
     if(window.orientation !== previousOrientation){
         if (window.location.pathname.split("/")[1] != "watch") {
-            previousOrientation = window.orientation;
-            window.location.reload()
+
+            if (document.getElementById("videok_container") && document.getElementById("videok_container").classList.contains("showing")) {} else {
+
+                previousOrientation = window.orientation;
+                window.location.reload()
+
+            }
         }
     }
 };

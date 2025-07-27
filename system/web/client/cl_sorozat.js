@@ -1434,6 +1434,10 @@ async function changeSeason(btn, seasonnum, eptoselect) {
 
 
 
+
+var utoljaraMegnezettEp
+
+
 function loadSeasonData(s) {
     const container = document.getElementById("seasonpage")
     //console.log(s)
@@ -1554,48 +1558,6 @@ function loadSeasonData(s) {
 
 
 
-    var arrowBtn = document.getElementById("backToSeasonSelection")
-
-    window.addEventListener("scroll", (e) => {
-        let currLoc = container.getBoundingClientRect().top
-        //console.log(currLoc)
-
-        if (currLoc < 100) { //minuszba fog majd menni ugye ha kimegy a képből, és akkor mehet le a legaljára, de ez a kb érték(100) kell neki most
-            arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
-            arrowBtn.dataset.direction = "top"
-
-        } else {
-            arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
-            arrowBtn.dataset.direction = "bottom"
-
-        }
-    })
-
-    
-    arrowBtn.addEventListener("click", (e) => {
-        var arrowBtn = document.getElementById("backToSeasonSelection")
-
-        if (arrowBtn.dataset.direction == "bottom") {
-            document.querySelector("#episodes hr").scrollIntoView({ behavior: 'smooth' });
-
-            arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
-            arrowBtn.dataset.direction = "top"
-
-        } else if (arrowBtn.dataset.direction == "top") {
-            document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
-
-            setTimeout(() => {
-                arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
-                arrowBtn.dataset.direction = "bottom"
-            }, 1000);
-
-        }
-    })
-
-
-
-
-    var utoljaraMegnezettEp
     let ListedEpisodes = document.getElementsByClassName("episode")
 
     Array.prototype.forEach.call(ListedEpisodes, function(ep) {
@@ -1606,6 +1568,82 @@ function loadSeasonData(s) {
     });
 
 
+
+
+
+
+    var arrowBtn = document.getElementById("backToSeasonSelection")
+
+    window.addEventListener("scroll", (e) => {
+        let currLoc = container.getBoundingClientRect().top
+        
+        if (currLoc < 100) { //minuszba fog majd menni ugye ha kimegy a képből, és akkor mehet le a legaljára, de ez a kb érték(100) kell neki most
+            arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+            arrowBtn.dataset.direction = "top"
+        
+        } else {
+            arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+            arrowBtn.dataset.direction = "bottom"
+        
+        }
+    })
+
+    
+    arrowBtn.addEventListener("click", (e) => {
+        var arrowBtn = document.getElementById("backToSeasonSelection")
+        let currLocOfLastWached = utoljaraMegnezettEp.getBoundingClientRect().top
+        let currLoc = container.getBoundingClientRect().top
+
+
+
+        if (currLocOfLastWached > 50 && currLocOfLastWached < 900) { //most mehet máshová, fel vagy le
+
+            if (arrowBtn.dataset.direction == "bottom") {
+                document.querySelector("#episodes hr").scrollIntoView({ behavior: 'smooth' });
+
+                arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                arrowBtn.dataset.direction = "top"
+
+            } else if (arrowBtn.dataset.direction == "top") {
+                document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
+
+                setTimeout(() => {
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                    arrowBtn.dataset.direction = "bottom"
+                }, 1000);
+
+            }
+
+        } else {
+            //itt meg muszáj neki az utoljára megnézettre mennie
+
+            window.scrollTo({
+                top: utoljaraMegnezettEp.getBoundingClientRect().top + window.pageYOffset - 100,
+                behavior: "smooth",
+            });
+
+
+            if (arrowBtn.dataset.direction == "bottom") {
+
+                setTimeout(() => {
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                    arrowBtn.dataset.direction = "bottom"
+                }, 1000);
+
+            } else if (arrowBtn.dataset.direction == "top") {
+
+                arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                arrowBtn.dataset.direction = "top"
+                
+            }
+
+        }
+    })
+
+
+
+
+
     setUpcomingErtekelesCucc()
     startEpsObserver()
     checkImgLoaded()
@@ -1613,7 +1651,10 @@ function loadSeasonData(s) {
     container.scrollIntoView({ behavior: 'smooth' });
 
     setTimeout(() => {
-        utoljaraMegnezettEp.scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo({
+            top: utoljaraMegnezettEp.getBoundingClientRect().top + window.pageYOffset - 100,
+            behavior: "smooth",
+        });
     }, 500);
 
 }

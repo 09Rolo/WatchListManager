@@ -197,6 +197,54 @@ function formatDate(date, nodots, extra) {
 
 
 
+function melyikNap(szam, formatum) {
+    if (szam == 0) {
+        if (formatum == "rövid") {
+            return "H"
+        } else {
+            return "Hétfő"
+        }
+    } else if (szam == 1) {
+        if (formatum == "rövid") {
+            return "K"
+        } else {
+            return "Kedd"
+        }
+    } else if (szam == 2) {
+        if (formatum == "rövid") {
+            return "Sze"
+        } else {
+            return "Szerda"
+        }
+    } else if (szam == 3) {
+        if (formatum == "rövid") {
+            return "Cs"
+        } else {
+            return "Csütörtök"
+        }
+    } else if (szam == 4) {
+        if (formatum == "rövid") {
+            return "P"
+        } else {
+            return "Péntek"
+        }
+    } else if (szam == 5) {
+        if (formatum == "rövid") {
+            return "Szo"
+        } else {
+            return "Szombat"
+        }
+    } else if (szam == 6) {
+        if (formatum == "rövid") {
+            return "V"
+        } else {
+            return "Vasárnap"
+        }
+    }
+}
+
+
+
 
 
 
@@ -457,12 +505,16 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
     }
     
 
+    var akkoriDateNormalisba = new Date(date)
+    var akkoriDateNapja = akkoriDateNormalisba.getDay()
+
 
     if (document.getElementById(`timeline-items_${daysFromToday}`)) { //már van
 
         document.getElementById(`timeline-items_${daysFromToday}`).innerHTML += `
             <div class="timeline-item">
                 <h5>${date}</h5>
+                <h6>(${melyikNap(akkoriDateNapja, "rövid")})</h6>
                 <img src="${poster}">
                 <h4>${sname}</h4>
                 <p>${mettolmeddigtxt}</p>
@@ -489,6 +541,7 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
         item.innerHTML += `
             <div class="timeline-item">
                 <h5>${date}</h5>
+                <h6>(${melyikNap(akkoriDateNapja)})</h6>
                 <img src="${poster}">
                 <h4>${sname}</h4>
                 <p>${mettolmeddigtxt}</p>
