@@ -82,19 +82,50 @@ function toHoursAndMinutes(totalMinutes) {
 
 
 
-function getGenres(genres) {
-    var katok = ""
 
-    for(let i = 0; i < genres.length; i++) {
-        if (genres.length - i != 1) {
-            katok += "" + genres[i].name + ", "
-        } else {
-            katok += "" + genres[i].name
+function getVeszoString(list, definialva) {
+    if (list) {
+
+        var definialva = definialva || "name"
+        var str = ""
+
+        if (list.length == 0) {
+            str = "Ismeretlen"
         }
+
+        for(let i = 0; i < list.length; i++) {
+            if (list.length - i != 1) {
+                str += "" + list[i][definialva] + ", "
+            } else {
+                str += "" + list[i][definialva]
+            }
+        }
+
+        return str
+
+    }
+}
+
+
+
+function getProperStatus(status) {
+    var visszamegy = status //alapból megkapja a saját értékét, aztán ha véletlen nem adtam hozzá max kiírja angolul
+    
+    if (status) {
+        if (status == "Ended") {
+            visszamegy = "Befejezve"
+        } else if (status == "Returning Series") {
+            visszamegy = "Folyamatban lévő sorozat"
+        } else if (status == "In Production") {
+            visszamegy = "Készítés alatt"
+        }
+    } else {
+        visszamegy = "Ismeretlen"
     }
 
-    return katok
+    return visszamegy
 }
+
 
 
 
@@ -139,7 +170,7 @@ async function getData() {
 
     const adatok = await getData.json()
     if (adatok) {
-
+        
         movieTitle = adatok.title
 
         const elsoresz = document.getElementById("elsoresz")
@@ -149,26 +180,64 @@ async function getData() {
             <div class="adatok col-md-7 col-10">
                 <div class="felso">
                     <h2 id="cim" class="underline_hover">${adatok.title}</h2>
+                    <br>
+                    <i id="tagline">${adatok.tagline.length != 0 ? "~" + adatok.tagline + "~" : ""}</i>
                     <hr>
                     <p id="datumok"></p>
                     <p id="sajatnote"></p><br>
                     <p id="leiras">${adatok.overview}</p>
                 </div>
                 <div class="also">
-                    <div class="rowba">
-                        <div class="elsoszekcio">
-                            <p id="kategoriak"><span class="bold">${getGenres(adatok.genres)}</span></p>
-                            <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
-                            <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
-                            <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
-                            <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
-                            <p id="status">Státusz: <span class="bold">${adatok.status}</span></p>
-                        </div>
-                        <div class="masodikszekcio">
-                            <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
-                        </div>
-                    </div>
+                    <div class="infoReszleg">
+                        <div id="generalInfo">
 
+                            <div class="elsoszekcio">
+                                <p id="kategoriak"><span class="bold">${getVeszoString(adatok.genres)}</span></p>
+                                <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
+                                <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
+                                <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
+                                <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
+                                <p id="status">Státusz: <span class="bold">${getProperStatus(adatok.status)}</span></p>
+                            </div>
+
+                            <div class="masodikszekcio">
+                                <p id="ertekeles" class="rating" style="color: ${ratingColor(adatok.vote_average)};">${adatok.vote_average.toFixed(1)}</p>
+                            </div>
+
+                        </div>
+
+
+                        <hr>
+                        <button onclick="showExtraInfo()">...</button>
+
+
+                        <div id="extraInfoBox">
+                            <p id="kollekcio"><span class="bold">Kollekció:</span> ${adatok.belongs_to_collection ? adatok.belongs_to_collection.name : "Nincs"}</p>
+
+                            <!--Egyéb fő crew? Rendező, író valami, nem tudom mik vannak, mehetnek ide üres p-ként aztán majd beleteszem jsel-->
+                            <!-- -->
+
+                            <p id="production"><span class="bold">Gyártók:</span> ${getVeszoString(adatok.production_companies)}</p>
+                            <p id="beszeltnyelvek"><span class="bold">Beszélt nyelvek:</span> ${getVeszoString(adatok.spoken_languages)}</p>
+
+
+                            <button id="togglePersons" class="cant_select" data-allapot="closed">Stáb megjelenítése</button>
+
+                            <div id="stabLista" class="hidden">
+                                <div id="szereplok">
+                                    <h3>Szereplők</h3>
+                                    <!-- JSSEL IDE -->
+                                </div>
+
+                                <div id="keszitok">
+                                    <h3>Készítők</h3>
+                                    <!-- JSSEL IDE -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
 
                     <div class="bottominteractions">
                         <div id="linkbox" class="cant_select">
@@ -240,6 +309,7 @@ async function getData() {
 
         setUpcomingErtekelesCucc()
         checkImgLoaded()
+        getPersons()
         manageServerLink()
     }
 
@@ -967,4 +1037,154 @@ async function manageServerLink() {
         serverLink.innerHTML = "<span class='bold'>Nézd itt</span>"
         serverLink.href = `${window.origin}/watch/movie/${id}`
     }
+}
+
+
+
+
+function showExtraInfo() {
+    const extraInfoBox = document.getElementById("extraInfoBox")
+
+    if (extraInfoBox.style.height == "0px" || extraInfoBox.style.height == "") {
+
+        extraInfoBox.style.height = "100%"
+    } else {
+        extraInfoBox.style.height = "0"
+    }
+}
+
+
+
+
+
+
+var Persons = []
+
+
+async function getPersons() {
+    const getData = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`)
+
+    const persons = await getData.json()
+    if (persons) {
+        Persons = persons
+    }
+
+
+    fillInPersons()
+}
+
+
+function toggleCastToWork() {
+    const togglePersons = document.getElementById("togglePersons")
+
+    togglePersons.addEventListener("click", (e) => {
+
+        const stabLista = document.getElementById("stabLista")
+
+        if (togglePersons.dataset.allapot == "opened") {
+            togglePersons.dataset.allapot = "closed"
+            togglePersons.innerText = "Stáb megjelenítése"
+
+            stabLista.classList.remove("showing")
+
+        } else if (togglePersons.dataset.allapot == "closed") {
+            togglePersons.dataset.allapot = "opened"
+            togglePersons.innerText = "Stáb elrejtése"
+
+            stabLista.classList.add("showing")
+        }
+
+    })
+}
+
+
+
+var Magyarul = {
+    "Directing": "Rendező",
+    "Writing": "Író",
+    "Production": "Producer",
+    "Camera": "Operatőr",
+    "Editing": "Vágó",
+    "Art": "Látványtervező",
+    "Sound": "Hang",
+    "Costume & Make-Up": "Jelmez és smink",
+    "Visual Effects": "Vizuális effektek",
+    "Lighting": "Világítás",
+    "Crew": "Stábtag",
+    "Acting": "Szereplő és",
+}
+
+function getProperTranslation(string) {
+    return Magyarul[string] || string
+}
+
+
+
+function fillInPersons() {
+    const szereplok = document.getElementById("szereplok")
+    const keszitok = document.getElementById("keszitok")
+    
+    console.log(Persons)
+
+
+    if (Persons) {
+        for (let ca in Persons.cast) {
+            var ember = Persons.cast[ca]
+
+            szereplok.innerHTML += `
+                <div class="creditsTag cast">
+                    <img loading="lazy" src="https://image.tmdb.org/t/p/original${ember.profile_path}" class="img-fluid creditPersonIMG" alt="A kép nem található">
+                    <h4><a href="https://www.google.com/search?q=${ember.name}" target="_blank" rel="noopener noreferrer">${ember.name}</a></h4>
+                    <h5>${ember.character}</h5>
+                </div>
+            `
+        }
+
+        if (Persons.cast.length == 0) {
+            szereplok.innerHTML += `
+                <div class="creditsTag cast">
+                    <h4>Sajnos nincs elérhető adat</h4>
+                    <h5><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">Stáb keresése</a></h5>
+                </div>
+            `
+        } else {
+            szereplok.innerHTML += `
+                <div class="creditsTag cast">
+                    <h4><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">További stáb keresése</a></h4>
+                </div>
+            `
+        }
+
+
+        for (let cr in Persons.crew) {
+            var ember = Persons.crew[cr]
+
+            keszitok.innerHTML += `
+                <div class="creditsTag crew">
+                    <img loading="lazy" src="https://image.tmdb.org/t/p/original${ember.profile_path}" class="img-fluid creditPersonIMG" alt="A kép nem található">
+                    <h4><a href="https://www.google.com/search?q=${ember.name}" target="_blank" rel="noopener noreferrer">${ember.name}</a></h4>
+                    <h5>${getProperTranslation(ember.known_for_department)}</h5>
+                    <h6>${getProperTranslation(ember.job)}</h6>
+                </div>
+            `
+        }
+
+
+        if (Persons.crew.length == 0) {
+            keszitok.innerHTML += `
+                <div class="creditsTag crew">
+                    <h4>Sajnos nincs elérhető adat</h4>
+                    <h5><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">Stáb keresése</a></h5>
+                </div>
+            `
+        } else {
+            keszitok.innerHTML += `
+                <div class="creditsTag crew">
+                    <h4><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">További stáb keresése</a></h4>
+                </div>
+            `
+        }
+    }
+
+    toggleCastToWork()
 }

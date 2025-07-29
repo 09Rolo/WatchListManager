@@ -232,10 +232,10 @@ h2 {
 }
 
 
-.adatok .also .rowba {
+.infoReszleg {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
     margin-bottom: 25px;
@@ -245,12 +245,170 @@ h2 {
     border-radius: 20px;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.4);
+
+    transition: 0.5s all;
 }
 
-.adatok .also .rowba p {
+.infoReszleg p {
     padding: 0;
     margin: 7px 10px;
 }
+
+.infoReszleg hr {
+    min-width: 100%;
+    max-width: 100%;
+    height: 5px;
+    border-color: gray;
+    color: gray;
+    background-color: gray;
+}
+
+
+.infoReszleg > button {
+    padding: 0px 10px 8px 10px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--red-theme);
+    text-align: center;
+    font-weight: bolder;
+
+    transition: 0.3s;
+}
+.infoReszleg > button:hover {
+    border-color: var(--red-underline);
+    transition: 0.3s;
+}
+
+
+
+#generalInfo {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+
+#extraInfoBox {
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#extraInfoBox p {
+    text-align: left;
+}
+
+
+
+#togglePersons {
+    margin: 20px auto;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--red-theme);
+
+    transition: 0.3s;
+}
+#togglePersons:hover {
+    border-color: var(--red-underline);
+    transition: 0.3s;
+}
+
+
+
+
+#stabLista.hidden {
+    height: 0px !important;
+    overflow: hidden;
+}
+#stabLista.showing {
+    height: 100% !important;
+}
+
+
+
+
+#stabLista {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    border-radius: 10px;
+    border: 2px solid var(--red-underline);
+    padding: 10px;
+    margin: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+}
+
+
+#stabLista > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+#stabLista > div > h3 {
+    width: 100% !important;
+    height: fit-content;
+    margin: 0px 0px 10px 0px;
+    text-decoration: underline;
+    font-weight: bolder;
+    text-align: left;
+}
+
+
+
+.creditsTag {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    background-color: rgba(20, 20, 20, 0.8);
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.creditsTag img {
+    width: 100px !important;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+
+.creditsTag h4 {
+    font-size: 20px;
+    font-weight: bold;
+}
+.creditsTag h4 a:hover {
+    font-size: 22px !important;
+}
+.creditsTag h5 {
+    font-size: 15px;
+}
+.creditsTag h6 {
+    font-size: 12px;
+    font-style: italic;
+}
+
 
 
 .elsoszekcio {
