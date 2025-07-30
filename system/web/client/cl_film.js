@@ -216,6 +216,8 @@ async function getData() {
 
                             <!--Egyéb fő crew? Rendező, író valami, nem tudom mik vannak, mehetnek ide üres p-ként aztán majd beleteszem jsel-->
                             <!-- -->
+                            <p id="rendezo"></p>
+                            <p id="vago"></p>
 
                             <p id="production"><span class="bold">Gyártók:</span> ${getVeszoString(adatok.production_companies)}</p>
                             <p id="beszeltnyelvek"><span class="bold">Beszélt nyelvek:</span> ${getVeszoString(adatok.spoken_languages)}</p>
@@ -228,7 +230,7 @@ async function getData() {
                                     <h3>Szereplők</h3>
                                     <!-- JSSEL IDE -->
                                 </div>
-
+                                <hr>
                                 <div id="keszitok">
                                     <h3>Készítők</h3>
                                     <!-- JSSEL IDE -->
@@ -1156,6 +1158,7 @@ function fillInPersons() {
         }
 
 
+
         for (let cr in Persons.crew) {
             var ember = Persons.crew[cr]
 
@@ -1167,6 +1170,29 @@ function fillInPersons() {
                     <h6>${getProperTranslation(ember.job)}</h6>
                 </div>
             `
+
+
+            if (ember.job == "Director") {
+                if (document.getElementById("rendezo").innerHTML == "") {
+                    document.getElementById("rendezo").innerHTML += `
+                        <span class="bold">Rendező: </span> ${ember.name}
+                    `
+                } else {
+                    document.getElementById("rendezo").innerHTML += `, ${ember.name}`
+                }
+            }
+
+
+            if (ember.job == "Editor") {
+                if (document.getElementById("vago").innerHTML == "") {
+                    document.getElementById("vago").innerHTML += `
+                        <span class="bold">Vágó: </span> ${ember.name}
+                    `
+                } else {
+                    document.getElementById("vago").innerHTML += `, ${ember.name}`
+                }
+            }
+
         }
 
 

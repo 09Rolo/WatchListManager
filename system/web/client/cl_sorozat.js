@@ -185,6 +185,8 @@ function getProperStatus(status) {
             visszamegy = "Folyamatban lévő sorozat"
         } else if (status == "In Production") {
             visszamegy = "Készítés alatt"
+        } else if (status == "Canceled") {
+            visszamegy = "Elkaszálva"
         }
     } else {
         visszamegy = "Ismeretlen"
@@ -227,7 +229,7 @@ async function getData() {
                     <hr>
                     <p id="datumok"></p>
                     <p id="sajatnote"></p><br>
-                    <p id="leiras">${adatok.overview}</p>
+                    <p id="leiras" class="hosszulehet" data-allapot="zarva">${adatok.overview}</p>
                 </div>
                 <div class="also">
                     <div class="infoReszleg">
@@ -258,6 +260,10 @@ async function getData() {
                             
                             <!--Egyéb fő crew? Rendező, író valami, nem tudom mik vannak, mehetnek ide üres p-ként aztán majd beleteszem jsel-->
                             <!-- -->
+                            <p id="iro"></p>
+                            <p id="rendezo"></p>
+                            <p id="vago"></p>
+
 
                             <p id="network"><span class="bold">Csatorna:</span> ${getVeszoString(adatok.networks)}</p>
                             <p id="production"><span class="bold">Gyártók:</span> ${getVeszoString(adatok.production_companies)}</p>
@@ -271,7 +277,7 @@ async function getData() {
                                     <h3>Szereplők</h3>
                                     <!-- JSSEL IDE -->
                                 </div>
-
+                                <hr>
                                 <div id="keszitok">
                                     <h3>Készítők</h3>
                                     <!-- JSSEL IDE -->
@@ -678,6 +684,8 @@ async function getData() {
         SpecialSeriesThings()
         getPersons()
         manageServerLink()
+        idetifyHosszuSzoveg()
+
 
         dataAdded = true
 
@@ -1357,7 +1365,9 @@ x_videok.addEventListener("click", (e) => {
 }, 100); // Check every 100ms
 
 
+
 /*----------------------------------------------------------------------------------------- Seasonok / Epizódok /*----------------------------------------------------------------------------------------- */
+
 
 var selectedEpisodes = []
 
@@ -1520,7 +1530,7 @@ function loadSeasonData(s) {
         <div class="infok">
             <h3>${name}</h3>
             <h5>(${date})</h5>
-            <p>${overview}</p>
+            <p class="hosszulehet" data-allapot="zarva">${overview}</p>
             <div id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</div>
         </div>
 
@@ -1535,6 +1545,10 @@ function loadSeasonData(s) {
             </div>
         </div>
     `
+
+
+    idetifyHosszuSzoveg() //az overviewnek kell
+
 
     const episodes_container = document.getElementById("episodes")
     episodes_container.innerHTML = ""
@@ -1640,67 +1654,119 @@ function loadSeasonData(s) {
 
     window.addEventListener("scroll", (e) => {
         let currLoc = container.getBoundingClientRect().top
-        
-        if (currLoc < 100) { //minuszba fog majd menni ugye ha kimegy a képből, és akkor mehet le a legaljára, de ez a kb érték(100) kell neki most
-            arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
-            arrowBtn.dataset.direction = "top"
-        
+
+
+        if (utoljaraMegnezettEp) {
+            let currLocOfLastWached = utoljaraMegnezettEp.getBoundingClientRect().top
+
+            if (currLocOfLastWached > 50 && currLocOfLastWached < 900) { //most mehet máshová, fel vagy le
+                if (currLoc < 100) { //minuszba fog majd menni ugye ha kimegy a képből, és akkor mehet le a legaljára, de ez a kb érték(100) kell neki most
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                    arrowBtn.dataset.direction = "top"
+
+                } else {
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                    arrowBtn.dataset.direction = "bottom"
+                
+                }
+
+            } else {
+                if (currLocOfLastWached > 50) {
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                    arrowBtn.dataset.direction = "bottom"
+
+                } else {
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                    arrowBtn.dataset.direction = "top"
+                
+                }
+            }
+
         } else {
-            arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
-            arrowBtn.dataset.direction = "bottom"
-        
+            if (currLoc < 100) { //minuszba fog majd menni ugye ha kimegy a képből, és akkor mehet le a legaljára, de ez a kb érték(100) kell neki most
+                arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                arrowBtn.dataset.direction = "top"
+                
+            } else {
+                arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                arrowBtn.dataset.direction = "bottom"
+            
+            }
+
         }
+        
+        
     })
 
     
     arrowBtn.addEventListener("click", (e) => {
         var arrowBtn = document.getElementById("backToSeasonSelection")
-        let currLocOfLastWached = utoljaraMegnezettEp.getBoundingClientRect().top
         let currLoc = container.getBoundingClientRect().top
 
 
+        if (utoljaraMegnezettEp) {
+            let currLocOfLastWached = utoljaraMegnezettEp.getBoundingClientRect().top
 
-        if (currLocOfLastWached > 50 && currLocOfLastWached < 900) { //most mehet máshová, fel vagy le
+            if (currLocOfLastWached > 50 && currLocOfLastWached < 900) { //most mehet máshová, fel vagy le
+
+                if (arrowBtn.dataset.direction == "bottom") {
+                    document.querySelector("#episodes hr").scrollIntoView({ behavior: 'smooth' });
+
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                    arrowBtn.dataset.direction = "top"
+
+                } else if (arrowBtn.dataset.direction == "top") {
+                    document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
+
+                    setTimeout(() => {
+                        arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                        arrowBtn.dataset.direction = "bottom"
+                    }, 1000);
+
+                }
+
+            } else {
+                //itt meg muszáj neki az utoljára megnézettre mennie
+
+                window.scrollTo({
+                    top: utoljaraMegnezettEp.getBoundingClientRect().top + window.pageYOffset - 100,
+                    behavior: "smooth",
+                });
+
+
+                if (arrowBtn.dataset.direction == "bottom") {
+
+                    setTimeout(() => {
+                        arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
+                        arrowBtn.dataset.direction = "bottom"
+                    }, 1000);
+
+                } else if (arrowBtn.dataset.direction == "top") {
+
+                    arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
+                    arrowBtn.dataset.direction = "top"
+
+                }
+
+            }
+        } else {
+            //ha még ugye nincs bejelölt rész
 
             if (arrowBtn.dataset.direction == "bottom") {
                 document.querySelector("#episodes hr").scrollIntoView({ behavior: 'smooth' });
-
+            
                 arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
                 arrowBtn.dataset.direction = "top"
-
+            
             } else if (arrowBtn.dataset.direction == "top") {
                 document.getElementById("seasonlist").scrollIntoView({ behavior: 'smooth' });
-
+            
                 setTimeout(() => {
                     arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
                     arrowBtn.dataset.direction = "bottom"
                 }, 1000);
-
+            
             }
-
-        } else {
-            //itt meg muszáj neki az utoljára megnézettre mennie
-
-            window.scrollTo({
-                top: utoljaraMegnezettEp.getBoundingClientRect().top + window.pageYOffset - 100,
-                behavior: "smooth",
-            });
-
-
-            if (arrowBtn.dataset.direction == "bottom") {
-
-                setTimeout(() => {
-                    arrowBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'
-                    arrowBtn.dataset.direction = "bottom"
-                }, 1000);
-
-            } else if (arrowBtn.dataset.direction == "top") {
-
-                arrowBtn.innerHTML = '<i class="bi bi-arrow-up-circle"></i>'
-                arrowBtn.dataset.direction = "top"
-                
-            }
-
         }
     })
 
@@ -1715,10 +1781,12 @@ function loadSeasonData(s) {
     container.scrollIntoView({ behavior: 'smooth' });
 
     setTimeout(() => {
-        window.scrollTo({
-            top: utoljaraMegnezettEp.getBoundingClientRect().top + window.pageYOffset - 100,
-            behavior: "smooth",
-        });
+        if (utoljaraMegnezettEp) {
+            window.scrollTo({
+                top: utoljaraMegnezettEp.getBoundingClientRect().top + window.pageYOffset - 100,
+                behavior: "smooth",
+            });
+        }
     }, 500);
 
 }
@@ -2731,6 +2799,41 @@ function fillInPersons() {
                     <h6>${getProperTranslation(ember.job)}</h6>
                 </div>
             `
+
+
+
+            if (getProperTranslation(ember.known_for_department) == "Író") {
+                if (document.getElementById("iro").innerHTML == "") {
+                    document.getElementById("iro").innerHTML += `
+                        <span class="bold">Író: </span> ${ember.name}
+                    `
+                } else {
+                    document.getElementById("iro").innerHTML += `, ${ember.name}`
+                }
+            }
+            
+
+            if (ember.job == "Series Director") {
+                if (document.getElementById("rendezo").innerHTML == "") {
+                    document.getElementById("rendezo").innerHTML += `
+                        <span class="bold">Rendező: </span> ${ember.name}
+                    `
+                } else {
+                    document.getElementById("rendezo").innerHTML += `, ${ember.name}`
+                }
+            }
+
+
+            if (ember.job == "Editor") {
+                if (document.getElementById("vago").innerHTML == "") {
+                    document.getElementById("vago").innerHTML += `
+                        <span class="bold">Vágó: </span> ${ember.name}
+                    `
+                } else {
+                    document.getElementById("vago").innerHTML += `, ${ember.name}`
+                }
+            }
+
         }
 
 
@@ -2751,4 +2854,47 @@ function fillInPersons() {
     }
 
     toggleCastToWork()
+}
+
+
+
+
+//------------------------
+
+
+function idetifyHosszuSzoveg() {
+    const szovegamirekell = document.querySelectorAll(".hosszulehet")
+
+    if (szovegamirekell.length > 0) {
+        szovegamirekell.forEach(szoveg => {
+
+            szoveg.addEventListener("click", (e) => {
+                var allapota = szoveg.dataset.allapot || "nyitva"
+
+                if (allapota == "zarva") {
+                    //nyitni
+                    szoveg.style.whiteSpace = "wrap"
+                    szoveg.style.animationPlayState = "paused"
+
+                    szoveg.dataset.allapot = "nyitva"
+
+                } else if(allapota == "nyitva") {
+                    //zárni
+                    szoveg.style.whiteSpace = "nowrap"
+                    szoveg.style.animationPlayState = "running"
+
+                    szoveg.dataset.allapot = "zarva"
+                }
+            })
+
+
+            if (szoveg.dataset.allapot) {
+                if (szoveg.dataset.allapot == "zarva") {
+                    //zarni
+                    szoveg.style.whiteSpace = "nowrap"
+                    szoveg.style.animationPlayState = "running"
+                }
+            }
+        })
+    }
 }

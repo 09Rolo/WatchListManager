@@ -720,6 +720,7 @@ h2 {
     margin: auto;
     text-align: center;
     margin-bottom: 10px;
+    max-width: 100% !important;
 }
 
 .infok p {
@@ -1367,4 +1368,32 @@ h2 {
 
 .extrainfo {
     color: gray;
+}
+
+
+.hosszulehet {
+    max-width: 100% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    cursor: pointer;
+
+    animation-play-state: paused;
+    animation-name: villog;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+
+@keyframes villog {
+    0% {
+        color: white;
+    }
+    50% {
+        color: gray;
+    }
+    100% {
+        color: white;
+    }
 }

@@ -43,11 +43,11 @@
     }
 
     #evadposter #evadposterimg {
-        max-width: calc(100vw - 20vw) !important;
+        max-width: 100% !important;
     }
 
     #evadposter #evadfadedimg {
-        max-width: calc(100vw - 10vw) !important;
+        max-width: 80% !important;
     }
 
 
