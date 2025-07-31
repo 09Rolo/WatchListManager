@@ -2873,6 +2873,7 @@ function idetifyHosszuSzoveg() {
 
                 if (allapota == "zarva") {
                     //nyitni
+                    szoveg.setAttribute( 'style', 'color: white !important' );
                     szoveg.style.whiteSpace = "wrap"
                     szoveg.style.animationPlayState = "paused"
 
@@ -2880,6 +2881,7 @@ function idetifyHosszuSzoveg() {
 
                 } else if(allapota == "nyitva") {
                     //zárni
+                    szoveg.setAttribute( 'style', 'color: white' );
                     szoveg.style.whiteSpace = "nowrap"
                     szoveg.style.animationPlayState = "running"
 
@@ -2891,6 +2893,7 @@ function idetifyHosszuSzoveg() {
             if (szoveg.dataset.allapot) {
                 if (szoveg.dataset.allapot == "zarva") {
                     //zarni
+                    szoveg.setAttribute( 'style', 'color: white' );
                     szoveg.style.whiteSpace = "nowrap"
                     szoveg.style.animationPlayState = "running"
                 }

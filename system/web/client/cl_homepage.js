@@ -642,17 +642,20 @@ function ManageTimelineAfterData() {
     const remainingRatio = (daysInMonth - day + 1) / daysInMonth;
     const monthWidth = 3720; //120px per nap
     const remainingPx = remainingRatio * monthWidth;
-    
-    document.getElementById(`idovonal_${formatDate(new Date(year, month), true, "year_and_month")}`).style.minWidth = remainingPx + "px"
-    document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-end`).style.left = remainingPx + 5 + "px"
-    document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-start`).innerHTML = formatDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()))
 
+    if (day != daysInMonth) {//nem ucsó nap a hóban
+        document.getElementById(`idovonal_${formatDate(new Date(year, month), true, "year_and_month")}`).style.minWidth = remainingPx + "px"
+        document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-end`).style.left = remainingPx + 5 + "px"
+        document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-start`).innerHTML = formatDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()))
+
+        switchMonth(formatDate(now, true, "year_and_month"), true)
+    } else {
+        switchMonth(formatDate(now, true, "year_and_month"), true, true)
+    }
 
     GiveHrefToAdatlapButton()
 
     GiveClickFunctionToMonths()
-
-    switchMonth(formatDate(now, true, "year_and_month"), true)
 }
 
 
@@ -666,7 +669,7 @@ function GiveClickFunctionToMonths() {
 }
 
 
-function switchMonth(date, dontscroll) {
+function switchMonth(date, dontscroll, dontnotify) {
     document.querySelector(".idovonalak").style.display = "none"
     document.querySelectorAll(".idovonal").forEach(vonal => {vonal.style.display = "none"})
 
@@ -700,7 +703,9 @@ function switchMonth(date, dontscroll) {
 
 
         } else {
-            notify("Ebben a hónapban nem jelenik meg semmi!", "info")
+            if(!dontnotify) {
+                notify("Ebben a hónapban nem jelenik meg semmi!", "info")
+            }
 
             document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
             document.querySelector(`#honap_${date}`).classList.add("selected")
