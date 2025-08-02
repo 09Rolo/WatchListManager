@@ -14,8 +14,21 @@
             }
         },
         {
+            "title": "Death Note",
+            "id": 13916,
+            "font": "Death_Note_Font_by_Karlibell22.ttf",
+            "font_settings": "letter-spacing: 0.2rem;",
+            "mode":"music",
+            "settings": {
+                "1": ["DN_Opening.mp3", 0.1],
+                "loop": false
+            }
+        },
+        {
             "title": "Squid Game",
             "id": 93405,
+            "font":"/SquidGameFont/octopus-game-font/OctopusGameItalic-lgvnV.ttf",
+            "font_settings":"letter-spacing: 0.1rem;",
             "mode":"music",
             "settings": {
                 "1": ["SG_Theme_S1.mp3", 0.1],
@@ -36,6 +49,8 @@
         {
             "title": "Better Call Saul",
             "id": 60059,
+            "font":"/BetterCallSaulFont/Dancing_Script/DancingScript-VariableFont_wght.ttf",
+            "font_settings":"font-size: 1.2rem;letter-spacing: 0.1rem;",
             "mode":"music",
             "settings": {
                 "ALL": ["BCS_Opening.mp3", 0.1],

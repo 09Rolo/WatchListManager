@@ -2450,6 +2450,7 @@ async function putInVideok() {
 
 var isSpecial = false
 
+
 async function SpecialSeriesThings() { //ide kell majd a kuki check a legelejére, hogy ne menjen tovább mer fölösleges lenne akkor ha ki van kapcsolva
 
 if (getSpecialCookie() == null) {setSpecialCookie("be")}
@@ -2479,6 +2480,39 @@ if (getSpecialCookie() == "be") {
         if (sseries[i].id == id) {
             isSpecial = true
 
+
+            if (sseries[i].font) {
+                if (sseries[i].font != "" || sseries[i].font != " ") {
+                    var navtartalom = document.getElementById("navtartalom")
+                    
+                    navtartalom.innerHTML += `
+                        <span class="navbar-text cant_select" id="nav_font"> | Normál Betűtípus |</span>
+                    `
+                    document.getElementById("nav_font").addEventListener("click", nav_fontButton)
+
+
+                    var fontSzoveg = `
+                        @font-face {
+                          font-family: specialSeriesFont;
+                          src: url(/fonts/${sseries[i].font});
+                        }
+
+                        .specialFontosElem {
+                            ${sseries[i].font_settings ? sseries[i].font_settings : ""}
+                        }
+                    `
+
+                    var styleSheet = document.createElement("style")
+                    styleSheet.textContent = fontSzoveg
+                    document.head.appendChild(styleSheet)
+
+                    document.body.style.fontFamily = "specialSeriesFont, sans-serif"
+                    document.body.classList.add("specialFontosElem")
+
+                }
+            }
+
+
             if (sseries[i].mode == "music") {
 
                 if (sseries[i].settings && sseries[i].settings["ALL"]) {
@@ -2503,7 +2537,7 @@ if (getSpecialCookie() == "be") {
 
                 } else if(!sseries[i].settings["ALL"]) {
                     for(let s in sseries[i].settings) {
-                        if(s / s == 1) { //csak hogy szám legyen, a loop és hasonlók nem kellenek, csak majd később
+                        if(s / s == 1 || s == 0) { //csak hogy szám legyen, a loop és hasonlók nem kellenek, csak majd később
                             var fileformat = sseries[i].settings[s][0].split(".")[sseries[i].settings[s][0].split(".").length - 1]
                             var hang = document.createElement("AUDIO");
 
@@ -2546,11 +2580,12 @@ if (isSpecial){
 
     if (!tartalomadva) {
         navtartalom.innerHTML += `
-            <span class="navbar-text cant_select" id="nav_music"> | Zene megállítása |</span>
+            <span class="navbar-text cant_select" id="nav_music"> | Zene megállítása | </span>
         `
         tartalomadva = true
 
         document.getElementById("nav_music").addEventListener("click", nav_musicbutton)
+        document.getElementById("nav_font").addEventListener("click", nav_fontButton) //valamiért megint meg kell adni az eventlistenert mert elbaszodik ha nem adom meg neki, fogalmam sincs miért
     }
     
     
@@ -2605,9 +2640,9 @@ if (isSpecial) {
         })
         
         audioPlayed = false
-        nav_music.innerHTML = " | Zene lejátszása|"
+        nav_music.innerHTML = " | Zene lejátszása | "
     } else {
-        if(nav_music.innerHTML == " | Zene megállítása |") {
+        if(nav_music.innerHTML == " | Zene megállítása | ") {
             var auds = document.querySelectorAll("audio")
                 
             auds.forEach(aud => {
@@ -2619,15 +2654,36 @@ if (isSpecial) {
             })
         
             audioPlayed = false
-            nav_music.innerHTML = " | Zene lejátszása|"
+            nav_music.innerHTML = " | Zene lejátszása | "
         } else {
             utcsozene.play()
             audioPlayed = true
-            nav_music.innerHTML = " | Zene megállítása |"
+            nav_music.innerHTML = " | Zene megállítása | "
         }
     }
 }
 }
+
+
+
+function nav_fontButton(e) {
+if (isSpecial) {
+    var nav_font = document.getElementById("nav_font")
+    var currFont = document.body.style.fontFamily.split(",")[0]
+
+    if (currFont == "specialSeriesFont") {
+        nav_font.innerHTML = " | Speciális Betűtípus | "
+        document.body.style.fontFamily = "var(--font-main)"
+        document.body.classList.remove("specialFontosElem")
+    } else {
+        nav_font.innerHTML = " | Normál Betűtípus | "
+        document.body.style.fontFamily = "specialSeriesFont, sans-serif"
+        document.body.classList.add("specialFontosElem")
+    }
+
+}
+}
+
 
 
 
