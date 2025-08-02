@@ -281,6 +281,16 @@ button, button *, a, a * {
 }
 
 
+
+.navbar {
+    font-family: var(--font-titles);
+    letter-spacing: 0rem !important;
+    font-size: 1rem !important;
+    line-height: 1rem !important;
+}
+
+
+
 @media screen and (min-width: 650px) {
 
 
@@ -434,19 +444,47 @@ button, button *, a, a * {
 
 
 
+@media screen and (max-width: 970px) {
+    .navbar-nav, .navbar-brand {
+        font-size: 0.85rem;
+    }
+}
+
+
 
 @media screen and (max-width: 767px) {
     .offcanvas {
         margin: 30px;
         padding: 10px;
     }
+
+    .navbar-nav, .navbar-brand {
+        font-size: 1rem;
+    }
 }
 
 
-@media screen and (max-width: 400px) {
-    .container-fluid {
-        justify-content: center !important;
-    }
+
+.container-fluid {
+    justify-content: center !important;
+}
+
+.navbar-brand {
+    text-align: center;
+    overflow-wrap: break-word;  /* Break long words */
+    word-break: break-word;     /* Allow breaking words anywhere */
+    white-space: normal;        /* Allow text to wrap onto new lines */
+    max-width: 100%;            /* Prevent it from growing outside */
+    display: block;             /* Make sure it behaves like a block */
+    flex-shrink: 1;             /* Allow shrinking */
+}
+
+.navbar-nav {
+    overflow-wrap: break-word;  /* Break long words */
+    word-break: break-word;     /* Allow breaking words anywhere */
+    white-space: normal;        /* Allow text to wrap onto new lines */
+    max-width: 100%;            /* Prevent it from growing outside */
+    flex-shrink: 1;             /* Allow shrinking */
 }
 
 

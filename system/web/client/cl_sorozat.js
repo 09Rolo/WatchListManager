@@ -252,7 +252,7 @@ async function getData() {
 
 
                         <hr>
-                        <button onclick="showExtraInfo()" class="cant_select">...</button>
+                        <button onclick="showExtraInfo(this)" class="cant_select">...</button>
 
 
                         <div id="extraInfoBox">
@@ -2732,14 +2732,17 @@ async function manageServerLink() {
 
 
 
-function showExtraInfo() {
+function showExtraInfo(btnElem) {
     const extraInfoBox = document.getElementById("extraInfoBox")
 
     if (extraInfoBox.style.height == "0px" || extraInfoBox.style.height == "") {
 
+        btnElem.innerHTML = "- - -"
         extraInfoBox.style.height = "100%"
     } else {
+        btnElem.innerHTML = "..."
         extraInfoBox.style.height = "0"
+
     }
 }
 
