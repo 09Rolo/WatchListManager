@@ -97,6 +97,9 @@ function manageLang() {
     if (getLanguageCookie() != null && !section) {
         language = getLanguageCookie()
     }
+
+
+    loadTranslations(language)
 }
 
 manageLang()
@@ -224,11 +227,11 @@ async function searching(tartalom) {
                                 <h5 class="card-title"><b>${el.title}</b></h5>
                                 <i class="bi bi-journal-arrow-up showtexticon"></i>
                                 <p class="card-text">${el.overview}</p>
-                                <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                                <a href="#" id="${el.id}" class="btn btn-primary adatlap-button" data-t="basic.details">Adatlap</a>
                                 <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
                             </div>
                             <div class="card-footer">
-                                <small class="text-body-secondary">Megjelenés: ${el.release_date}</small>
+                                <small class="text-body-secondary" data-t="basic.release_date">Megjelenés: </small>${el.release_date}
                             </div>
                         </div>
                     `
@@ -249,11 +252,11 @@ async function searching(tartalom) {
                             <h5 class="card-title"><b>${el.title}</b></h5>
                             <i class="bi bi-journal-arrow-up showtexticon"></i>
                             <p class="card-text">${el.overview}</p>
-                            <a href="#" id="${el.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                            <a href="#" id="${el.id}" class="btn btn-primary adatlap-button" data-t="basic.details">Adatlap</a>
                             <p class="rating" style="color: ${ratingColor(el.vote_average)};">${Math.round(el.vote_average * 100) / 100}</p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-body-secondary">Megjelenés: ${el.release_date}</small>
+                            <small class="text-body-secondary" data-t="basic.release_date">Megjelenés: </small>${el.release_date}
                         </div>
                     </div>
                 `
@@ -277,15 +280,15 @@ async function searching(tartalom) {
 
 
             if (searched_movies_list.innerHTML == "") {
-                searched_movies_list.innerHTML = "<p class='info'>Nincs itt semmi, írj be valamit a keresőbe</p>"
+                searched_movies_list.innerHTML = "<p class='info' data-t='movies.nothing_here'>Nincs itt semmi, írj be valamit a keresőbe</p>"
             }
 
             if (sajat_movies_watched.innerHTML == "") {
-                sajat_movies_watched.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+                sajat_movies_watched.innerHTML = "<p class='info' data-t='movies.nothing_here_mymovies'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
             }
 
             if (sajat_movies_wishlisted.innerHTML == "") {
-                sajat_movies_wishlisted.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+                sajat_movies_wishlisted.innerHTML = "<p class='info' data-t='movies.nothing_here_mymovies'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
             }
 
 
@@ -294,6 +297,9 @@ async function searching(tartalom) {
             }
 
         }
+
+
+        translatePage()
     } catch(e) {
         console.error(e)
     }
@@ -390,14 +396,14 @@ async function fillSajatMovies() {
     if (wishlistedMovies.length > 0) {
         sajat_movies_wishlisted.innerHTML = ""
     } else {
-        sajat_movies_wishlisted.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+        sajat_movies_wishlisted.innerHTML = "<p class='info' data-t='movies.nothing_here_mymovies'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
     }
 
 
     if (watchedMovies.length > 0) {
         sajat_movies_watched.innerHTML = ""
     } else {
-        sajat_movies_watched.innerHTML = "<p class='info'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
+        sajat_movies_watched.innerHTML = "<p class='info' data-t='movies.nothing_here_mymovies'>Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből</p>"
     }
 
 
@@ -421,11 +427,11 @@ async function fillSajatMovies() {
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>
-                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button" data-t="basic.details">Adatlap</a>
                         <p class="rating" style="color: ${ratingColor(adatok.vote_average)};">${Math.round(adatok.vote_average * 100) / 100}</p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-body-secondary">Megjelenés: ${adatok.release_date}</small>
+                        <small class="text-body-secondary" data-t="basic.release_date">Megjelenés: </small>${adatok.release_date}
                     </div>
                 </div>
             `
@@ -459,11 +465,11 @@ async function fillSajatMovies() {
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>
-                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button" data-t="basic.details">Adatlap</a>
                         <p class="rating" style="color: ${ratingColor(adatok.vote_average)};">${Math.round(adatok.vote_average * 100) / 100}</p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-body-secondary">Megjelenés: ${adatok.release_date}</small>
+                        <small class="text-body-secondary" data-t="basic.release_date">Megjelenés: </small>${adatok.release_date}
                     </div>
                 </div>
             `
@@ -481,6 +487,7 @@ async function fillSajatMovies() {
 
     checkImgLoaded()
 
+    loadTranslations(language)
 }
 
 
@@ -495,10 +502,14 @@ function toggleWishlisted() {
     if(sajat_movies_wishlisted.style.display == "none") {
         sajat_movies_wishlisted.style.display = "flex"
         document.getElementById("wishlistedMoviesToggleBtn").innerHTML = "Kívánságlistás filmeid elrejtése"
+        document.getElementById("wishlistedMoviesToggleBtn").dataset.t = "movies.wishlisted_movies_btn_hide"
     } else {
         sajat_movies_wishlisted.style.display = "none"
         document.getElementById("wishlistedMoviesToggleBtn").innerHTML = "Kívánságlistás filmeid megjelenítése"
+        document.getElementById("wishlistedMoviesToggleBtn").dataset.t = "movies.wishlisted_movies_btn_show"
     }
+
+    translatePage()
 }
 
 
@@ -506,8 +517,12 @@ function toggleWatched() {
     if(sajat_movies_watched.style.display == "none") {
         sajat_movies_watched.style.display = "flex"
         document.getElementById("watchedMoviesToggleBtn").innerHTML = "Megnézett filmeid elrejtése"
+        document.getElementById("wishlistedMoviesToggleBtn").dataset.t = "movies.watched_movies_btn_hide"
     } else {
         sajat_movies_watched.style.display = "none"
         document.getElementById("watchedMoviesToggleBtn").innerHTML = "Megnézett filmeid megjelenítése"
+        document.getElementById("wishlistedMoviesToggleBtn").dataset.t = "movies.watched_movies_btn_show"
     }
+
+    translatePage()
 }

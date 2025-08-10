@@ -46,31 +46,31 @@
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menü</h5>
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel" data-t="basic.menu">Menü</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#info" onclick="checkHashtag()">Infó</a>
+                                <a class="nav-link" href="#info" onclick="checkHashtag()" data-t="basic.info">Infó</a>
                             </li>
 
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.series">
                                     Sorozatok
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <div>
                                         <li>
-                                            <a class="dropdown-item" href="/sorozatok">
+                                            <a class="dropdown-item" href="/sorozatok" data-t="homepage.manage_series">
                                                 Sorozatok kezelése
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#sorozatok">
+                                            <a class="dropdown-item" href="#sorozatok" data-t="homepage.menu_info_button">
                                                 Részletek
                                             </a>
                                         </li>
@@ -81,18 +81,18 @@
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.movies">
                                     Filmek
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <div>
                                         <li>
-                                            <a class="dropdown-item" href="/filmek">
+                                            <a class="dropdown-item" href="/filmek" data-t="homepage.manage_movies">
                                                 Filmek kezelése
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#filmek">
+                                            <a class="dropdown-item" href="#filmek" data-t="homepage.menu_info_button">
                                                 Részletek
                                             </a>
                                         </li>
@@ -104,7 +104,7 @@
                             <!--Fiók dropdown cucc-->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.account">
                                     Fiók
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -118,12 +118,12 @@
 
                                     <div id="menu_login_register">
                                         <li>
-                                            <a class="dropdown-item" href="/auth/login">
+                                            <a class="dropdown-item" href="/auth/login" data-t="basic.login">
                                                 Bejelentkezés
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="/auth/register">
+                                            <a class="dropdown-item" href="/auth/register" data-t="basic.register">
                                                 Regisztráció
                                             </a>
                                         </li>
@@ -134,7 +134,7 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#" id="menu_logout_button">Kijelentkezés</a>
+                                            <a class="dropdown-item" href="#" id="menu_logout_button" data-t="basic.logout">Kijelentkezés</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -153,34 +153,34 @@
         <div class="main">
 
             <div class="kartya big cant_select" id="infoBox">
-                <h1 id="info">Információ</h1>
+                <h1 id="info" data-t="basic.info">Információ</h1>
                 
-                <p class="needtype">Üdvözöllek a weboldalon! 😁</p>
-                <p>Ez a weboldal a számontartás érdekében jött létre. Itt kezelni tudod a megnézett epizódokat egy sorozatból, vagy akár a filmeket is amelyeket már láttál, vagy látni szeretnél.</p>
-                <p>A filmes kívánságlistádat megoszthatod barátaiddal is, így egy esti filmnézéshez közösen is tudtok filmet választani.</p>
-                <p>Igyekesztem rengeteg hasznos dolgot beépíteni a weboldalba. Így az előzeteseket is megtalálod illetve egy pár linket is ha esetleg online ingyenesen szeretnéd nézni a tartalmat</p>
+                <p class="needtype" data-t="homepage.welcome">Üdvözöllek a weboldalon! 😁</p>
+                <p data-t="homepage.info_text1">Ez a weboldal a számontartás érdekében jött létre. Itt kezelni tudod a megnézett epizódokat egy sorozatból, vagy akár a filmeket is amelyeket már láttál, vagy látni szeretnél.</p>
+                <p data-t="homepage.info_text2">A filmes kívánságlistádat megoszthatod barátaiddal is, így egy esti filmnézéshez közösen is tudtok filmet választani.</p>
+                <p data-t="homepage.info_text3">Igyekesztem rengeteg hasznos dolgot beépíteni a weboldalba. Így az előzeteseket is megtalálod illetve egy pár linket is ha esetleg online ingyenesen szeretnéd nézni a tartalmat</p>
             </div>
 
             <div class="kartya cant_select">
-                <h1 id="sorozatok">Sorozatok</h1>
-                <p>Kezeld a sorozatokat amelyeket éppen nézel, amelyeket szeretnél nézni, vagy épp amelyeket láttál.</p>
-                <a href="/sorozatok" id="sorozatok_starthere_button">Sorozatok</a>
+                <h1 id="sorozatok" data-t="basic.series">Sorozatok</h1>
+                <p data-t="homepage.series_card_text">Kezeld a sorozatokat amelyeket éppen nézel, amelyeket szeretnél nézni, vagy épp amelyeket láttál.</p>
+                <a href="/sorozatok" id="sorozatok_starthere_button"></a>
             </div>
 
             <div class="kartya cant_select">
-                <h1 id="filmek">Filmek</h1>
-                <p>Kezeld a filmeket amelyeket láttál, és amelyeket szeretnél megnézni. A fiók menüpont alatt található linkkel megoszthatod ezeket másokkal is.</p>
-                <a href="/filmek" id="filmek_starthere_button">Filmek</a>
+                <h1 id="filmek" data-t="basic.movies">Filmek</h1>
+                <p data-t="homepage.movies_card_text">Kezeld a filmeket amelyeket láttál, és amelyeket szeretnél megnézni. A fiók menüpont alatt található linkkel megoszthatod ezeket másokkal is.</p>
+                <a href="/filmek" id="filmek_starthere_button"></a>
             </div>
 
 
             <div id="timeline-kulso" style="display: none;">
-                <h2>Megjelenések</h2>
+                <h2 data-t="homepage.timeline_title">Megjelenések</h2>
 
 
                 <div id="majelenikmeg" style="display: none;">
                     <hr>
-                    <h5>Ma jelenik meg!</h5>
+                    <h5 data-t="homepage.timeline_releasing_today">Ma jelenik meg!</h5>
 
                     <div id="idovonal_MA">
 

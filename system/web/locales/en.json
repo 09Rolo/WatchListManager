@@ -1,0 +1,160 @@
+{
+	"basic": {
+		"menu": "Menu",
+		"homepage": "Homepage",
+		"account": "Account",
+		"login": "Login",
+		"register": "Register",
+		"logout": "Logout",
+		"info": "Information",
+		"series": "Series",
+		"movies": "Movies",
+		"details": "Details",
+
+		"movies_language": "Language",
+		"series_language": "Language",
+		"lang_hu": "Hungarian",
+		"lang_en": "English",
+		"release_date": "Release date: ",
+		"search_placeholder": "Start typing"
+	},
+
+
+	"notifs": {
+		"nothing_releases_this_month": "Nothing is releasing this month!",
+
+		"no_new_pass_and_email": "Enter your new password and your email address.",
+		"need_email": "Enter your email address",
+
+		"Lejárt a munkaidő": "Login time expired!",
+		"Érvénytelen email formátum": "Invalid email format",
+		"A felhasználónévnek 3 és 15 karakter között kell lennie, space nélkül, Illetve csak pont és alsóvonal használható": "The username must be between 3 and 15 characters, without spaces, and can only contain dots and underscores",
+		"A jelszónak legalább 6 karakter hosszúnak kell lennie": "The password must be at least 6 characters long",
+		"Sikeres regisztráció!": "Registration successful!",
+		"Jelentkezz be!": "Log in!",
+		"Már létezik ilyen ember": "This user already exists",
+		"Helytelen adatok": "Incorrect details",
+		"Helytelen jelszó": "Incorrect password",
+		"Sikeres bejelentkezés": "Login successful",
+		"Engedély megtagadva": "Permission denied",
+		"Helytelen token": "Invalid token",
+		"Sikeresen megváltoztatva!": "Successfully changed!",
+		"Nemsokára elküldjük a linket": "We'll send the link shortly",
+		"Már kaptál egy linket": "You've already received a link",
+		"Még nem regisztráltál": "You haven't registered yet",
+		"Elküldtük az email címre a linket!": "We've sent the link to your email!",
+		"Sikeresen megváltoztatva, Mostmár bejelentkezhetsz!": "Successfully changed, you can log in now!",
+		"Már nem érvényes a link vagy rossz email címet adtál meg": "The link is no longer valid or you entered a wrong email address",
+
+		"Siker": "Success",
+		"Hiba": "Error",
+		"Szerver hiba": "Server error"
+	},
+
+
+    "homepage": {
+		"manage_series": "Manage Series",
+		"manage_movies": "Manage Movies",
+		"menu_info_button": "Details",
+
+		"welcome": "Welcome to the website! 😁",
+		"info_text1": "This website was created to help you keep track of what you watch. Here you can manage the episodes of a series you've seen, as well as the movies you've already watched or want to watch.",
+		"info_text2": "You can share your movie wishlist with your friends, so you can pick a movie together for a movie night.",
+		"info_text3": "I'm trying to add lots of useful features to the website. That way, you can find trailers and some links if you want to watch the content online for free.",
+
+		"series_card_text": "Manage the series you're currently watching, want to watch, or have already seen.",
+		"series_card_button_not_logged_in": "Login to manage them",
+		"series_card_button_logged_in": "Manage them",
+
+		"movies_card_text": "Manage the movies you've watched and those you want to watch. You can share them with others using the link in the account menu.",
+		"movies_card_button_not_logged_in": "Login to manage them",
+		"movies_card_button_logged_in": "Manage them",
+
+
+		"timeline_title": "Releases",
+		"timeline_releasing_today": "Releasing today!",
+		"timeline_multiple_releases": "Multiple releases!",
+
+		"monday": "Monday",
+		"monday_short": "M",
+		"tuesday": "Tuesday",
+		"tuesday_short": "Tu",
+		"wednesday": "Wednesday",
+		"wednesday_short": "W",
+		"thursday": "Thursday",
+		"thursday_short": "Th",
+		"friday": "Friday",
+		"friday_short": "F",
+		"saturday": "Saturday",
+		"saturday_short": "Sa",
+		"sunday": "Sunday",
+		"sunday_short": "Su"
+  	},
+
+
+	"auth": {
+		"back_to_home": "Back to homepage",
+
+		"already_has_account": "Already have an account?",
+		"login_text": "Log in",
+		"email_title": "Email",
+		"password_title": "Password",
+		"forgot_password": "Forgot my password",
+
+		"doesent_have_account": "Don't have an account yet?",
+		"register_text": "Register",
+		"username_title": "Username",
+
+		"recover_title": "Password Recovery",
+		"new_pass_title": "New Password",
+		"recover_button": "Recover Password"
+	},
+
+
+	"user": {
+		"own_url_title": "Own url",
+		"copy_url": "Copy",
+		"settings": "Settings",
+		"language_setting": "Language",
+		"special_series_setting": "Special Series",
+		"on": "On",
+		"off": "Off",
+		"question_recomendation_help": "Question / Recomendation / Help",
+		"question_recomendation_help_box_text1": "You can do all these by <a href='mailto:rolo.kiss.09@gmail.com' class='inline_a'>email, by clicking here</a>.",
+		"question_recomendation_help_box_text2": "Or through any of my <a href='https://kissroland.hu/links' target='_blank' rel='noopener noreferrer' class='inline_a'>contact links</a>.",
+		"info_box_text1": "This website was made by <a href='https://kissroland.hu/' target='_blank' rel='noopener noreferrer' class='inline_a'>Rolo</a>.<br>It’s just a simple project for personal use.",
+		"movie_info": "There's nothing here, the person didn't add anything.",
+		"welcome": "Welcome",
+		"wishlist": "'s wishlist:"
+	},
+
+
+	"movies": {
+		"title": "Movies",
+		"searched_movies": "Searched Movies",
+		"nothing_here": "There's nothing here, please type something into the search box",
+		"nothing_here_mymovies": "There's nothing here, add something to your account from the searches",
+		"own_movies": "My Movies",
+
+		"wishlisted_movies_btn_hide": "Hide your wishlist movies",
+		"wishlisted_movies_btn_show": "Show your wishlist movies",
+		"watched_movies_btn_hide": "Hide your watched movies",
+		"watched_movies_btn_show": "Show your watched movies"
+	},
+
+
+	"series": {
+		"title": "Series",
+		"searched_series": "Searched Series",
+		"nothing_here": "There's nothing here, please type something into the search box",
+		"nothing_here_myseries": "There's nothing here, add something to your account from the searches",
+		"own_series": "My Series",
+
+		"started_series_btn_hide": "Hide your started series",
+		"started_series_btn_show": "Show your started series",
+		"wishlisted_series_btn_hide": "Hide your wishlisted series",
+		"wishlisted_series_btn_show": "Show your wishlisted series",
+		"watched_series_btn_hide": "Hide your watched series",
+		"watched_series_btn_show": "Show your watched series"
+	}
+}

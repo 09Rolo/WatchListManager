@@ -21,9 +21,11 @@ window.onload = async () => {
     menu_logout.style.display = "none"
 
     sorozatok_starthere_button.href = "/auth/login"
-    sorozatok_starthere_button.innerHTML = "Jelentkezz be a kezdéshez"
+    sorozatok_starthere_button.innerHTML = "Login"
+    sorozatok_starthere_button.dataset.t = "homepage.series_card_button_not_logged_in"
     filmek_starthere_button.href = "/auth/login"
-    filmek_starthere_button.innerHTML = "Jelentkezz be a kezdéshez"
+    filmek_starthere_button.innerHTML = "Login"
+    filmek_starthere_button.dataset.t = "homepage.movies_card_button_not_logged_in"
 
 
     const token = localStorage.getItem("token")
@@ -48,9 +50,11 @@ async function loggedIn() {
     menu_username.innerHTML = JSON.parse(localStorage.getItem("user")).username
 
     sorozatok_starthere_button.href = "/sorozatok"
-    sorozatok_starthere_button.innerHTML = "Kezeld őket itt"
+    sorozatok_starthere_button.innerHTML = "Series"
+    sorozatok_starthere_button.dataset.t = "homepage.series_card_button_logged_in"
     filmek_starthere_button.href = "/filmek"
-    filmek_starthere_button.innerHTML = "Kezeld őket itt"
+    filmek_starthere_button.innerHTML = "Movies"
+    filmek_starthere_button.dataset.t = "homepage.movies_card_button_logged_in"
 
 
     document.getElementById("infoBox").style.display = "none" //Levi mondta, hogy szerinte tűnjön el
@@ -68,7 +72,7 @@ async function loggedIn() {
             API_KEY = result.apiKey
 
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     
     } catch(e) {
@@ -123,10 +127,18 @@ menu_logout_button.onclick = async () => {
 
 
 var language = 'hu'
+var langcodes = "hu-HU"
 
 function manageLang() {
     if (getLanguageCookie() != null) {
         language = getLanguageCookie()
+        
+
+        if (language == "en") {
+            langcodes = "en-US"
+        }
+
+        loadTranslations(language)
     }
 }
 
@@ -200,45 +212,73 @@ function formatDate(date, nodots, extra) {
 function melyikNap(szam, formatum) {
     if (szam == 0) {
         if (formatum == "rövid") {
-            return "H"
+            if (t("homepage.monday_short")) {return t("homepage.monday_short")} else {
+                return "H"
+            }
         } else {
-            return "Hétfő"
+            if (t("homepage.monday")) {return t("homepage.monday")} else {
+                return "Hétfő"
+            }
         }
     } else if (szam == 1) {
         if (formatum == "rövid") {
-            return "K"
+            if (t("homepage.tuesday_short")) {return t("homepage.tuesday_short")} else {
+                return "K"
+            }
         } else {
-            return "Kedd"
+            if (t("homepage.tuesday")) {return t("homepage.tuesday")} else {
+                return "Kedd"
+            }
         }
     } else if (szam == 2) {
         if (formatum == "rövid") {
-            return "Sze"
+            if (t("homepage.wednesday_short")) {return t("homepage.wednesday_short")} else {
+                return "Sze"
+            }
         } else {
-            return "Szerda"
+            if (t("homepage.wednesday")) {return t("homepage.wednesday")} else {
+                return "Szerda"
+            }
         }
     } else if (szam == 3) {
         if (formatum == "rövid") {
-            return "Cs"
+            if (t("homepage.thursday_short")) {return t("homepage.thursday_short")} else {
+                return "Cs"
+            }
         } else {
-            return "Csütörtök"
+            if (t("homepage.thursday")) {return t("homepage.thursday")} else {
+                return "Csütörtök"
+            }
         }
     } else if (szam == 4) {
         if (formatum == "rövid") {
-            return "P"
+            if (t("homepage.friday_short")) {return t("homepage.friday_short")} else {
+                return "P"
+            }
         } else {
-            return "Péntek"
+            if (t("homepage.friday")) {return t("homepage.friday")} else {
+                return "Péntek"
+            }
         }
     } else if (szam == 5) {
         if (formatum == "rövid") {
-            return "Szo"
+            if (t("homepage.saturday_short")) {return t("homepage.saturday_short")} else {
+                return "Szo"
+            }
         } else {
-            return "Szombat"
+            if (t("homepage.saturday")) {return t("homepage.saturday")} else {
+                return "Szombat"
+            }
         }
     } else if (szam == 6) {
         if (formatum == "rövid") {
-            return "V"
+            if (t("homepage.sunday_short")) {return t("homepage.sunday_short")} else {
+                return "V"
+            }
         } else {
-            return "Vasárnap"
+            if (t("homepage.sunday")) {return t("homepage.sunday")} else {
+                return "Vasárnap"
+            }
         }
     }
 }
@@ -518,7 +558,7 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
                 <img src="${poster}">
                 <h4>${sname}</h4>
                 <p>${mettolmeddigtxt}</p>
-                <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+                <a class="adatlap-button" id="${id}" href="" data-t="basic.details">Adatlap</a>
                 <div></div>
             </div>
         `
@@ -526,7 +566,9 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
         if (!document.querySelector(`#timeline-items_${daysFromToday} .tobbdolog`)) {
             var tobbdologSzoveg = document.createElement("p")
             tobbdologSzoveg.classList = "tobbdolog"
+            tobbdologSzoveg.dataset.t = "homepage.timeline_multiple_releases"
             tobbdologSzoveg.innerHTML = "Több megjelenés!"
+
 
             document.getElementById(`timeline-items_${daysFromToday}`).insertBefore(tobbdologSzoveg, document.getElementById(`timeline-items_${daysFromToday}`).firstChild)
         }
@@ -545,7 +587,7 @@ function addTimelineItem(date, poster, sname, mettolmeddigtxt, id, daysFromToday
                 <img src="${poster}">
                 <h4>${sname}</h4>
                 <p>${mettolmeddigtxt}</p>
-                <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+                <a class="adatlap-button" id="${id}" href="" data-t="basic.details">Adatlap</a>
                 <div></div>
             </div>
         `
@@ -584,7 +626,7 @@ function addNowAiring(poster, sname, mettolmeddigtxt, id) {
             <img src="${poster}">
             <h4>${sname}</h4>
             <p>${mettolmeddigtxt}</p>
-            <a class="adatlap-button" id="${id}" href="">Adatlap</a>
+            <a class="adatlap-button" id="${id}" href="" data-t="basic.details">Adatlap</a>
             <div></div>
         </div>
     `
@@ -618,11 +660,11 @@ function ManageTimelineBeforeData() {
 
     const currYear = now.getFullYear()
     const currMonth = now.getMonth()
-    const currMonthText = now.toLocaleDateString('hu-HU', { month: 'short' })
+    const currMonthText = now.toLocaleDateString(langcodes, { month: 'short' })
     const monthsToShow = 9 //+ugye a mostani
 
     for (let i = 0; i <= monthsToShow; i++) {
-        const newDate = new Date(currYear, currMonth + i).toLocaleDateString('hu-HU', { month: 'short' })
+        const newDate = new Date(currYear, currMonth + i).toLocaleDateString(langcodes, { month: 'short' }) //itt majd lehet a több nyelvű cuccot állítani esetleg
 
         honapok.innerHTML += `
             <li class="honap" id="honap_${formatDate(new Date(currYear, currMonth + i), true, "year_and_month")}"><span>${newDate}</span></li>
@@ -656,6 +698,8 @@ function ManageTimelineAfterData() {
     GiveHrefToAdatlapButton()
 
     GiveClickFunctionToMonths()
+
+    loadTranslations(language)
 }
 
 
@@ -704,7 +748,7 @@ function switchMonth(date, dontscroll, dontnotify) {
 
         } else {
             if(!dontnotify) {
-                notify("Ebben a hónapban nem jelenik meg semmi!", "info")
+                notify(t("notifs.nothing_releases_this_month"), "info")
             }
 
             document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))

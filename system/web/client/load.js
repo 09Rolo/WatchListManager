@@ -52,6 +52,80 @@ function checkImgLoaded(diffTime) {
 
 
 
+async function waitUntilDefined(getVar) {
+  while (getVar() === undefined) {
+    await new Promise(r => setTimeout(r, 50));
+  }
+  return getVar();
+}
+
+
+
+
+//--------------------------------------------------------------------------------Nyelv
+var forditasok
+
+async function loadTranslations(lang) {
+    const res = await fetch(`/locales/${lang}.json`);
+    const data = await res.json();
+    
+    forditasok = data
+
+    setTimeout(() => {
+        translatePage()
+    }, 100);
+}
+
+
+
+function t(key) {
+    const parts = key.split(".");
+    let value = forditasok;
+
+    for (let i = 0; i < parts.length; i++) {
+        if (value && value[parts[i]] !== undefined) {
+            value = value[parts[i]];
+        } else {
+            return key
+        }
+    }
+
+    return value;
+}
+
+
+async function translatePage() {
+    var everything = document.querySelectorAll("*")
+    
+    everything.forEach(elem => {
+        if (elem.dataset.t) {
+            if(t(elem.dataset.t)) {
+                if (elem.dataset.ttype) {
+
+                    if (elem.dataset.ttype == "value") {
+                        elem.value = t(elem.dataset.t)
+                    } else if(elem.dataset.ttype == "innerhtml") {
+                        elem.innerHTML = t(elem.dataset.t)
+                    } else if(elem.dataset.ttype == "placeholder") {
+                        elem.placeholder = t(elem.dataset.t)
+                    }
+
+                } else {
+
+                    if (!elem.classList.contains("typed")) {
+                        elem.innerText = t(elem.dataset.t)
+                    }
+
+                }
+            }
+        }
+    })
+}
+
+//-------------------------------------------------------------------------------------
+
+
+
 //-------------------------------------------------------------------------------Kurzor
 //var mouseButtonState
 
@@ -283,7 +357,8 @@ window.addEventListener("orientationchange", checkOrientation, false);
 
 //-------------------------------------------------------------------------------Iras
 
-function iras(element, arg) {
+async function iras(element, arg) {
+    await waitUntilDefined(() => forditasok);
 
 
     if (!element) {
@@ -295,6 +370,9 @@ function iras(element, arg) {
 
                 var txt = elem.innerHTML
                 elem.innerHTML = ""
+
+                if (elem.dataset.t) {if (t(elem.dataset.t)) {txt = t(elem.dataset.t)}}
+
             
                 var speed = 30;
             
@@ -318,6 +396,9 @@ function iras(element, arg) {
             if (elem) {
                 var txt = elem.innerHTML
                 elem.innerHTML = ""
+
+                if (elem.dataset.t) {if (t(elem.dataset.t)) {txt = t(elem.dataset.t)}}
+
             
                 var speed = 30;
             
@@ -336,6 +417,9 @@ function iras(element, arg) {
             if (elem) {
                 var txt = elem.innerHTML
                 elem.innerHTML = ""
+
+                if (elem.dataset.t) {if (t(elem.dataset.t)) {txt = t(elem.dataset.t)}}
+
             
                 var speed = 1000;
             
@@ -352,6 +436,9 @@ function iras(element, arg) {
             if (elem) {
                 var txt = elem.innerHTML
                 elem.innerHTML = ""
+
+                if (elem.dataset.t) {if (t(elem.dataset.t)) {txt = t(elem.dataset.t)}}
+
             
                 var speed = 100;
             
@@ -388,6 +475,9 @@ function iras(element, arg) {
 
                         var txt = elem.innerHTML
                         elem.innerHTML = ""
+
+                        if (elem.dataset.t) {if (t(elem.dataset.t)) {txt = t(elem.dataset.t)}}
+                        
                         
                         var speed = 30;
                         

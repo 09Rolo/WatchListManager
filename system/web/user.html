@@ -48,31 +48,31 @@
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menü</h5>
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel" data-t="basic.menu">Menü</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/">Főoldal</a>
+                                <a class="nav-link" href="/" data-t="basic.homepage">Főoldal</a>
                             </li>
 
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.movies_language">
                                     Filmek nyelve
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <div id="menu_language">
                                         <li>
-                                            <p class="dropdown-item" onclick="changeLang('hu')" id="menu_language_hu">
+                                            <p class="dropdown-item" onclick="changeLang('hu')" id="menu_language_hu" data-t="basic.lang_hu">
                                                 Magyar
                                             </p>
                                         </li>
                                         <li>
-                                            <p class="dropdown-item" onclick="changeLang('en')" id="menu_language_en">
+                                            <p class="dropdown-item" onclick="changeLang('en')" id="menu_language_en" data-t="basic.lang_en">
                                                 Angol
                                             </p>
                                         </li>
@@ -84,7 +84,7 @@
                             <!--Fiók dropdown cucc-->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.account">
                                     Fiók
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -98,12 +98,12 @@
 
                                     <div id="menu_login_register">
                                         <li>
-                                            <a class="dropdown-item" href="/auth/login">
+                                            <a class="dropdown-item" href="/auth/login" data-t="basic.login">
                                                 Bejelentkezés
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="/auth/register">
+                                            <a class="dropdown-item" href="/auth/register" data-t="basic.register">
                                                 Regisztráció
                                             </a>
                                         </li>
@@ -114,7 +114,7 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#" id="menu_logout_button">Kijelentkezés</a>
+                                            <a class="dropdown-item" href="#" id="menu_logout_button" data-t="basic.logout">Kijelentkezés</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -140,46 +140,46 @@
 
         <div class="tartalom">
             <div class="sajaturlbox box">
-                <h5>Saját link</h5>
+                <h5 data-t="user.own_url_title">Saját link</h5>
                 <p id="sajaturl" class="underline_hover"></p><br>
-                <button id="copyurl">Másolás</button>
+                <button id="copyurl" data-t="user.copy_url">Másolás</button>
             </div>
 
 
             <div class="nyelvkuki box">
-                <h5>Beállítások</h5>
+                <h5 data-t="user.settings">Beállítások</h5>
 
                 <div class="valaszto">
-                    <h6>Megjelenítési nyelv</h6>
+                    <h6 data-t="user.language_setting">Megjelenítési nyelv</h6>
                     <div id="valasztonyelv">
-                        <p id="magyar" class="option" onclick="changeCookieLang('hu')">Magyar</p>
+                        <p id="magyar" class="option" onclick="changeCookieLang('hu')" data-t="basic.lang_hu">Magyar</p>
                         <p>/</p>
-                        <p id="angol" class="option" onclick="changeCookieLang('en')">Angol</p>
+                        <p id="angol" class="option" onclick="changeCookieLang('en')" data-t="basic.lang_en">Angol</p>
                     </div>
                 </div>
 
                 <div class="valaszto">
-                    <h6>Speciális Sorozatok</h6>
+                    <h6 data-t="user.special_series_setting">Speciális Sorozatok</h6>
                     <div id="valasztospecial">
-                        <p id="lehetspecial" class="option" onclick="changeCookieSpecial('be')">Be</p>
+                        <p id="lehetspecial" class="option" onclick="changeCookieSpecial('be')" data-t="user.on">Be</p>
                         <p>/</p>
-                        <p id="nemlehetspecial" class="option" onclick="changeCookieSpecial('ki')">Ki</p>
+                        <p id="nemlehetspecial" class="option" onclick="changeCookieSpecial('ki')" data-t="user.off">Ki</p>
                     </div>
                 </div>
 
             </div>
 
             <div class="helpbox box">
-                <h5>Kérdés / Ajánlás / Segítség</h5>
+                <h5 data-t="user.question_recomendation_help">Kérdés / Ajánlás / Segítség</h5>
                 
-                <p>Ezeket mind meg tudod tenni <a href="mailto:rolo.kiss.09@gmail.com" class="inline_a">emailben, ide kattintva</a>.
-                <p>Vagy akár az <a href="https://kissroland.hu/links" target="_blank" rel="noopener noreferrer" class="inline_a">elérhetőségeim</a> bármelyikében.</p>
+                <p data-t="user.question_recomendation_help_box_text1" data-ttype="innerhtml">Ezeket mind meg tudod tenni <a href="mailto:rolo.kiss.09@gmail.com" class="inline_a">emailben, ide kattintva</a>.</p>
+                <p data-t="user.question_recomendation_help_box_text2" data-ttype="innerhtml">Vagy akár az <a href="https://kissroland.hu/links" target="_blank" rel="noopener noreferrer" class="inline_a">elérhetőségeim</a> bármelyikében.</p>
             </div>
 
             <div class="infobox box">
-                <h5>Információ</h5>
+                <h5 data-t="basic.info">Információ</h5>
                 
-                <p>Ezt a weboldalt <a href="https://kissroland.hu/" target="_blank" rel="noopener noreferrer" class="inline_a">Rolo</a> csinálta.
+                <p data-t="user.info_box_text1" data-ttype="innerhtml">Ezt a weboldalt <a href="https://kissroland.hu/" target="_blank" rel="noopener noreferrer" class="inline_a">Rolo</a> csinálta.
                 <br>Ez csak egy egyszerű projekt saját célra</p>
             </div>
         </div>
@@ -190,7 +190,7 @@
         <h2 id="koszonto2"></h2>
 
         <div id="movies_list">
-            <p class="info">Nincs itt semmi, nem adott hozzá semmit az illető</p>
+            <p class="info" data-t="user.movie_info">Nincs itt semmi, nem adott hozzá semmit az illető</p>
         </div>
     </div>
 

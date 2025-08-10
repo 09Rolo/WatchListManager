@@ -1,0 +1,160 @@
+{
+	"basic": {
+		"menu": "Menü",
+		"homepage": "Főoldal",
+		"account": "Fiók",
+		"login": "Bejelentkezés",
+		"register": "Regisztráció",
+		"logout": "Kijelentkezés",
+		"info": "Információ",
+		"series": "Sorozatok",
+		"movies": "Filmek",
+		"details": "Adatlap",
+
+		"movies_language": "Nyelv",
+		"series_language": "Nyelv",
+		"lang_hu": "Magyar",
+		"lang_en": "Angol",
+		"release_date": "Megjelenés: ",
+		"search_placeholder": "Kezdj el írni"
+	},
+
+
+	"notifs": {
+		"nothing_releases_this_month": "Ebben a hónapban nem jelenik meg semmi!",
+
+		"no_new_pass_and_email": "Írd be az új jelszót és az email címedet!",
+		"need_email": "Írd be az email címedet",
+
+		"Lejárt a munkaidő": "Lejárt a munkaidő",
+		"Érvénytelen email formátum": "Érvénytelen email formátum",
+		"A felhasználónévnek 3 és 15 karakter között kell lennie, space nélkül, Illetve csak pont és alsóvonal használható": "A felhasználónévnek 3 és 15 karakter között kell lennie, space nélkül, Illetve csak pont és alsóvonal használható",
+		"A jelszónak legalább 6 karakter hosszúnak kell lennie": "A jelszónak legalább 6 karakter hosszúnak kell lennie",
+		"Sikeres regisztráció!": "Sikeres regisztráció!",
+		"Jelentkezz be!": "Jelentkezz be!",
+		"Már létezik ilyen ember": "Már létezik ilyen ember",
+		"Helytelen adatok": "Helytelen adatok",
+		"Helytelen jelszó": "Helytelen jelszó",
+		"Sikeres bejelentkezés": "Sikeres bejelentkezés",
+		"Engedély megtagadva": "Engedély megtagadva",
+		"Helytelen token": "Helytelen token",
+		"Sikeresen megváltoztatva!": "Sikeresen megváltoztatva!",
+		"Nemsokára elküldjük a linket": "Nemsokára elküldjük a linket",
+		"Már kaptál egy linket": "Már kaptál egy linket",
+		"Még nem regisztráltál": "Még nem regisztráltál",
+		"Elküldtük az email címre a linket!": "Elküldtük az email címre a linket!",
+		"Sikeresen megváltoztatva, Mostmár bejelentkezhetsz!": "Sikeresen megváltoztatva, Mostmár bejelentkezhetsz!",
+		"Már nem érvényes a link vagy rossz email címet adtál meg": "Már nem érvényes a link vagy rossz email címet adtál meg",
+
+		"Siker": "Siker",
+		"Hiba": "Hiba",
+		"Szerver hiba": "Szerver hiba"
+	},
+
+
+    "homepage": {
+		"manage_series": "Sorozatok kezelése",
+		"manage_movies": "Filmek kezelése",
+		"menu_info_button": "Részletek",
+
+		"welcome": "Üdvözöllek a weboldalon! 😁",
+		"info_text1": "Ez a weboldal a számontartás érdekében jött létre. Itt kezelni tudod a megnézett epizódokat egy sorozatból, vagy akár a filmeket is amelyeket már láttál, vagy látni szeretnél.",
+		"info_text2": "A filmes kívánságlistádat megoszthatod barátaiddal is, így egy esti filmnézéshez közösen is tudtok filmet választani.",
+		"info_text3": "Igyekesztem rengeteg hasznos dolgot beépíteni a weboldalba. Így az előzeteseket is megtalálod illetve egy pár linket is ha esetleg online ingyenesen szeretnéd nézni a tartalmat.",
+
+		"series_card_text": "Kezeld a sorozatokat amelyeket éppen nézel, amelyeket szeretnél nézni, vagy épp amelyeket láttál.",
+		"series_card_button_not_logged_in": "Jelentkezz be a kezdéshez",
+		"series_card_button_logged_in": "Kezeld őket itt",
+
+		"movies_card_text": "Kezeld a filmeket amelyeket láttál, és amelyeket szeretnél megnézni. A fiók menüpont alatt található linkkel megoszthatod ezeket másokkal is.",
+		"movies_card_button_not_logged_in": "Jelentkezz be a kezdéshez",
+		"movies_card_button_logged_in": "Kezeld őket itt",
+
+
+		"timeline_title": "Megjelenések",
+		"timeline_releasing_today": "Ma jelenik meg!",
+		"timeline_multiple_releases": "Több megjelenés!",
+
+		"monday": "Hétfő",
+		"monday_short": "H",
+		"tuesday": "Kedd",
+		"tuesday_short": "K",
+		"wednesday": "Szerda",
+		"wednesday_short": "Sze",
+		"thursday": "Csütörtök",
+		"thursday_short": "Cs",
+		"friday": "Péntek",
+		"friday_short": "P",
+		"saturday": "Szombat",
+		"saturday_short": "Szo",
+		"sunday": "Vasárnap",
+		"sunday_short": "V"
+  	},
+
+
+	"auth": {
+		"back_to_home": "Vissza a főoldalra",
+
+		"already_has_account": "Már van fiókod?",
+		"login_text": "Jelentkezz be",
+		"email_title": "Email cím",
+		"password_title": "Jelszó",
+		"forgot_password": "Elfelejtettem a jelszavam",
+
+		"doesent_have_account": "Még nincs fiókod?",
+		"register_text": "Regisztrálj",
+		"username_title": "Felhasználónév",
+
+		"recover_title": "Jelszó visszaállítása",
+		"new_pass_title": "Új jelszó",
+		"recover_button": "Jelszó visszaállítása"
+	},
+
+
+	"user": {
+		"own_url_title": "Saját link",
+		"copy_url": "Másolás",
+		"settings": "Beállítások",
+		"language_setting": "Nyelv",
+		"special_series_setting": "Speciális Sorozatok",
+		"on": "Be",
+		"off": "Ki",
+		"question_recomendation_help": "Kérdés / Ajánlás / Segítség",
+		"question_recomendation_help_box_text1": "Ezeket mind meg tudod tenni <a href='mailto:rolo.kiss.09@gmail.com' class='inline_a'>emailben, ide kattintva</a>.",
+		"question_recomendation_help_box_text2": "Vagy akár az <a href='https://kissroland.hu/links' target='_blank' rel='noopener noreferrer' class='inline_a'>elérhetőségeim</a> bármelyikében.",
+		"info_box_text1": "Ezt a weboldalt <a href='https://kissroland.hu/' target='_blank' rel='noopener noreferrer' class='inline_a'>Rolo</a> csinálta.<br>Ez csak egy egyszerű projekt saját célra",
+		"movie_info": "Nincs itt semmi, nem adott hozzá semmit az illető",
+		"welcome": "Üdvözlet",
+		"wishlist": "kívánságlistája:"
+	},
+
+
+	"movies": {
+		"title": "Filmek",
+		"searched_movies": "Keresett Filmek",
+		"nothing_here": "Nincs itt semmi, írj be valamit a keresőbe",
+		"nothing_here_mymovies": "Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből",
+		"own_movies": "Saját Filmek",
+
+		"wishlisted_movies_btn_hide": "Kívánságlistás filmeid elrejtése",
+		"wishlisted_movies_btn_show": "Kívánságlistás filmeid megjelenítése",
+		"watched_movies_btn_hide": "Megnézett filmeid elrejtése",
+		"watched_movies_btn_show": "Megnézett filmeid megjelenítése"
+	},
+
+
+	"series": {
+		"title": "Sorozatok",
+		"searched_series": "Keresett Sorozatok",
+		"nothing_here": "Nincs itt semmi, írj be valamit a keresőbe",
+		"nothing_here_myseries": "Nincs itt semmi, adj hozzá valamit a fiókodhoz a keresésekből",
+		"own_series": "Saját Sorozatok",
+
+		"started_series_btn_hide": "Elkezdett sorozataid elrejtése",
+		"started_series_btn_show": "Elkezdett sorozataid megjelenítése",
+		"wishlisted_series_btn_hide": "Kívánságlistás sorozataid elrejtése",
+		"wishlisted_series_btn_show": "Kívánságlistás sorozataid megjelenítése",
+		"watched_series_btn_hide": "Megnézett sorozataid elrejtése",
+		"watched_series_btn_show": "Megnézett sorozataid megjelenítése"
+	}
+}

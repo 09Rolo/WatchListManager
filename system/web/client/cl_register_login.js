@@ -30,7 +30,7 @@ async function login(details, donotify) {
 
 
         if (!donotify || donotify != "no-notify") {
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         }
     } catch(e) {
         console.log("Error:", e)
@@ -55,7 +55,7 @@ async function checkLogin(token) {
             if (response.ok) {
                 return true
             } else {
-                notify("Lejárt a munkaidő", "error")
+                notify(t("notifs.Lejárt a munkaidő"), "error")
                 localStorage.removeItem("token");
                 return false
             }
@@ -86,7 +86,7 @@ async function register(details, donotify) {
         const result = await response.json()
 
         if (!donotify || donotify != "no-notify") {
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         }
 
     } catch(e) {

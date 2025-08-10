@@ -56,7 +56,7 @@ window.onload = async () => {
         if (response.ok) {
             API_KEY = result.apiKey
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     
     } catch(e) {
@@ -100,21 +100,21 @@ function alapok() {
             profile.style.display = ""
     
     
-            koszonto1.innerHTML = `Üdvözlet ${decodeURIComponent(JSON.parse(localStorage.getItem("user")).username)}!`
+            koszonto1.innerHTML = `${t("user.welcome")} ${decodeURIComponent(JSON.parse(localStorage.getItem("user")).username)}!`
             displayProfile()
     
         } else {
             profile.style.display = "none"
             filmek.style.display = ""
     
-            koszonto2.innerHTML = `${decodeURIComponent(window.location.pathname.split("/")[2])} kívánságlistája:`
+            koszonto2.innerHTML = `${decodeURIComponent(window.location.pathname.split("/")[2])} ${t("user.wishlist")}`
             getWishlisted()
         }
     } else {
         profile.style.display = "none"
         filmek.style.display = ""
 
-        koszonto2.innerHTML = `${decodeURIComponent(window.location.pathname.split("/")[2])} kívánságlistája:`
+        koszonto2.innerHTML = `${decodeURIComponent(window.location.pathname.split("/")[2])} ${t("user.wishlist")}`
         getWishlisted()
     }
     
@@ -273,6 +273,8 @@ function manageLang() {
     if (getLanguageCookie() != null && !section) {
         language = getLanguageCookie()
     }
+
+    loadTranslations(language)
 }
 
 manageLang()
@@ -356,11 +358,11 @@ async function displayFilmek() {
                         <h5 class="card-title"><b>${adatok.title}</b></h5>
                         <i class="bi bi-journal-arrow-up showtexticon"></i>
                         <p class="card-text">${adatok.overview}</p>
-                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button">Adatlap</a>
+                        <a href="#" id="${adatok.id}" class="btn btn-primary adatlap-button" data-t="basic.details">Adatlap</a>
                         <p class="rating" style="color: ${ratingColor(adatok.vote_average)};">${Math.round(adatok.vote_average * 100) / 100}</p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-body-secondary">Megjelenés: ${adatok.release_date}</small>
+                        <small class="text-body-secondary" data-t="basic.release_date" data-ttype="innerhtml">Megjelenés: </small>${adatok.release_date}
                     </div>
                 </div>
             `
@@ -377,5 +379,7 @@ async function displayFilmek() {
     setUpcomingErtekelesCucc()
 
     checkImgLoaded()
+
+    loadTranslations(language)
 }
 

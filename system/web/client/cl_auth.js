@@ -266,13 +266,13 @@ document.getElementById("forgetpassbtn").onclick = async () => {
 
             const result = await response.json()
 
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
 
         } catch(e) {
             console.log("Error: ", e)
         }
     } else {
-        notify("Írd be az email címedet", "info")
+        notify(t("notifs.need_email"), "info")
     }
 }
 
@@ -306,7 +306,7 @@ async function doTheRecovering() {
 
             const result = await response.json()
 
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
 
             window.location.search = ""
             window.location.pathname = "/"
@@ -315,7 +315,7 @@ async function doTheRecovering() {
             console.log("Error: ", e)
         }
     } else {
-        notify("Írd be az új jelszót és az email címedet!", "error")
+        notify(t("notifs.no_new_pass_and_email"), "error")
     }
     
 }
@@ -367,3 +367,17 @@ function giveEnterAFunction() {
 }
 
 giveEnterAFunction()
+
+
+
+var language = 'hu'
+
+function manageLang() {
+    if (getLanguageCookie() != null) {
+        language = getLanguageCookie()
+
+        loadTranslations(language)
+    }
+}
+
+manageLang()

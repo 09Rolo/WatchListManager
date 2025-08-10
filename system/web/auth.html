@@ -32,61 +32,61 @@
     <div class="container" id="register_login_container">
         <div id="vissza" class="cant_select">
             <span>&larrhk;</span>
-            <p>Vissza a főoldalra</p>
+            <p data-t="auth.back_to_home">Vissza a főoldalra</p>
         </div>
 
         <div id="login_side">
             <div id="login_small" class="small cant_select">
-                <h2>Már van fiókod?</h2>
-                <button id="switch_to_login">Jelentkezz be</button>
+                <h2 data-t="auth.already_has_account">Már van fiókod?</h2>
+                <button id="switch_to_login" data-t="auth.login_text">Jelentkezz be</button>
             </div>
 
             <div id="login_big" class="big cant_select">
-                <h2>Jelentkezz be</h2>
+                <h2 data-t="auth.login_text">Jelentkezz be</h2>
 
                 <label for="email_l">
                     <input type="email" name="email" id="email_l" minlength="5" placeholder=" ">
-                    <span>Email cím</span>
+                    <span data-t="auth.email_title">Email cím</span>
                 </label>
 
                 <label for="password_l" class="password-container">
                     <input type="password" name="password" id="password_l" minlength="5" placeholder=" ">
-                    <span>Jelszó</span>
+                    <span data-t="auth.password_title">Jelszó</span>
                     <button type="button" class="toggle-password" data-target="password_l">🙈</button>
                 </label>
 
-                <input type="submit" value="Bejelentkezés" id="login_button">
+                <input type="submit" data-t="basic.login" data-ttype="value" value="Bejelentkezés" id="login_button">
                 <hr>
-                <button id="forgetpassbtn">Elfelejtettem a jelszavam</button>
+                <button id="forgetpassbtn" data-t="auth.forgot_password">Elfelejtettem a jelszavam</button>
             </div>
         </div>
 
 
         <div id="register_side">
             <div id="register_small" class="small cant_select">
-                <h2>Még nincs fiókod?</h2>
-                <button id="switch_to_register">Regisztrálj egyet</button>
+                <h2 data-t="auth.doesent_have_account">Még nincs fiókod?</h2>
+                <button id="switch_to_register" data-t="auth.register_text">Regisztrálj egyet</button>
             </div>
 
             <div id="register_big" class="big cant_select">
-                <h2>Regisztrálj egy fiókot</h2>
+                <h2 data-t="auth.register_text">Regisztrálj egy fiókot</h2>
                 <label for="email_r">
                     <input type="email" name="email" id="email_r" minlength="5" placeholder=" ">
-                    <span>Email cím</span>
+                    <span data-t="auth.email_title">Email cím</span>
                 </label>
 
                 <label for="username_r">
                     <input type="text" name="username" id="username_r" minlength="2" placeholder=" ">
-                    <span>Felhasználónév</span>
+                    <span data-t="auth.username_title">Felhasználónév</span>
                 </label>
 
                 <label for="password_r" class="password-container">
                     <input type="password" name="password" id="password_r" minlength="5" placeholder=" ">
-                    <span>Jelszó</span>
+                    <span data-t="auth.password_title">Jelszó</span>
                     <button type="button" class="toggle-password" data-target="password_r">🙈</button>
                 </label>
 
-                <input type="submit" value="Regisztráció" id="register_button">
+                <input type="submit" data-t="basic.register" data-ttype="value" value="Regisztráció" id="register_button">
             </div>
         </div>
     </div>
@@ -94,20 +94,20 @@
 
     <div id="recoverThings" style="display: none;">
         <div id="recover" class="big cant_select">
-            <h2>Jelszó visszaállítása</h2>
+            <h2 data-t="auth.recover_title">Jelszó visszaállítása</h2>
 
             <label for="email_recover">
                 <input type="email" name="email" id="email_recover" minlength="5" placeholder=" ">
-                <span>Email cím</span>
+                <span data-t="auth.email_title">Email cím</span>
             </label>
 
             <label for="password_recover" class="password-container">
                 <input type="password" name="password" id="password_recover" minlength="5" placeholder=" ">
-                <span>Új jelszó</span>
+                <span data-t="auth.new_pass_title">Új jelszó</span>
                 <button type="button" class="toggle-password" data-target="password_recover">🙈</button>
             </label>
 
-            <input type="submit" value="Jelszó visszaállítása" id="recover_button">
+            <input type="submit" data-t="auth.recover_button" data-ttype="value" value="Jelszó visszaállítása" id="recover_button">
         </div>
     </div>
 
