@@ -1891,6 +1891,7 @@ async function addEpsToWatched() {
                 var epDate = new Date(json.air_date)
                 var currDate = new Date()
                 //console.log(json)
+                //console.log(currDate, epDate, currDate >= epDate, json.runtime, currDate >= epDate && json.runtime > 0)
 
                 if (currDate >= epDate && json.runtime > 0) {
                     try {
@@ -1919,6 +1920,9 @@ async function addEpsToWatched() {
                     } catch(e) {
                         console.log("Error:", e)
                     }
+                } else {
+                    isAdded = true //legyen true, hogy ne menjen tovább és gondolja, hogy special ep
+                    notify(t("notifs.Még nem jelent(ek) meg az epizód(ok)"), "error")
                 }
             }
         }
@@ -1928,31 +1932,66 @@ async function addEpsToWatched() {
         if (!isAdded) {
             //Valószínűleg a Special Seasonből való rész lett bejelölve
 
-            try {
-                var details = {
-                    user_id: JSON.parse(localStorage.user).user_id,
-                    media_id: id,
-                    media_type: "tv",
-                    ep_id: ep,
+            if (epDate) {
+                if (currDate >= epDate) {
+                    try {
+                        var details = {
+                            user_id: JSON.parse(localStorage.user).user_id,
+                            media_id: id,
+                            media_type: "tv",
+                            ep_id: ep,
+                        }
+                    
+                        const response = await fetch(`${location.origin}/addWatched`, {
+                            method: "POST",
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(details)
+                        })
+                    
+                        const result = await response.json()
+                    
+                        //notify(result.message, result.type)
+                        isAdded = true
+                    
+                    
+                        if(result.type == "success") {
+                            console.log("Siker")
+                        }
+                    } catch(e) {
+                        console.log("Error:", e)
+                    }
+                } else {
+                    notify(t("notifs.Még nem jelent(ek) meg az epizód(ok)"), "error")
                 }
-            
-                const response = await fetch(`${location.origin}/addWatched`, {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(details)
-                })
-            
-                const result = await response.json()
-            
-                //notify(result.message, result.type)
-                isAdded = true
-            
-            
-                if(result.type == "success") {
-                    console.log("Siker")
+            } else {
+                //null az epdate, valamiért tuti lesz ilyen sajna, még rész kihagyások is vannak ebbe a kurva api-ba, a 10. után jön a 13. rész :)))
+
+                try {
+                    var details = {
+                        user_id: JSON.parse(localStorage.user).user_id,
+                        media_id: id,
+                        media_type: "tv",
+                        ep_id: ep,
+                    }
+                
+                    const response = await fetch(`${location.origin}/addWatched`, {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(details)
+                    })
+                
+                    const result = await response.json()
+                
+                    //notify(result.message, result.type)
+                    isAdded = true
+                
+                
+                    if(result.type == "success") {
+                        console.log("Siker")
+                    }
+                } catch(e) {
+                    console.log("Error:", e)
                 }
-            } catch(e) {
-                console.log("Error:", e)
             }
         }
 
