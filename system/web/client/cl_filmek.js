@@ -52,7 +52,7 @@ async function loggedIn() {
         if (response.ok) {
             API_KEY = result.apiKey
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     
     } catch(e) {

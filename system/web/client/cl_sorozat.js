@@ -71,7 +71,7 @@ async function loggedIn() {
 
             getData()
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     
     } catch(e) {
@@ -121,6 +121,7 @@ menu_language_en.href = `/sorozat/${section}/en`
 
 
 var language = 'hu'
+var langcodes = "hu-HU"
 
 function manageLang() {
     const sectionParts = window.location.pathname.split("/")
@@ -133,9 +134,17 @@ function manageLang() {
     }
 
 
+    if (language == "en") {
+        langcodes = "en-US"
+    }
+
+
     if (getLanguageCookie() != null && !section) {
         language = getLanguageCookie()
     }
+
+
+    loadTranslations(language)
 }
 
 manageLang()
@@ -175,6 +184,7 @@ function getVeszoString(list, definialva) {
 
 
 
+/*
 function getProperStatus(status) {
     var visszamegy = status //alapból megkapja a saját értékét, aztán ha véletlen nem adtam hozzá max kiírja angolul
     
@@ -194,6 +204,7 @@ function getProperStatus(status) {
 
     return visszamegy
 }
+*/
 
 
 
@@ -209,9 +220,21 @@ async function getData() {
         console.log(adatok)
 
         if (adatok.last_air_date && adatok.status == "Ended") {
-            var idotartam = adatok.first_air_date + "-től | " + adatok.last_air_date + "-ig"
+            if (language == "hu") {
+                var idotartam = adatok.first_air_date + "-től | " + adatok.last_air_date + "-ig"
+            } else if(language == "en") {
+                var idotartam = `From ${adatok.first_air_date} | To ${adatok.last_air_date}`
+            } else {
+                var idotartam = `${adatok.first_air_date} | ${adatok.last_air_date}`
+            }
         } else {
-            var idotartam = adatok.first_air_date + "-től"
+            if (language == "hu") {
+                var idotartam = adatok.first_air_date + "-től"
+            } else if(language == "en") {
+                var idotartam = "From " + adatok.first_air_date
+            } else {
+                var idotartam = adatok.first_air_date + "- "
+            }
         }
 
 
@@ -237,11 +260,11 @@ async function getData() {
 
                             <div class="elsoszekcio">
                                 <p id="kategoriak"><span class="bold">${getVeszoString(adatok.genres)}</span></p>
-                                <p id="releasedate">Futamidő: <span class="bold">${idotartam}</span></p>
+                                <p id="releasedate">${t("cl_series.runtime")}: <span class="bold">${idotartam}</span></p>
 
                                 <div class="egybe">
-                                    <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
-                                    <p id="status">Státusz: <span class="bold">${getProperStatus(adatok.status)}</span></p>
+                                    <p id="originallang">${t("cl_series.original_language")}: <span class="bold">${adatok.original_language}</span></p>
+                                    <p id="status">${t("cl_series.state")}: <span class="bold">${t("cl_series." + adatok.status)}</span></p>
                                 </div>
                             </div>
                             <div class="masodikszekcio">
@@ -256,7 +279,7 @@ async function getData() {
 
 
                         <div id="extraInfoBox">
-                            <p id="keszito"><span class="bold">Készítő:</span> ${getVeszoString(adatok.created_by)}</p>
+                            <p id="keszito"><span class="bold">${t("cl_series.creator")}:</span> ${getVeszoString(adatok.created_by)}</p>
                             
                             <!--Egyéb fő crew? Rendező, író valami, nem tudom mik vannak, mehetnek ide üres p-ként aztán majd beleteszem jsel-->
                             <!-- -->
@@ -265,21 +288,21 @@ async function getData() {
                             <p id="vago"></p>
 
 
-                            <p id="network"><span class="bold">Csatorna:</span> ${getVeszoString(adatok.networks)}</p>
-                            <p id="production"><span class="bold">Gyártók:</span> ${getVeszoString(adatok.production_companies)}</p>
-                            <p id="beszeltnyelvek"><span class="bold">Beszélt nyelvek:</span> ${getVeszoString(adatok.spoken_languages)}</p>
+                            <p id="network"><span class="bold">${t("cl_series.network")}:</span> ${getVeszoString(adatok.networks)}</p>
+                            <p id="production"><span class="bold">${t("cl_series.production_companies")}:</span> ${getVeszoString(adatok.production_companies)}</p>
+                            <p id="beszeltnyelvek"><span class="bold">${t("cl_series.spoken_languages")}:</span> ${getVeszoString(adatok.spoken_languages)}</p>
 
 
-                            <button id="togglePersons" class="cant_select" data-allapot="closed">Stáb megjelenítése</button>
+                            <button id="togglePersons" class="cant_select" data-allapot="closed">${t("cl_series.show_credits")}</button>
 
                             <div id="stabLista" class="hidden">
                                 <div id="szereplok">
-                                    <h3>Szereplők</h3>
+                                    <h3>${t("cl_series.cast")}</h3>
                                     <!-- JSSEL IDE -->
                                 </div>
                                 <hr>
                                 <div id="keszitok">
-                                    <h3>Készítők</h3>
+                                    <h3>${t("cl_series.crew")}</h3>
                                     <!-- JSSEL IDE -->
                                 </div>
                             </div>
@@ -292,22 +315,22 @@ async function getData() {
                             <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
                             <a href="" target="_blank" rel="noopener noreferrer" id="serverLink"></a>
                             <hr>
-                            <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">Hivatalos oldala</span></a>
-                            <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">IMDB Keresés</span></a>
-                            <a href="https://www.google.com/search?q=${adatok.name}+teljes+részek+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold">Google Keresés</span></a>
+                            <a href="${adatok.homepage}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">${t("cl_series.series_homepage")}</span></a>
+                            <a href="https://www.google.com/search?q=imdb+${adatok.name}" target="_blank" rel="noopener noreferrer" id="imdblink_search"><span class="bold">${t("cl_series.imdb_search")}</span></a>
+                            <a href="https://www.google.com/search?q=${adatok.name}+teljes+részek+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold">${t("cl_series.google_search")}</span></a>
                             
                             <hr>
-                            <button id="collapse_button">Több link mutatása</button>
+                            <button id="collapse_button">${t("cl_series.show_multiple_links")}</button>
                             <div id="collapse_links">
                                 
                                 <a href="https://moviedrive.hu/filmek/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
                                 <a href="https://mozisarok.hu/search/${adatok.name}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
-                                <a href="https://ww.yesmovies.ag/search.html?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
-                                <a href="https://donkey.to/media/search?query=${adatok.name}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
+                                <a href="https://ww.yesmovies.ag/search.html?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus" data-t="basic.lang_en">Angol</span></a>
+                                <a href="https://donkey.to/media/search?query=${adatok.name}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus" data-t="basic.lang_en">Angol</span></a>
 
                                 <hr>
                                 <a href="https://animedrive.hu/search/?q=${adatok.name}" target="_blank" rel="noopener noreferrer">Animedrive.hu</a>
-                                <a href="https://9animetv.to/search?keyword=${adatok.name}" target="_blank" rel="noopener noreferrer">9Animetv.to <span class="kisbetus">Angol</span></a>
+                                <a href="https://9animetv.to/search?keyword=${adatok.name}" target="_blank" rel="noopener noreferrer">9Animetv.to <span class="kisbetus" data-t="basic.lang_en">Angol</span></a>
                                 <a href="https://magyaranime.eu/web/kereso/" target="_blank" rel="noopener noreferrer">Magyaranime.eu</a>
                             </div>
                             
@@ -331,11 +354,11 @@ async function getData() {
                             <div class="inputok">
                                 <div class="bevitel">
                                     <input type="text" name="link" id="link" placeholder="Link">
-                                    <button id="linkbutton">Link hozzáadása</button>
+                                    <button id="linkbutton" data-t="cl_series.add_link">Link hozzáadása</button>
                                 </div>
                                 <div class="bevitel">
                                     <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
-                                    <button id="notebutton">Jegyzet hozzáadása</button>
+                                    <button id="notebutton" data-t="cl_series.add_note">Jegyzet hozzáadása</button>
                                 </div>
                             </div>
                         </div>
@@ -347,15 +370,15 @@ async function getData() {
                 <img src="https://image.tmdb.org/t/p/original${adatok.poster_path}" id="posterimg" class="img-fluid">
 
                 <div class="videok">
-                    <button id="videokLoad_btn">Videók mutatása</button>
+                    <button id="videokLoad_btn" data-t="cl_series.show_videos">Videók mutatása</button>
                     <div class="bgpreventclickandfade"></div>
 
                     <div id="videok_container" class="hidden">
                         <span id="x_videok">X</span>
-                        <h5>Trailerek</h5>
+                        <h5 data-t="cl_series.trailers_title">Trailerek</h5>
                         <div id="trailers_container"></div>
                         <hr>
-                        <h5>Videók</h5>
+                        <h5 data-t="cl_series.videos_title">Videók</h5>
                         <div id="videos_container"></div>
                     </div>
                 </div>
@@ -367,7 +390,7 @@ async function getData() {
         const masodikresz = document.getElementById("masodikresz")
         masodikresz.innerHTML = `
                 <div class="general" id="general">
-                    <p id="num_of_s"><span>Évadok száma:</span> ${adatok.number_of_seasons}</p>
+                    <p id="num_of_s"><span data-t="cl_series.number_of_seasons">Évadok száma:</span> ${adatok.number_of_seasons}</p>
                     
                 </div>
 
@@ -404,43 +427,43 @@ async function getData() {
 
 
                 <div id="osszesito">
-                    <button id="osszesito_btn" onclick="showTable()">Összesítő táblázat</button>
+                    <button id="osszesito_btn" onclick="showTable()" data-t="cl_series.summary_table">Összesítő táblázat</button>
 
 
                     <div class="szinek" id="szinek" style="display: none;">
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Tökéletes</div>
+                            <div class="szinnev" data-t="cl_series.rating_awesome">Tökéletes</div>
                             <p>|</p>
                         </div>
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Kiváló</div>
+                            <div class="szinnev" data-t="cl_series.rating_great">Kiváló</div>
                             <p>|</p>
                         </div>
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Jó</div>
+                            <div class="szinnev" data-t="cl_series.rating_good">Jó</div>
                             <p>|</p>
                         </div>
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Átlagos</div>
+                            <div class="szinnev" data-t="cl_series.rating_regular">Átlagos</div>
                             <p>|</p>
                         </div>
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Rossz</div>
+                            <div class="szinnev" data-t="cl_series.rating_bad">Rossz</div>
                             <p>|</p>
                         </div>
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Szemét</div>
+                            <div class="szinnev" data-t="cl_series.rating_garbage">Szemét</div>
                             <p>|</p>
                         </div>
                         <div class="magyarazat">
                             <div class="szin"></div>
-                            <div class="szinnev">Nincs adat</div>
+                            <div class="szinnev" data-t="cl_series.rating_no_data">Nincs adat</div>
                         </div>
                     </div>
 
@@ -686,6 +709,8 @@ async function getData() {
         manageServerLink()
         idetifyHosszuSzoveg()
 
+        translatePage()
+
 
         dataAdded = true
 
@@ -705,13 +730,13 @@ async function getData() {
 
         if (ahossz_h != 0) {
             if (ahossz_m != 0) {
-                var ahossztext = ahossz_h + " óra " + ahossz_m + " perc"
+                var ahossztext = `${ahossz_h} ${t("basic.hours")} ${ahossz_m} ${t("basic.minutes")}`
             } else {
-                var ahossztext = ahossz_h + " óra"
+                var ahossztext = `${ahossz_h} ${t("basic.hours")}`
             }
         } else {
             if (ahossz_m != 0) {
-                var ahossztext = ahossz_m + " perc"
+                var ahossztext = `${ahossz_m} ${t("basic.minutes")}`
             } else {
                 var ahossztext = "0"
             }
@@ -719,8 +744,8 @@ async function getData() {
         
 
         document.getElementById("general").innerHTML += `
-            <p id="num_of_e"><span>Epizódok száma:</span> ${allEpisodes.length}</p>
-            <p id="num_of_mins"><span>Átlag hossz:</span> ${ahossztext}</p>
+            <p id="num_of_e"><span data-t="cl_series.number_of_all_episodes">Epizódok száma:</span> ${allEpisodes.length}</p>
+            <p id="num_of_mins"><span data-t="cl_series.average_length">Átlag hossz:</span> ${ahossztext}</p>
         `
 
 
@@ -731,7 +756,7 @@ async function getData() {
             if (!marVoltKoviAirDate) {
                 if (new Date(allEpisodes_jsonok[ep].air_date) > new Date()) {
                     document.getElementById("general").innerHTML += `
-                        <p id="kovi_ep_to_air"><span>Következő megjelenés:</span> ${allEpisodes_jsonok[ep].season_number}. évad ${allEpisodes_jsonok[ep].episode_number}. rész (${allEpisodes_jsonok[ep].air_date})</p>
+                        <p id="kovi_ep_to_air"><span data-t="cl_series.next_release">Következő megjelenés:</span> ${allEpisodes_jsonok[ep].season_number}. évad ${allEpisodes_jsonok[ep].episode_number}. rész (${allEpisodes_jsonok[ep].air_date})</p>
                     `
 
                     marVoltKoviAirDate = true
@@ -741,6 +766,7 @@ async function getData() {
 
     }
 
+    translatePage()
 }
 
 
@@ -772,7 +798,7 @@ async function checkWishlist(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     wishlistbeAddolva = localDate
 
                     return true
@@ -821,7 +847,7 @@ async function checkWatched(id) {
 
 
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
 
                     if (eloszorBasicDate == undefined || eloszorBasicDate > date) {
                         eloszorBasicDate = date
@@ -853,7 +879,7 @@ async function checkWatched(id) {
 
             fillInLastWatched(lastEpisodeWatched)
             //console.log(watchlistbeAddolvaUtoljara)
-            progressBars(episodesInMainSeasonsWatched.length, allEpisodes.length, "Látott epizódok")
+            progressBars(episodesInMainSeasonsWatched.length, allEpisodes.length, t("cl_series.seen_episodes"))
 
             checkWatchedMinutes()
 
@@ -900,7 +926,7 @@ async function checkLink(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     linkAddolva = localDate
 
                     return result.dataVissza[i].link_url
@@ -936,7 +962,7 @@ async function checkNote(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     noteFrissitve = localDate
 
                     return result.dataVissza[i].note
@@ -983,16 +1009,21 @@ async function wishlistManage() {
     if (isWishlisted) {
         wishlist.innerHTML = '<i class="bi bi-bookmark-dash-fill"></i>'
         wishlisttext.innerHTML = "Kivétel a kívánságlistából"
+        wishlisttext.dataset.t = "cl_series.remove_wishlist"
         document.body.style.backgroundColor = "var(--wishlisted)"
-        datumok.innerHTML += ` | Kívánságlistához adva: ${wishlistbeAddolva} | `
+        datumok.innerHTML += ` | ${t("cl_series.wishlisted_date")}: ${wishlistbeAddolva} | `
 
         wishlist.dataset.do = "remove"
     } else {
         wishlist.innerHTML = '<i class="bi bi-bookmark-plus-fill"></i>'
         wishlisttext.innerHTML = "Kívánságlistára rakás"
+        wishlisttext.dataset.t = "cl_series.add_wishlist"
 
         wishlist.dataset.do = "add"
     }
+
+
+    translatePage()
 }
 
 wishlistManage()
@@ -1005,26 +1036,32 @@ async function watchedManage() {
     if (isWatched == "vegig") {
         watched.innerHTML = '<i class="bi bi-file-excel-fill"></i>'
         watchedtext.innerHTML = "Jelölés nem befejezettnek"
+        watchedtext.dataset.t = "cl_series.mark_as_not_finished"
         document.body.style.backgroundColor = "var(--watched-series)"
-        datumok.innerHTML += `| Elkezdve: ${watchlistbeAddolvaEloszor} | | Megnézve: ${watchlistbeAddolvaUtoljara} | `
+        datumok.innerHTML += `| ${t("cl_series.started_date")}: ${watchlistbeAddolvaEloszor} | | ${t("cl_series.watched_date")}: ${watchlistbeAddolvaUtoljara} | `
 
         watched.dataset.do = "removeall"
 
     } else if(isWatched == "nem") {
         watched.innerHTML = '<i class="bi bi-file-check-fill"></i>'
         watchedtext.innerHTML = "Jelölés befejezettnek"
+        watchedtext.dataset.t = "cl_series.mark_as_finished"
 
         watched.dataset.do = "addall"
 
     } else if (isWatched == "elkezdte") {
         watched.innerHTML = '<i class="bi bi-file-check-fill"></i>'
         watchedtext.innerHTML = "Jelölés befejezettnek"
+        watchedtext.dataset.t = "cl_series.mark_as_finished"
         document.body.style.backgroundColor = "var(--started-series)"
-        datumok.innerHTML += ` | Elkezdve: ${watchlistbeAddolvaEloszor} | `
+        datumok.innerHTML += ` | ${t("cl_series.started_date")}: ${watchlistbeAddolvaEloszor} | `
 
         watched.dataset.do = "addall"
 
     }
+
+
+    translatePage()
 }
 
 watchedManage()
@@ -1037,18 +1074,23 @@ async function linkManage() {
 
     if (haslink) {
         sajaturl.href = haslink
-        sajaturl.innerHTML = '<span class="bold">Saját link</span>'
+        sajaturl.innerHTML = '<span class="bold" data-t="cl_series.own_url">Saját link</span>'
         linkbutton.innerHTML = "Link változtatása"
-        datumok.innerHTML += ` | Link adva: ${linkAddolva} | `
+        linkbutton.dataset.t = "cl_series.change_link"
+        datumok.innerHTML += ` | ${t("cl_series.link_added_date")}: ${linkAddolva} | `
 
         link.value = haslink
     } else {
         sajaturl.innerHTML = ""
     }
 
+
     link.addEventListener("focusin", () => {
         link.select()
     })
+
+
+    translatePage()
 }
 
 linkManage()
@@ -1062,7 +1104,8 @@ async function noteManage() {
     if (hasnote) {
         sajatnote.innerHTML = hasnote
         notebutton.innerHTML = "Jegyzet változtatása"
-        datumok.innerHTML += ` | Jegyzet frissítve: ${noteFrissitve} | `
+        notebutton.dataset.t = "cl_series.change_note"
+        datumok.innerHTML += ` | ${t("cl_series.note_updated_date")}: ${noteFrissitve} | `
 
         belepesnelNote = hasnote
         note.value = hasnote
@@ -1073,6 +1116,9 @@ async function noteManage() {
     } else {
         sajatnote.innerHTML = ""
     }
+
+
+    translatePage()
 }
 
 noteManage()
@@ -1099,7 +1145,7 @@ wishlist.onclick = async() => {
     
             const result = await response.json()
     
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
     
             if(result.type == "success") {
                 setTimeout(() => {
@@ -1125,7 +1171,7 @@ wishlist.onclick = async() => {
     
             const result = await response.json()
     
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
     
             if(result.type == "success") {
                 setTimeout(() => {
@@ -1197,7 +1243,7 @@ linkbutton.onclick = async() => {
         
             const result = await response.json()
         
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         
             if(result.type == "success") {
                 setTimeout(() => {
@@ -1225,7 +1271,7 @@ linkbutton.onclick = async() => {
             
                 const result = await response.json()
             
-                notify(result.message, result.type)
+                notify(t(result.message), result.type)
             
                 if(result.type == "success") {
                     setTimeout(() => {
@@ -1237,10 +1283,10 @@ linkbutton.onclick = async() => {
             }
 
         } else if(link.value == haslink) {
-            notify("A link ugyan az", "info")
+            notify(t("notifs.A link ugyan az"), "info")
 
         } else {
-            notify("Helytelen URL", "error")
+            notify(t("notifs.Helytelen URL"), "error")
         }
     }
 
@@ -1268,7 +1314,7 @@ notebutton.onclick = async() => {
         
             const result = await response.json()
         
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         
             if(result.type == "success") {
                 setTimeout(() => {
@@ -1279,7 +1325,7 @@ notebutton.onclick = async() => {
             console.log("Error:", e)
         }
     } else {
-        notify("Írj be valamit előtte", "error")
+        notify(t("notifs.Írj be valamit előtte"), "error")
     }
 
 }
@@ -1288,7 +1334,7 @@ notebutton.onclick = async() => {
 
 note.addEventListener("focusin", (e) => {
     note.innerHTML = ""
-    note.placeholder = "Jegyzet"
+    note.placeholder = t("cl_series.note")
 })
 
 
@@ -1308,13 +1354,18 @@ collapse_button.addEventListener("click", (e) => {
 
         collapse_links.style.height = "100%"
         collapse_button.innerHTML = "Kevesebb link mutatása"
+        collapse_button.dataset.t = "cl_series.hide_multiple_links"
 
     } else {
 
         collapse_links.style.height = "0px"
         collapse_button.innerHTML = "Több link mutatása"
+        collapse_button.dataset.t = "cl_series.show_multiple_links"
 
     }
+
+
+    translatePage()
 })
 
 
@@ -1428,7 +1479,7 @@ async function changeSeason(btn, seasonnum, eptoselect) {
 
         if (haveToClearSelection) {
             if (selectedEpisodes.length > 0) {
-                notify("Az összes kiválasztás törlődött", "info")
+                notify(t("notifs.Az összes kiválasztás törlődött"), "info")
 
                 document.querySelectorAll("td").forEach(tableep => {
                     if (tableep.style.border == "3px solid var(--red-theme)") {
@@ -1463,7 +1514,7 @@ async function changeSeason(btn, seasonnum, eptoselect) {
     } else {
 
         if (selectedEpisodes.length > 0) {
-            notify("Az összes kiválasztás törlődött", "info")
+            notify(t("notifs.Az összes kiválasztás törlődött"), "info")
         }
 
         selectedEpisodes = []
@@ -1504,6 +1555,9 @@ async function changeSeason(btn, seasonnum, eptoselect) {
         }
 
     }
+
+
+    translatePage()
 }
 
 
@@ -1558,9 +1612,9 @@ function loadSeasonData(s) {
         var hossz = 0
         
         if (toHoursAndMinutes(ep.runtime)["hours"] != 0) {
-            var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc(${ep.runtime}perc)`
+            var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["hours"]}</span> ${t("basic.hours")} ${toHoursAndMinutes(ep.runtime)["minutes"] != 0 ? `<span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> ${t("basic.minutes")} ` : ""}(${ep.runtime}${t("basic.minutes")})`
         } else {
-            var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> perc`
+            var hossz = `<span class="bold">${toHoursAndMinutes(ep.runtime)["minutes"]}</span> ${t("basic.minutes")}`
         }
 
         var epnumtext = ep.episode_number
@@ -1572,7 +1626,7 @@ function loadSeasonData(s) {
             } else {
                 countAfterMidSeason++
                 epnumtext = `${ep.episode_number} <span class="mid_season_secound_countdown">(${countAfterMidSeason-1})</span>`
-                overviewinfo = "<br><br><span class='extrainfo'>(Sok helyen külön töltik fel a seasont a felénél kettéosztva. Azért van a második számláló)</span>"
+                overviewinfo = "<br><br><span class='extrainfo' data-t='cl_series.extra_info_midSeasons'>(Sok helyen külön töltik fel a seasont a felénél kettéosztva. Azért van a második számláló)</span>"
             }
 
         }
@@ -1588,7 +1642,7 @@ function loadSeasonData(s) {
                         <p>${ep.name}</p>
                         <p>(${ep.air_date}, ${hossz})</p>
                         <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
-                        <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
+                        <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)" data-t="cl_series.overview">Áttekintés</button>
                     </div>
                     <div class="overview">
                         <p>${ep.overview}${overviewinfo}</p>
@@ -1604,10 +1658,10 @@ function loadSeasonData(s) {
                     <div class="data">
                         <p class="ep_num">${epnumtext}.</p>
                         <p>${ep.name}</p>
-                        <i>${ep.id}</i>
+                        <i>(DEV ONLY) Ep ID:${ep.id}</i>
                         <p>(${ep.air_date}, ${hossz})</p>
                         <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
-                        <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)">Áttekintés</button>
+                        <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)" data-t="cl_series.overview">Áttekintés</button>
                     </div>
                     <div class="overview">
                         <p>${ep.overview}${overviewinfo}</p>
@@ -1624,8 +1678,8 @@ function loadSeasonData(s) {
         <hr>
         <div class="alsoResz">
             <div class="buttons" id="kezelobtns" style="display: none;">
-                <button onclick="addEpsToWatched()">Jelölés megnézettnek</button>
-                <button onclick="removeEpsFromWatched()">Jelölés nem megnézettnek</button>
+                <button onclick="addEpsToWatched()" data-t="cl_series.mark_as_watched">Jelölés megnézettnek</button>
+                <button onclick="removeEpsFromWatched()" data-t="cl_series.mark_as_not_watched">Jelölés nem megnézettnek</button>
             </div>
 
             <div id="backBtnContainer">
@@ -1777,6 +1831,8 @@ function loadSeasonData(s) {
     setUpcomingErtekelesCucc()
     startEpsObserver()
     checkImgLoaded()
+
+    translatePage()
 
     container.scrollIntoView({ behavior: 'smooth' });
 
@@ -2064,7 +2120,7 @@ async function fillInLastWatched(ep_id) {
                     var generalcucc = document.getElementById("general")
                     generalcucc.innerHTML += `
                         <hr>
-                        <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
+                        <p id="last_seen"><span data-t="cl_series.last_watched_episode">Utoljára látott epizód:</span> ${season.episodes[s].season_number}. ${t("cl_series.season")} ${season.episodes[s].episode_number}. ${t("cl_series.episode")}</p>
                     `
                     marLetezik = true
                 }
@@ -2087,7 +2143,7 @@ async function fillInLastWatched(ep_id) {
                         var generalcucc = document.getElementById("general")
                         generalcucc.innerHTML += `
                             <hr>
-                            <p id="last_seen"><span>Utoljára látott epizód:</span> ${season.episodes[s].season_number}. évad  ${season.episodes[s].episode_number}. rész</p>
+                            <p id="last_seen"><span data-t="cl_series.last_watched_episode">Utoljára látott epizód:</span> ${season.episodes[s].season_number}. ${t("cl_series.season")}  ${season.episodes[s].episode_number}. ${t("cl_series.episode")}</p>
                         `
                     }
                 }
@@ -2096,6 +2152,9 @@ async function fillInLastWatched(ep_id) {
             }
         }
     }
+
+
+    translatePage()
 } 
 
 
@@ -2199,7 +2258,7 @@ async function checkWatchedMinutes() {
     }
 
 
-    progressBars(watchedMinutes, sumMinutes, "Eltöltött órák")
+    progressBars(watchedMinutes, sumMinutes, t("cl_series.spent_hours"))
 
     progressbarokadva = true
     
@@ -2212,19 +2271,19 @@ async function checkWatchedMinutes() {
 async function progressBars(current, max, title) {
     const progressionBox = document.getElementById("progressionbox")
 
-    if (title == "Eltöltött órák") {
+    if (title == t("cl_series.spent_hours")) {
         var currtime_h = toHoursAndMinutes(current).hours
         var currtime_m = toHoursAndMinutes(current).minutes
 
         if (currtime_h != 0) {
             if (currtime_m != 0) {
-                var currtext = currtime_h + " óra " + currtime_m + " perc"
+                var currtext = `${currtime_h} ${t("basic.hours")} ${currtime_m} ${t("basic.minutes")}`
             } else {
-                var currtext = currtime_h + " óra"
+                var currtext = `${currtime_h} ${t("basic.hours")}`
             }
         } else {
             if (currtime_m != 0) {
-                var currtext = currtime_m + " perc"
+                var currtext = `${currtime_m} ${t("basic.minutes")}`
             } else {
                 var currtext = "0"
             }
@@ -2236,13 +2295,13 @@ async function progressBars(current, max, title) {
 
         if (maxtime_h != 0) {
             if (maxtime_m != 0) {
-                var maxtext = maxtime_h + " óra " + maxtime_m + " perc"
+                var maxtext = `${maxtime_h} ${t("basic.hours")} ${maxtime_m} ${t("basic.minutes")}`
             } else {
-                var maxtext = maxtime_h + " óra"
+                var maxtext = `${maxtime_h} ${t("basic.hours")}`
             }
         } else {
             if (maxtime_m != 0) {
-                var maxtext = maxtime_m + " perc"
+                var maxtext = `${maxtime_m} ${t("basic.minutes")}`
             } else {
                 var maxtext = "0"
             }
@@ -2288,6 +2347,8 @@ async function progressBars(current, max, title) {
         `
     }
 
+
+    translatePage()
     
 }
 
@@ -2452,35 +2513,38 @@ async function putInVideok() {
         }
 
         if (videos_container.innerHTML == "") {
-            videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
+            videos_container.innerHTML = `<p>${t("cl_series.not_available_video")}</p>`
 
             videos_container.innerHTML += `
-                <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer">Videók keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_videos">Videók keresése YouTube-on</a>
             `
         } else {
 
             videos_container.innerHTML += `
                 <p></p>
-                <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer">További videók keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_more_videos">További videók keresése YouTube-on</a>
             `
         }
 
         if (trailers_container.innerHTML == "") {
-            trailers_container.innerHTML = `<p>Nincs elérhető trailer :(</p>`
+            trailers_container.innerHTML = `<p>${t("cl_series.not_available_trailer")}</p>`
 
             trailers_container.innerHTML += `
-                <a href="https://www.youtube.com/results?search_query=${seriesTitle}+trailer" target="_blank" rel="noopener noreferrer">Trailer keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}+trailer" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_trailers">Trailer keresése YouTube-on</a>
             `
         } else {
             
             trailers_container.innerHTML += `
                 <p></p>
-                <a href="https://www.youtube.com/results?search_query=${seriesTitle}+trailer" target="_blank" rel="noopener noreferrer">További trailerek keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${seriesTitle}+trailer" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_more_trailers">További trailerek keresése YouTube-on</a>
             `
         }
     } catch(e) {
         console.error(e)
     }
+
+
+    translatePage()
 
 }
 
@@ -2525,7 +2589,7 @@ if (getSpecialCookie() == "be") {
                     var navtartalom = document.getElementById("navtartalom")
                     
                     navtartalom.innerHTML += `
-                        <span class="navbar-text cant_select" id="nav_font"> | Normál Betűtípus |</span>
+                        <span class="navbar-text cant_select" id="nav_font"> | ${t("cl_series.normal_font")} |</span>
                     `
                     document.getElementById("nav_font").addEventListener("click", nav_fontButton)
 
@@ -2604,6 +2668,9 @@ if (getSpecialCookie() == "be") {
 
         }
     }
+
+
+    translatePage()
 }
 }
 
@@ -2619,12 +2686,12 @@ if (isSpecial){
 
     if (!tartalomadva) {
         navtartalom.innerHTML += `
-            <span class="navbar-text cant_select" id="nav_music"> | Zene megállítása | </span>
+            <span class="navbar-text cant_select" id="nav_music"> | ${t("cl_series.stop_music")} | </span>
         `
         tartalomadva = true
 
-        document.getElementById("nav_music").addEventListener("click", nav_musicbutton)
-        document.getElementById("nav_font").addEventListener("click", nav_fontButton) //valamiért megint meg kell adni az eventlistenert mert elbaszodik ha nem adom meg neki, fogalmam sincs miért
+        if (document.getElementById("nav_music")) {document.getElementById("nav_music").addEventListener("click", nav_musicbutton)}
+        if (document.getElementById("nav_font")) {document.getElementById("nav_font").addEventListener("click", nav_fontButton)} //valamiért megint meg kell adni az eventlistenert mert elbaszodik ha nem adom meg neki, fogalmam sincs miért
     }
     
     
@@ -2656,6 +2723,9 @@ if (isSpecial){
             nav_musicbutton("", true)
         })
     })
+
+
+    translatePage()
 }
 }
 
@@ -2679,9 +2749,9 @@ if (isSpecial) {
         })
         
         audioPlayed = false
-        nav_music.innerHTML = " | Zene lejátszása | "
+        nav_music.innerHTML = ` | ${t("cl_series.start_music")} | `
     } else {
-        if(nav_music.innerHTML == " | Zene megállítása | ") {
+        if(nav_music.innerHTML == ` | ${t("cl_series.stop_music")} | `) {
             var auds = document.querySelectorAll("audio")
                 
             auds.forEach(aud => {
@@ -2693,13 +2763,16 @@ if (isSpecial) {
             })
         
             audioPlayed = false
-            nav_music.innerHTML = " | Zene lejátszása | "
+            nav_music.innerHTML = ` | ${t("cl_series.start_music")} | `
         } else {
             utcsozene.play()
             audioPlayed = true
-            nav_music.innerHTML = " | Zene megállítása | "
+            nav_music.innerHTML = ` | ${t("cl_series.stop_music")} | `
         }
     }
+
+
+    translatePage()
 }
 }
 
@@ -2711,15 +2784,17 @@ if (isSpecial) {
     var currFont = document.body.style.fontFamily.split(",")[0]
 
     if (currFont == "specialSeriesFont") {
-        nav_font.innerHTML = " | Speciális Betűtípus | "
+        nav_font.innerHTML = ` | ${t("cl_series.special_font")} | `
         document.body.style.fontFamily = "var(--font-main)"
         document.body.classList.remove("specialFontosElem")
     } else {
-        nav_font.innerHTML = " | Normál Betűtípus | "
+        nav_font.innerHTML = ` | ${t("cl_series.normal_font")} | `
         document.body.style.fontFamily = "specialSeriesFont, sans-serif"
         document.body.classList.add("specialFontosElem")
     }
 
+
+    translatePage()
 }
 }
 
@@ -2762,9 +2837,12 @@ async function manageServerLink() {
 
     if (serverLinkURL != undefined) {
         //van link
-        serverLink.innerHTML = "<span class='bold'>Nézd itt</span>"
+        serverLink.innerHTML = `<span class='bold'>${t("cl_series.watch_here")}</span>`
         serverLink.href = `${window.origin}/watch/tv/${id}`
     }
+
+
+    translatePage()
 }
 
 
@@ -2813,39 +2891,31 @@ function toggleCastToWork() {
 
         if (togglePersons.dataset.allapot == "opened") {
             togglePersons.dataset.allapot = "closed"
-            togglePersons.innerText = "Stáb megjelenítése"
+            togglePersons.innerText = t("cl_series.show_credits")
 
             stabLista.classList.remove("showing")
 
         } else if (togglePersons.dataset.allapot == "closed") {
             togglePersons.dataset.allapot = "opened"
-            togglePersons.innerText = "Stáb elrejtése"
+            togglePersons.innerText = t("cl_series.hide_credits")
 
             stabLista.classList.add("showing")
         }
 
     })
+
+
+    translatePage()
 }
 
 
-
-var Magyarul = {
-    "Directing": "Rendező",
-    "Writing": "Író",
-    "Production": "Producer",
-    "Camera": "Operatőr",
-    "Editing": "Vágó",
-    "Art": "Látványtervező",
-    "Sound": "Hang",
-    "Costume & Make-Up": "Jelmez és smink",
-    "Visual Effects": "Vizuális effektek",
-    "Lighting": "Világítás",
-    "Crew": "Stábtag",
-    "Acting": "Szereplő és",
-}
 
 function getProperTranslation(string) {
-    return Magyarul[string] || string
+    if (t("basic." + string) == ("basic." + string)) {
+        return string
+    } else {
+        return t("basic." + string)
+    }
 }
 
 
@@ -2873,17 +2943,18 @@ function fillInPersons() {
         if (Persons.cast.length == 0) {
             szereplok.innerHTML += `
                 <div class="creditsTag cast">
-                    <h4>Sajnos nincs elérhető adat</h4>
-                    <h5><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer">Stáb keresése</a></h5>
+                    <h4 data-t="cl_series.no_available_data">Sajnos nincs elérhető adat</h4>
+                    <h5><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_credits">Stáb keresése</a></h5>
                 </div>
             `
         } else {
             szereplok.innerHTML += `
                 <div class="creditsTag cast">
-                    <h4><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer">További stáb keresése</a></h4>
+                    <h4><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_more_credits">További stáb keresése</a></h4>
                 </div>
             `
         }
+
 
 
         for (let cr in Persons.crew) {
@@ -2903,7 +2974,7 @@ function fillInPersons() {
             if (getProperTranslation(ember.known_for_department) == "Író") {
                 if (document.getElementById("iro").innerHTML == "") {
                     document.getElementById("iro").innerHTML += `
-                        <span class="bold">Író: </span> ${ember.name}
+                        <span class="bold" data-t="basic.Writing">Író: </span> ${ember.name}
                     `
                 } else {
                     document.getElementById("iro").innerHTML += `, ${ember.name}`
@@ -2914,7 +2985,7 @@ function fillInPersons() {
             if (ember.job == "Series Director") {
                 if (document.getElementById("rendezo").innerHTML == "") {
                     document.getElementById("rendezo").innerHTML += `
-                        <span class="bold">Rendező: </span> ${ember.name}
+                        <span class="bold" data-t="basic.Directing">Rendező: </span> ${ember.name}
                     `
                 } else {
                     document.getElementById("rendezo").innerHTML += `, ${ember.name}`
@@ -2925,7 +2996,7 @@ function fillInPersons() {
             if (ember.job == "Editor") {
                 if (document.getElementById("vago").innerHTML == "") {
                     document.getElementById("vago").innerHTML += `
-                        <span class="bold">Vágó: </span> ${ember.name}
+                        <span class="bold" data-t="basic.Editing">Vágó: </span> ${ember.name}
                     `
                 } else {
                     document.getElementById("vago").innerHTML += `, ${ember.name}`
@@ -2938,20 +3009,22 @@ function fillInPersons() {
         if (Persons.crew.length == 0) {
             keszitok.innerHTML += `
                 <div class="creditsTag crew">
-                    <h4>Sajnos nincs elérhető adat</h4>
-                    <h5><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer">Stáb keresése</a></h5>
+                    <h4 data-t="cl_series.no_available_data">Sajnos nincs elérhető adat</h4>
+                    <h5><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_credits">Stáb keresése</a></h5>
                 </div>
             `
         } else {
             keszitok.innerHTML += `
                 <div class="creditsTag crew">
-                    <h4><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer">További stáb keresése</a></h4>
+                    <h4><a href="https://www.google.com/search?q=${seriesTitle}+szereposztás" target="_blank" rel="noopener noreferrer" data-t="cl_series.search_for_more_credits">További stáb keresése</a></h4>
                 </div>
             `
         }
     }
 
+    
     toggleCastToWork()
+    translatePage()
 }
 
 

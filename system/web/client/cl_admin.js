@@ -351,7 +351,7 @@ async function setBtnFunction(btn) {
         
         const result = await response.json()
         
-        notify(result.message, result.type)
+        notify(t(result.message), result.type)
     } catch(e) {
         console.log("Error:", e)
     }
@@ -766,7 +766,7 @@ async function userManageOKButtonClicked(elemparent, mit) {
     
         const result = await response.json()
 
-        notify(result.message, result.type)
+        notify(t(result.message), result.type)
 
         if(result.type == "success") {
             setTimeout(() => {

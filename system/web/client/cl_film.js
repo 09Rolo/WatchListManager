@@ -57,7 +57,7 @@ async function loggedIn() {
 
             getData()
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     
     } catch(e) {
@@ -107,7 +107,7 @@ function getVeszoString(list, definialva) {
 }
 
 
-
+/*
 function getProperStatus(status) {
     var visszamegy = status //alapból megkapja a saját értékét, aztán ha véletlen nem adtam hozzá max kiírja angolul
     
@@ -125,7 +125,7 @@ function getProperStatus(status) {
 
     return visszamegy
 }
-
+*/
 
 
 
@@ -139,6 +139,7 @@ menu_language_en.href = `/film/${section}/en`
 
 
 var language = 'hu'
+var langcodes = "hu-HU"
 
 function manageLang() {
     const sectionParts = window.location.pathname.split("/")
@@ -151,9 +152,17 @@ function manageLang() {
     }
 
 
+    if (language == "en") {
+        langcodes = "en-US"
+    }
+
+
     if (getLanguageCookie() != null && !section) {
         language = getLanguageCookie()
     }
+
+
+    loadTranslations(language)
 }
 
 manageLang()
@@ -193,11 +202,11 @@ async function getData() {
 
                             <div class="elsoszekcio">
                                 <p id="kategoriak"><span class="bold">${getVeszoString(adatok.genres)}</span></p>
-                                <p id="hossz">Játékidő: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> óra <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> perc(${adatok.runtime}perc)</p>
-                                <p id="releasedate">Megjelenés: <span class="bold">${adatok.release_date}</span></p>
-                                <p id="originallang">Eredeti nyelv: <span class="bold">${adatok.original_language}</span></p>
-                                <p id="budget">Költségvetés: <span class="bold">${adatok.budget}$</span></p>
-                                <p id="status">Státusz: <span class="bold">${getProperStatus(adatok.status)}</span></p>
+                                <p id="hossz">${t("movie.runtime")}: <span class="bold">${toHoursAndMinutes(adatok.runtime)["hours"]}</span> ${t("basic.hours")} <span class="bold">${toHoursAndMinutes(adatok.runtime)["minutes"]}</span> ${t("basic.minutes")} (${adatok.runtime} ${t("basic.minutes")})</p>
+                                <p id="releasedate">${t("movie.release")}: <span class="bold">${adatok.release_date}</span></p>
+                                <p id="originallang">${t("movie.original_language")}: <span class="bold">${adatok.original_language}</span></p>
+                                <p id="budget">${t("movie.budget")}: <span class="bold">${adatok.budget}$</span></p>
+                                <p id="status">${t("movie.state")}: <span class="bold">${t("movie." + adatok.status)}</span></p>
                             </div>
 
                             <div class="masodikszekcio">
@@ -212,27 +221,27 @@ async function getData() {
 
 
                         <div id="extraInfoBox">
-                            <p id="kollekcio"><span class="bold">Kollekció:</span> ${adatok.belongs_to_collection ? adatok.belongs_to_collection.name : "Nincs"}</p>
+                            <p id="kollekcio"><span class="bold">${t("movie.collection")}:</span> ${adatok.belongs_to_collection ? adatok.belongs_to_collection.name : "Nincs"}</p>
 
                             <!--Egyéb fő crew? Rendező, író valami, nem tudom mik vannak, mehetnek ide üres p-ként aztán majd beleteszem jsel-->
                             <!-- -->
                             <p id="rendezo"></p>
                             <p id="vago"></p>
 
-                            <p id="production"><span class="bold">Gyártók:</span> ${getVeszoString(adatok.production_companies)}</p>
-                            <p id="beszeltnyelvek"><span class="bold">Beszélt nyelvek:</span> ${getVeszoString(adatok.spoken_languages)}</p>
+                            <p id="production"><span class="bold">${t("movie.production_companies")}:</span> ${getVeszoString(adatok.production_companies)}</p>
+                            <p id="beszeltnyelvek"><span class="bold">${t("movie.spoken_languages")}:</span> ${getVeszoString(adatok.spoken_languages)}</p>
 
 
-                            <button id="togglePersons" class="cant_select" data-allapot="closed">Stáb megjelenítése</button>
+                            <button id="togglePersons" class="cant_select" data-allapot="closed">${t("movie.show_credits")}</button>
 
                             <div id="stabLista" class="hidden">
                                 <div id="szereplok">
-                                    <h3>Szereplők</h3>
+                                    <h3>${t("movie.cast")}</h3>
                                     <!-- JSSEL IDE -->
                                 </div>
                                 <hr>
                                 <div id="keszitok">
-                                    <h3>Készítők</h3>
+                                    <h3>${t("movie.crew")}</h3>
                                     <!-- JSSEL IDE -->
                                 </div>
                             </div>
@@ -247,27 +256,27 @@ async function getData() {
                             <a href="" target="_blank" rel="noopener noreferrer" id="serverLink"></a>
                             <hr>
                             <a href="https://www.imdb.com/title/${adatok.imdb_id}" target="_blank" rel="noopener noreferrer" id="imdblink"><span class="bold">IMDB Link</span></a>
-                            <a href="https://www.google.com/search?q=${adatok.title}+teljes+film+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold">Google Keresés</span></a>
+                            <a href="https://www.google.com/search?q=${adatok.title}+teljes+film+magyarul+hd" target="_blank" rel="noopener noreferrer"><span class="bold" data-t="movie.google_search">Google Keresés</span></a>
                             
                             <hr>
                             <a href="https://moviedrive.hu/filmek/?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Moviedrive.hu</a>
                             <a href="https://mozisarok.hu/search/${adatok.title}" target="_blank" rel="noopener noreferrer">Mozisarok.hu</a>
                             <a href="https://hdmozi.hu/?s=${adatok.title}" target="_blank" rel="noopener noreferrer">HDMozi.hu</a>
                             <a href="https://filminvazio.cc/?s=${adatok.title}" target="_blank" rel="noopener noreferrer">FilmInvazio.cc</a>
-                            <a href="https://ww.yesmovies.ag/search.html?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus">Angol</span></a>
-                            <a href="https://donkey.to/media/search?query=${adatok.title}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus">Angol</span></a>
+                            <a href="https://ww.yesmovies.ag/search.html?q=${adatok.title}" target="_blank" rel="noopener noreferrer">Yesmovies.ag <span class="kisbetus" data-t="basic.lang_en">Angol</span></a>
+                            <a href="https://donkey.to/media/search?query=${adatok.title}" target="_blank" rel="noopener noreferrer">Donkey.to <span class="kisbetus" data-t="basic.lang_en">Angol</span></a>
 
                             <hr>
                             <div class="videok">
-                                <button id="videokLoad_btn">Videók mutatása</button>
+                                <button id="videokLoad_btn" data-t="movie.show_videos">Videók mutatása</button>
                                 <div class="bgpreventclickandfade"></div>
 
                                 <div id="videok_container" class="hidden">
                                     <span id="x_videok">X</span>
-                                    <h5>Trailerek</h5>
+                                    <h5 data-t="movie.trailers_title">Trailerek</h5>
                                     <div id="trailers_container"></div>
                                     <hr>
-                                    <h5>Videók</h5>
+                                    <h5 data-t="movie.videos_title">Videók</h5>
                                     <div id="videos_container"></div>
                                 </div>
                             </div>
@@ -290,11 +299,11 @@ async function getData() {
                             <div class="inputok">
                                 <div class="bevitel">
                                     <input type="text" name="link" id="link" placeholder="Link">
-                                    <button id="linkbutton">Link hozzáadása</button>
+                                    <button id="linkbutton" data-t="movie.add_link">Link hozzáadása</button>
                                 </div>
                                 <div class="bevitel">
                                     <textarea name="note" id="note" rows="2" maxlength="250">Jegyzet</textarea>
-                                    <button id="notebutton">Jegyzet hozzáadása</button>
+                                    <button id="notebutton" data-t="movie.add_note">Jegyzet hozzáadása</button>
                                 </div>
                             </div>
                         </div>
@@ -313,6 +322,8 @@ async function getData() {
         checkImgLoaded()
         getPersons()
         manageServerLink()
+
+        translatePage()
     }
 
 }
@@ -345,7 +356,7 @@ async function checkWishlist(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     wishlistbeAddolva = localDate
 
                     return true
@@ -381,7 +392,7 @@ async function checkWatched(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     watchlistbeAddolva = localDate
 
                     return true
@@ -417,7 +428,7 @@ async function checkLink(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     linkAddolva = localDate
 
                     return result.dataVissza[i].link_url
@@ -453,7 +464,7 @@ async function checkNote(id) {
             for(i in result.dataVissza) {
                 if (result.dataVissza[i].media_id == parseInt(id, 10)) {
                     var date = new Date(result.dataVissza[i].added_at); 
-                    var localDate = date.toLocaleDateString("hu-HU"); // Hungarian format (YYYY.MM.DD)
+                    var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
                     noteFrissitve = localDate
 
                     return result.dataVissza[i].note
@@ -500,16 +511,20 @@ async function wishlistManage() {
     if (isWishlisted) {
         wishlist.innerHTML = '<i class="bi bi-bookmark-dash-fill"></i>'
         wishlisttext.innerHTML = "Kivétel a kívánságlistából"
+        wishlisttext.dataset.t = "movie.remove_wishlist"
         document.body.style.backgroundColor = "var(--wishlisted)"
-        datumok.innerHTML += ` | Kívánságlistához adva: ${wishlistbeAddolva} | `
+        datumok.innerHTML += ` | ${t("movie.wishlisted_date")}: ${wishlistbeAddolva} | `
 
         wishlist.dataset.do = "remove"
     } else {
         wishlist.innerHTML = '<i class="bi bi-bookmark-plus-fill"></i>'
         wishlisttext.innerHTML = "Kívánságlistára rakás"
+        wishlisttext.dataset.t = "movie.add_wishlist"
 
         wishlist.dataset.do = "add"
     }
+
+    translatePage()
 }
 
 wishlistManage()
@@ -522,16 +537,20 @@ async function watchedManage() {
     if (isWatched) {
         watched.innerHTML = '<i class="bi bi-file-excel-fill"></i>'
         watchedtext.innerHTML = "Jelölés nem megnézettnek"
+        watchedtext.dataset.t = "movie.remove_watched"
         document.body.style.backgroundColor = "var(--watched)"
-        datumok.innerHTML += ` | Megnézve: ${watchlistbeAddolva} | `
+        datumok.innerHTML += ` | ${t("movie.watched_date")}: ${watchlistbeAddolva} | `
 
         watched.dataset.do = "remove"
     } else {
         watched.innerHTML = '<i class="bi bi-file-check-fill"></i>'
         watchedtext.innerHTML = "Jelölés megnézettnek"
+        watchedtext.dataset.t = "movie.add_watched"
 
         watched.dataset.do = "add"
     }
+
+    translatePage()
 }
 
 watchedManage()
@@ -544,9 +563,10 @@ async function linkManage() {
 
     if (haslink) {
         sajaturl.href = haslink
-        sajaturl.innerHTML = '<span class="bold">Saját link</span>'
+        sajaturl.innerHTML = '<span class="bold" data-t="movie.own_url">Saját link</span>'
         linkbutton.innerHTML = "Link változtatása"
-        datumok.innerHTML += ` | Link adva: ${linkAddolva} | `
+        linkbutton.dataset.t = "movie.change_link"
+        datumok.innerHTML += ` | ${t("movie.link_added_date")}: ${linkAddolva} | `
 
         link.value = haslink
     } else {
@@ -557,6 +577,9 @@ async function linkManage() {
     link.addEventListener("focusin", () => {
         link.select()
     })
+
+
+    translatePage()
 }
 
 linkManage()
@@ -570,7 +593,8 @@ async function noteManage() {
     if (hasnote) {
         sajatnote.innerHTML = hasnote
         notebutton.innerHTML = "Jegyzet változtatása"
-        datumok.innerHTML += ` | Jegyzet frissítve: ${noteFrissitve} | `
+        notebutton.dataset.t = "movie.change_note"
+        datumok.innerHTML += ` | ${t("movie.note_updated_date")}: ${noteFrissitve} | `
 
         belepesnelNote = hasnote
         note.value = hasnote
@@ -581,6 +605,9 @@ async function noteManage() {
     } else {
         sajatnote.innerHTML = ""
     }
+
+    
+    translatePage()
 }
 
 noteManage()
@@ -607,7 +634,7 @@ wishlist.onclick = async() => {
     
             const result = await response.json()
     
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
     
             if(result.type == "success") {
                 setTimeout(() => {
@@ -633,7 +660,7 @@ wishlist.onclick = async() => {
     
             const result = await response.json()
     
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
     
             if(result.type == "success") {
                 setTimeout(() => {
@@ -670,7 +697,7 @@ watched.onclick = async() => {
     
             const result = await response.json()
     
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
     
             if(result.type == "success") {
                 setTimeout(() => {
@@ -697,7 +724,7 @@ watched.onclick = async() => {
     
             const result = await response.json()
     
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
     
             if(result.type == "success") {
                 setTimeout(() => {
@@ -737,7 +764,7 @@ linkbutton.onclick = async() => {
         
             const result = await response.json()
         
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         
             if(result.type == "success") {
                 setTimeout(() => {
@@ -765,7 +792,7 @@ linkbutton.onclick = async() => {
             
                 const result = await response.json()
             
-                notify(result.message, result.type)
+                notify(t(result.message), result.type)
             
                 if(result.type == "success") {
                     setTimeout(() => {
@@ -777,10 +804,10 @@ linkbutton.onclick = async() => {
             }
             
         } else if(link.value == haslink) {
-            notify("A link ugyan az", "info")
+            notify(t("notifs.A link ugyan az"), "info")
 
         } else {
-            notify("Helytelen URL", "error")
+            notify(t("notifs.Helytelen URL"), "error")
         }
     }
 }
@@ -807,7 +834,7 @@ notebutton.onclick = async() => {
         
             const result = await response.json()
         
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         
             if(result.type == "success") {
                 setTimeout(() => {
@@ -818,7 +845,7 @@ notebutton.onclick = async() => {
             console.log("Error:", e)
         }
     } else {
-        notify("Írj be valamit előtte", "error")
+        notify(t("notifs.Írj be valamit előtte"), "error")
     }
 
 }
@@ -828,7 +855,7 @@ notebutton.onclick = async() => {
 
 note.addEventListener("focusin", (e) => {
     note.innerHTML = ""
-    note.placeholder = "Jegyzet"
+    note.placeholder = t("movie.note")
 })
 
 
@@ -966,28 +993,28 @@ async function putInVideok() {
 
 
         if (videos_container.innerHTML == "") {
-            videos_container.innerHTML = `<p>Nincs elérhető videó :(</p>`
+            videos_container.innerHTML = `<p>${t("movie.not_available_video")}</p>`
 
             videos_container.innerHTML += `
-                <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">Videók keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">${t("movie.search_for_videos")}</a>
             `
         } else {
             videos_container.innerHTML += `
                 <p></p>
-                <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">További videók keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}" target="_blank" rel="noopener noreferrer">${t("movie.search_for_more_videos")}</a>
             `
         }
 
         if (trailers_container.innerHTML == "") {
-            trailers_container.innerHTML = `<p>Nincs elérhető trailer :(</p>`
+            trailers_container.innerHTML = `<p>${t("movie.not_available_trailer")}</p>`
 
             trailers_container.innerHTML += `
-                <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">Trailer keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">${t("movie.search_for_trailers")}</a>
             `
         } else {
             trailers_container.innerHTML += `
                 <p></p>
-                <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">További trailerek keresése YouTube-on</a>
+                <a href="https://www.youtube.com/results?search_query=${movieTitle}+trailer" target="_blank" rel="noopener noreferrer">${t("movie.search_for_more_trailers")}</a>
             `
         }
     } catch(e) {
@@ -1036,9 +1063,12 @@ async function manageServerLink() {
 
     if (serverLinkURL != undefined) {
         //van link
-        serverLink.innerHTML = "<span class='bold'>Nézd itt</span>"
+        serverLink.innerHTML = `<span class='bold'>${t("movie.watch_here")}</span>`
         serverLink.href = `${window.origin}/watch/movie/${id}`
     }
+
+    
+    translatePage()
 }
 
 
@@ -1085,39 +1115,31 @@ function toggleCastToWork() {
 
         if (togglePersons.dataset.allapot == "opened") {
             togglePersons.dataset.allapot = "closed"
-            togglePersons.innerText = "Stáb megjelenítése"
+            togglePersons.innerText = t("movie.show_credits")
 
             stabLista.classList.remove("showing")
 
         } else if (togglePersons.dataset.allapot == "closed") {
             togglePersons.dataset.allapot = "opened"
-            togglePersons.innerText = "Stáb elrejtése"
+            togglePersons.innerText = t("movie.hide_credits")
 
             stabLista.classList.add("showing")
         }
 
     })
+
+
+    translatePage()
 }
 
 
-
-var Magyarul = {
-    "Directing": "Rendező",
-    "Writing": "Író",
-    "Production": "Producer",
-    "Camera": "Operatőr",
-    "Editing": "Vágó",
-    "Art": "Látványtervező",
-    "Sound": "Hang",
-    "Costume & Make-Up": "Jelmez és smink",
-    "Visual Effects": "Vizuális effektek",
-    "Lighting": "Világítás",
-    "Crew": "Stábtag",
-    "Acting": "Szereplő és",
-}
 
 function getProperTranslation(string) {
-    return Magyarul[string] || string
+    if (t("basic." + string) == ("basic." + string)) {
+        return string
+    } else {
+        return t("basic." + string)
+    }
 }
 
 
@@ -1145,14 +1167,14 @@ function fillInPersons() {
         if (Persons.cast.length == 0) {
             szereplok.innerHTML += `
                 <div class="creditsTag cast">
-                    <h4>Sajnos nincs elérhető adat</h4>
-                    <h5><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">Stáb keresése</a></h5>
+                    <h4>${t("movie.no_available_data")}</h4>
+                    <h5><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">${t("movie.search_for_credits")}</a></h5>
                 </div>
             `
         } else {
             szereplok.innerHTML += `
                 <div class="creditsTag cast">
-                    <h4><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">További stáb keresése</a></h4>
+                    <h4><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">${t("movie.search_for_more_credits")}</a></h4>
                 </div>
             `
         }
@@ -1175,7 +1197,7 @@ function fillInPersons() {
             if (ember.job == "Director") {
                 if (document.getElementById("rendezo").innerHTML == "") {
                     document.getElementById("rendezo").innerHTML += `
-                        <span class="bold">Rendező: </span> ${ember.name}
+                        <span class="bold">${t("basic.Directing")}: </span> ${ember.name}
                     `
                 } else {
                     document.getElementById("rendezo").innerHTML += `, ${ember.name}`
@@ -1186,7 +1208,7 @@ function fillInPersons() {
             if (ember.job == "Editor") {
                 if (document.getElementById("vago").innerHTML == "") {
                     document.getElementById("vago").innerHTML += `
-                        <span class="bold">Vágó: </span> ${ember.name}
+                        <span class="bold">${t("basic.Editing")}: </span> ${ember.name}
                     `
                 } else {
                     document.getElementById("vago").innerHTML += `, ${ember.name}`
@@ -1199,14 +1221,14 @@ function fillInPersons() {
         if (Persons.crew.length == 0) {
             keszitok.innerHTML += `
                 <div class="creditsTag crew">
-                    <h4>Sajnos nincs elérhető adat</h4>
-                    <h5><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">Stáb keresése</a></h5>
+                    <h4>${t("movie.no_available_data")}</h4>
+                    <h5><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">${t("movie.search_for_credits")}</a></h5>
                 </div>
             `
         } else {
             keszitok.innerHTML += `
                 <div class="creditsTag crew">
-                    <h4><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">További stáb keresése</a></h4>
+                    <h4><a href="https://www.google.com/search?q=${movieTitle}+szereposztás" target="_blank" rel="noopener noreferrer">${t("movie.search_for_more_credits")}</a></h4>
                 </div>
             `
         }

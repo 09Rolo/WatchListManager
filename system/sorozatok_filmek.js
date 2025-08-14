@@ -14,9 +14,9 @@ app.get("/getAPIinfo", async (req, res) => {
         const API_KEY = process.env.API_KEY
         const GOOGLE_API = process.env.GOOGLE_API
 
-        res.status(200).json({ message: "API adatok sikeresen lekérve", type: "success", apiKey: API_KEY, googleAPI: GOOGLE_API});
+        res.status(200).json({ message: "notifs.API adatok sikeresen lekérve", type: "success", apiKey: API_KEY, googleAPI: GOOGLE_API});
     } catch(e) {
-        res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+        res.status(401).json({ message: `Error: ${e}`, type: "error"})
     }
 });
 
@@ -43,24 +43,24 @@ app.post("/addWishlist", async (req, res) => {
                                         try {
                                             const addUser = db.query("INSERT INTO user_wishlist (user_id, movie_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                                 }
                                             })
                                             
                                         } catch(e) {console.log(e)}
                                     } else {
-                                        res.status(500).json({ message: "Már benne van a kívánságlistádban", type: "error"});
+                                        res.status(500).json({ message: "notifs.Már benne van a kívánságlistádban", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba 3", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
                         
                     } else {
-                        res.status(500).json({ message: "Már láttad ezt a filmet", type: "error"});
+                        res.status(500).json({ message: "notifs.Már láttad ezt a filmet", type: "error"});
                     }
                 }
             });
@@ -87,24 +87,24 @@ app.post("/addWishlist", async (req, res) => {
                                         try {
                                             const addUser = db.query("INSERT INTO user_wishlist (user_id, series_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                                 }
                                             })
                         
                                         } catch(e) {console.log(e)}
                                     } else {
-                                        res.status(500).json({ message: "Már benne van a kívánságlistádban", type: "error"});
+                                        res.status(500).json({ message: "notifs.Már benne van a kívánságlistádban", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
                         
                     } else {
-                        res.status(500).json({ message: "Már elkezdted nézni ezt a sorozatot", type: "error"});
+                        res.status(500).json({ message: "notifs.Már elkezdted nézni ezt a sorozatot", type: "error"});
                     }
                 }
             });
@@ -134,20 +134,20 @@ app.post("/removeWishlist", async (req, res) => {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
-                                        res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
                     } else {
-                        res.status(500).json({ message: "Nincs benne a kívánságlistában", type: "error"});
+                        res.status(500).json({ message: "notifs.Nincs benne a kívánságlistában", type: "error"});
                     }
                 } else {
-                    res.status(500).json({ message: "Hiba", type: "error"});
+                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                 }
             });              
         } catch (error) {
@@ -168,20 +168,20 @@ app.post("/removeWishlist", async (req, res) => {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
-                                        res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
                     } else {
-                        res.status(500).json({ message: "Nincs benne a kívánságlistában", type: "error"});
+                        res.status(500).json({ message: "notifs.Nincs benne a kívánságlistában", type: "error"});
                     }
                 } else {
-                    res.status(500).json({ message: "Hiba", type: "error"});
+                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                 }
             });              
         } catch (error) {
@@ -215,14 +215,14 @@ app.post("/getWishlist", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a kívánságlistán semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a kívánságlistán semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 
@@ -245,14 +245,14 @@ app.post("/getWishlist", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a kívánságlistán semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a kívánságlistán semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 });
@@ -286,18 +286,18 @@ app.post("/addWatched", async (req, res) => {
                                         try {
                                             const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                                 }
                                             })
                         
                                         } catch(e) {console.log(e)}
                                     } else {
-                                        res.status(500).json({ message: "Már benne van a megnézett listában", type: "error"});
+                                        res.status(500).json({ message: "notifs.Már benne van a megnézett listában", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
@@ -312,18 +312,18 @@ app.post("/addWatched", async (req, res) => {
                                         try {
                                             const addUser = db.query("INSERT INTO user_watched_movies (user_id, movie_id) VALUES (?, ?)", [user_id, media_id], function(err, result) {
                                                 if (!err) {
-                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                                 }
                                             })
                         
                                         } catch(e) {console.log(e)}
                                     } else {
-                                        res.status(500).json({ message: "Sikertelen törlés a kívánságlistából", type: "error"});
+                                        res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
@@ -355,18 +355,18 @@ app.post("/addWatched", async (req, res) => {
                                         try {
                                             const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id], function(err, result) {
                                                 if (!err) {
-                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                                 }
                                             })
                         
                                         } catch(e) {console.log(e)}
                                     } else {
-                                        res.status(500).json({ message: "Már benne van a megnézett listában", type: "error"});
+                                        res.status(500).json({ message: "notifs.Már benne van a megnézett listában", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
@@ -381,18 +381,18 @@ app.post("/addWatched", async (req, res) => {
                                         try {
                                             const addUser = db.query("INSERT INTO user_watched_episodes (user_id, series_id, episode_id) VALUES (?, ?, ?)", [user_id, media_id, ep_id], function(err, result) {
                                                 if (!err) {
-                                                    res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                                    res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                                 } else {
-                                                    res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                                 }
                                             })
                         
                                         } catch(e) {console.log(e)}
                                     } else {
-                                        res.status(500).json({ message: "Sikertelen törlés a kívánságlistából", type: "error"});
+                                        res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
@@ -426,20 +426,20 @@ app.post("/removeWatched", async (req, res) => {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
-                                        res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
                     } else {
-                        res.status(500).json({ message: "Nincs benne a megnézett listában", type: "error"});
+                        res.status(500).json({ message: "notifs.Nincs benne a megnézett listában", type: "error"});
                     }
                 } else {
-                    res.status(500).json({ message: "Hiba", type: "error"});
+                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                 }
             });              
         } catch (error) {
@@ -461,20 +461,20 @@ app.post("/removeWatched", async (req, res) => {
                                 if (!err) {
                                     if (result.affectedRows > 0) {
                                         //oksa
-                                        res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                        res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                     }
                                 } else {
-                                    res.status(500).json({ message: "Hiba", type: "error"});
+                                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                 }
                             });
                         } catch(e) {console.log(e)}
                     } else {
-                        res.status(500).json({ message: "Nincs benne a megnézett listában", type: "error"});
+                        res.status(500).json({ message: "notifs.Nincs benne a megnézett listában", type: "error"});
                     }
                 } else {
-                    res.status(500).json({ message: "Hiba", type: "error"});
+                    res.status(500).json({ message: "notifs.Hiba", type: "error"});
                 }
             });              
         } catch (error) {
@@ -508,14 +508,14 @@ app.post("/getWatched", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a megnézettek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a megnézettek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 
@@ -539,14 +539,14 @@ app.post("/getWatched", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a megnézettek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a megnézettek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 });
@@ -573,9 +573,9 @@ app.post("/changeLink", async (req, res) => {
                             try {
                                 const addUser = db.query("INSERT INTO user_links (user_id, movie_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url], function(err, result) {
                                     if (!err) {
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 })
                             
@@ -591,9 +591,9 @@ app.post("/changeLink", async (req, res) => {
                                     if(err) throw err;
 
                                     if (result.affectedRows > 0) {
-                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen megváltoztatva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
 
@@ -605,12 +605,12 @@ app.post("/changeLink", async (req, res) => {
                                     if (!err) {
                                         if (result.affectedRows > 0) {
                                             //oksa
-                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                            res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                         } else {
-                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                            res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                         }
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
                             } catch(e) {console.log(e)}
@@ -638,9 +638,9 @@ app.post("/changeLink", async (req, res) => {
                             try {
                                 const addUser = db.query("INSERT INTO user_links (user_id, series_id, link_url) VALUES (?, ?, ?)", [user_id, media_id, link_url], function(err, result) {
                                     if (!err) {
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 })
                             
@@ -656,9 +656,9 @@ app.post("/changeLink", async (req, res) => {
                                     if(err) throw err;
 
                                     if (result.affectedRows > 0) {
-                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen megváltoztatva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
 
@@ -670,12 +670,12 @@ app.post("/changeLink", async (req, res) => {
                                     if (!err) {
                                         if (result.affectedRows > 0) {
                                             //oksa
-                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                            res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                         } else {
-                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                            res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                         }
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
                             } catch(e) {console.log(e)}
@@ -716,14 +716,14 @@ app.post("/getLinks", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a linkek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a linkek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 
@@ -748,14 +748,14 @@ app.post("/getLinks", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a linkek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a linkek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 });
@@ -782,9 +782,9 @@ app.post("/changeNote", async (req, res) => {
                             try {
                                 const addUser = db.query("INSERT INTO user_notes (user_id, movie_id, note) VALUES (?, ?, ?)", [user_id, media_id, note], function(err, result) {
                                     if (!err) {
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 })
                                 
@@ -800,9 +800,9 @@ app.post("/changeNote", async (req, res) => {
                                     if(err) throw err;
 
                                     if (result.affectedRows > 0) {
-                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen megváltoztatva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
 
@@ -814,12 +814,12 @@ app.post("/changeNote", async (req, res) => {
                                     if (!err) {
                                         if (result.affectedRows > 0) {
                                             //oksa
-                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                            res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                         } else {
-                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                            res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                         }
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
                             } catch(e) {console.log(e)}
@@ -846,9 +846,9 @@ app.post("/changeNote", async (req, res) => {
                             try {
                                 const addUser = db.query("INSERT INTO user_notes (user_id, series_id, note) VALUES (?, ?, ?)", [user_id, media_id, note], function(err, result) {
                                     if (!err) {
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 })
                             
@@ -864,9 +864,9 @@ app.post("/changeNote", async (req, res) => {
                                     if(err) throw err;
 
                                     if (result.affectedRows > 0) {
-                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen megváltoztatva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
 
@@ -877,12 +877,12 @@ app.post("/changeNote", async (req, res) => {
                                     if (!err) {
                                         if (result.affectedRows > 0) {
                                             //oksa
-                                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                                            res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                                         } else {
-                                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                                            res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                                         }
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
                             } catch(e) {console.log(e)}
@@ -923,14 +923,14 @@ app.post("/getNotes", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a jegyzetek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a jegyzetek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 
@@ -955,14 +955,14 @@ app.post("/getNotes", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a jegyzetek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a jegyzetek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 });
@@ -990,9 +990,9 @@ app.post("/changeServerLink", async (req, res) => {
                             try {
                                 const addLink = db.query("INSERT INTO server_links (movie_id, link) VALUES (?, ?)", [media_id, link], function(err, result) {
                                     if (!err) {
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 })
 
@@ -1005,9 +1005,9 @@ app.post("/changeServerLink", async (req, res) => {
                                     if(err) throw err;
 
                                     if (result.affectedRows > 0) {
-                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen megváltoztatva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
 
@@ -1026,12 +1026,12 @@ app.post("/changeServerLink", async (req, res) => {
                     if (!err) {
                         if (result.affectedRows > 0) {
                             //oksa
-                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                            res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                         } else {
-                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                            res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                         }
                     } else {
-                        res.status(500).json({ message: "Hiba", type: "error"});
+                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                     }
                 });
             } catch(e) {console.log(e)}
@@ -1054,9 +1054,9 @@ app.post("/changeServerLink", async (req, res) => {
                             try {
                                 const addLink = db.query("INSERT INTO server_links (series_id, link) VALUES (?, ?)", [media_id, link], function(err, result) {
                                     if (!err) {
-                                        res.status(201).json({ message: "Sikeresen hozzáadva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen hozzáadva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba történt, próbáld meg újra", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 })
                             
@@ -1069,9 +1069,9 @@ app.post("/changeServerLink", async (req, res) => {
                                     if(err) throw err;
 
                                     if (result.affectedRows > 0) {
-                                        res.status(201).json({ message: "Sikeresen megváltoztatva", type: "success"});
+                                        res.status(201).json({ message: "notifs.Sikeresen megváltoztatva", type: "success"});
                                     } else {
-                                        res.status(500).json({ message: "Hiba", type: "error"});
+                                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                                     }
                                 });
 
@@ -1091,12 +1091,12 @@ app.post("/changeServerLink", async (req, res) => {
                     if (!err) {
                         if (result.affectedRows > 0) {
                             //oksa
-                            res.status(201).json({ message: "Sikeresen törölve", type: "success"});
+                            res.status(201).json({ message: "notifs.Sikeresen törölve", type: "success"});
                         } else {
-                            res.status(500).json({ message: "Sikertelen törlés", type: "error"});
+                            res.status(500).json({ message: "notifs.Sikertelen törlés", type: "error"});
                         }
                     } else {
-                        res.status(500).json({ message: "Hiba", type: "error"});
+                        res.status(500).json({ message: "notifs.Hiba", type: "error"});
                     }
                 });
             } catch(e) {console.log(e)}
@@ -1130,14 +1130,14 @@ app.post("/getServerLinks", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a linkek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a linkek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 
@@ -1161,14 +1161,14 @@ app.post("/getServerLinks", async (req, res) => {
 
                         res.status(200).json({ dataVissza });
                     } else {
-                        res.status(401).json({ message: "Nincs a linkek között semmi", type: "error"})
+                        res.status(401).json({ message: "notifs.Nincs a linkek között semmi", type: "error"})
                     }
                 } else {
-                    res.status(401).json({ message: "Hiba", type: "error"})
+                    res.status(401).json({ message: "notifs.Hiba", type: "error"})
                 }
             });
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 });
@@ -1188,13 +1188,13 @@ app.post("/listDIR", async (req, res) => {
     
     // Prevent path traversal
     if (!absolutePath.startsWith(BASE_DIR)) {
-        return res.status(403).json({ message: 'Engedély megtagadva!', type: "error" })
+        return res.status(403).json({ message: "notifs.Engedély megtagadva!", type: "error" })
     }
 
 
     fs.readdir(absolutePath, { withFileTypes: true }, (err, items) => {
         if (err) {
-            return res.status(500).json({ message: 'Hiba történt a mappa beolvasásánál', type: "error", hibaok: "esetleg file" })
+            return res.status(500).json({ message: "notifs.Hiba történt a mappa beolvasásánál", type: "error", hibaok: "esetleg file" })
         }
 
         const result = {
@@ -1232,7 +1232,7 @@ app.post("/videoKezeles", async (req, res) => {
 
     // Prevent path traversal
     if (!absoluteFilePath.startsWith(BASE_DIR)) {
-        return res.status(403).json({ message: 'Engedély megtagadva!', type: "error" });
+        return res.status(403).json({ message: "notifs.Engedély megtagadva!", type: "error" });
     }
 
 
@@ -1325,7 +1325,7 @@ app.get('/media/*', (req, res) => {
     res.sendFile(absoluteFilePath, err => {
         if (err) {
             if (!res.headersSent) {
-                return res.status(404).json({ message: 'A file nem található :(', type: "error" });
+                return res.status(404).json({ message: "notifs.A file nem található :(", type: "error" });
             }
         }
     });
@@ -1370,7 +1370,7 @@ app.post("/getSQLElozmenyek", async (req, res) => {
             });
 
         } catch(e) {
-            res.status(401).json({ message: `Hiba: ${e}`, type: "error"})
+            res.status(401).json({ message: `Error: ${e}`, type: "error"})
         }
     }
 });

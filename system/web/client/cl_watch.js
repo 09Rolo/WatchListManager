@@ -29,12 +29,27 @@ async function loggedIn() {
             API_KEY = result.apiKey
         
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     } catch(e) {
         console.error(e)
     }
 }
+
+
+var language = "hu"
+
+function manageLang() {
+    
+    if (getLanguageCookie() != null) {
+        language = getLanguageCookie()
+    }
+
+
+    loadTranslations(language)
+}
+
+manageLang()
 
 
 
@@ -212,6 +227,10 @@ function makeClickableDivs() {
 
 async function videoKezelese() {
     document.getElementById("boldInfo").innerHTML = "Kérlek szépen <span class='bigger'>várj</span> egy pár percet itt vagy vissza is jöhetsz később!"
+    document.getElementById("boldInfo").dataset.t = "watch.info_please_wait"
+    document.getElementById("boldInfo").dataset.ttype = "innerhtml"
+
+    translatePage()
 
 
     try {
@@ -260,7 +279,7 @@ async function videoKezelese() {
             window.location.pathname = newpath
 
         } else if (result.type) {
-            notify(result.message, result.type)
+            notify(t(result.message), result.type)
         }
             
     } catch(e) {
@@ -273,6 +292,8 @@ async function videoKezelese() {
 async function createVid(videoSRC) {
     document.getElementById("boldInfo").innerHTML = ""
     document.getElementById("extraInfo1").innerHTML = "Böngészőtől függ, de lehet, hogy csak a <span class='bigger'>.vtt</span> feliratokat támogatja a böngésző"
+    document.getElementById("extraInfo1").dataset.t = "watch.info_only_vtt_subtitles"
+    document.getElementById("extraInfo1").dataset.ttype = "innerhtml"
 
     let titlenakSplitted = videoSRC.split(".")
     let titlenakPopped = titlenakSplitted.pop()
@@ -312,14 +333,23 @@ async function createVid(videoSRC) {
         document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
     }
 
+
+    translatePage()
 }
 
 
 
 async function createPlaylistesVid(videoSRC) {
     document.getElementById("boldInfo").innerHTML = "Mivel ez egy nem támogatott videó formátumban van, ezért ha letöltöd ezt a filet (vagy az egész videót) akkor meg tudod nyitni <span class='bigger'>VLC</span> program használatával"
+    document.getElementById("boldInfo").dataset.t = "watch.not_supported_so_download"
+    document.getElementById("boldInfo").dataset.ttype = "innerhtml"
+
     document.getElementById("extraInfo1").innerHTML = "Ha VLC-ben nézed akkor elérhetővé válik az összes felirat / hangsáv ami a file-ban benne van. Csak sajnos kb egyik böngésző sem támogatja ezeket 🙁"
+    document.getElementById("extraInfo1").dataset.t = "watch.vlc_unlocks_all_langs_and_everything"
+
     document.getElementById("extraInfo2").innerHTML = "Böngészőtől függ, de lehet, hogy csak a <span class='bigger'>.vtt</span> feliratokat támogatja a böngésző"
+    document.getElementById("extraInfo2").dataset.t = "watch.info_only_vtt_subtitles"
+    document.getElementById("extraInfo2").dataset.ttype = "innerhtml"
 
     let titlenakSplitted = videoSRC.split(".")
     let titlenakPopped = titlenakSplitted.pop()
@@ -338,7 +368,7 @@ async function createPlaylistesVid(videoSRC) {
         //console.log(response.status)
 
         if (!response.ok) {
-            document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+            document.getElementById("boldInfo").innerHTML = "<span class='bigger' data-t='watch.file_not_found'>A File nem található</span>"
         } else {
             document.getElementById("mediaTitle").innerHTML = titlenak
 
@@ -347,23 +377,23 @@ async function createPlaylistesVid(videoSRC) {
             `
 
             document.getElementById("downgomb").innerHTML = `
-                <a href="/playlist/${window.location.origin}|${videoSRC}" download>Nyisd meg VLC-vel</a>
+                <a href="/playlist/${window.location.origin}|${videoSRC}" download data-t="watch.open_with_vlc">Nyisd meg VLC-vel</a>
                 <hr>
-                <a href="/media/${videoSRC}" download>Teljes videó letöltése</a>
+                <a href="/media/${videoSRC}" download data-t="watch.download_full_video">Teljes videó letöltése</a>
 
                 <br><br>
             `
 
 
             document.getElementById("subgomb").innerHTML += `
-                <label for="subfile" class="cant_select" id="labeltext">Felirat Feltöltése</label>
+                <label for="subfile" class="cant_select" id="labeltext" data-t="watch.upload_subtitle">Felirat Feltöltése</label>
                 <input type="file" name="subfile" id="subfile" accept=".vtt,.srt,.sbv,.sub,.ass,.ssa,.dfxp,.ttml" />
             `
 
             subFunctionality()
         }
     } catch(e) {
-        document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+        document.getElementById("boldInfo").innerHTML = "<span class='bigger' data-t='watch.file_not_found'>A File nem található</span>"
     }
 }
 
@@ -407,7 +437,7 @@ function createText(path) {
             `
         })
         .catch(error => {
-            document.getElementById("boldInfo").innerHTML = "<span class='bigger'>A File nem található</span>"
+            document.getElementById("boldInfo").innerHTML = "<span class='bigger' data-t='watch.file_not_found'>A File nem található</span>"
         });
 }
 
@@ -434,7 +464,7 @@ function subFunctionality() {
 
         const track = document.createElement("track");
         track.kind = "subtitles";
-        track.label = "Feltöltött Felirat";
+        track.label = t("watch.uploaded_subitle");
         track.srclang = "hu"; //hát detectelni nem lehet, jó lesz a magyar mindegyikre
         track.src = subtitleURL;
         track.default = true;

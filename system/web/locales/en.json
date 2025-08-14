@@ -16,7 +16,23 @@
 		"lang_hu": "Hungarian",
 		"lang_en": "English",
 		"release_date": "Release date: ",
-		"search_placeholder": "Start typing"
+		"search_placeholder": "Start typing",
+
+		"hours": "hours",
+		"minutes": "minutes",
+
+		"Directing": "Directing",
+    	"Writing": "Writing",
+    	"Production": "Production",
+    	"Camera": "Camera",
+    	"Editing": "Editing",
+    	"Art": "Art",
+    	"Sound": "Sound",
+    	"Costume & Make-Up": "Costume & Make-Up",
+    	"Visual Effects": "Visual Effects",
+    	"Lighting": "Lighting",
+    	"Crew": "Crew",
+    	"Acting": "Acting and"
 	},
 
 
@@ -45,10 +61,49 @@
 		"Elküldtük az email címre a linket!": "We've sent the link to your email!",
 		"Sikeresen megváltoztatva, Mostmár bejelentkezhetsz!": "Successfully changed, you can log in now!",
 		"Már nem érvényes a link vagy rossz email címet adtál meg": "The link is no longer valid or you entered a wrong email address",
+		"URL kimásolva!": " URL copied!",
+		"Írj be valamit előtte": "Type something",
+		"A link ugyan az": "The URL is the same",
+		"Helytelen URL": "Wrong URL",
+		"Az összes kiválasztás törlődött": "All selections have been cleared",
 
+		"API adatok sikeresen lekérve": "API data successfully retrieved",
+		"Már benne van a kívánságlistádban": "It's already in your wishlist",
+		"Már láttad ezt a filmet": "You've already seen this movie",
+		"Már elkezdted nézni ezt a sorozatot": "You've already started watching this series",
+		"Nincs benne a kívánságlistában": "It's not in your wishlist",
+		"Nincs a kívánságlistán semmi": "There's nothing in the wishlist",
+		"Már benne van a megnézett listában": "It's already in your watched list",
+		"Nincs benne a megnézett listában": "It's not in your watched list",
+		"Nincs a megnézettek között semmi": "There's nothing in the watched list",
+		"Nincs a linkek között semmi": "There's nothing in the links",
+		"Nincs a jegyzetek között semmi": "There's nothing in the notes",
+		"Engedély megtagadva!": "Permission denied!",
+		"Hiba történt a mappa beolvasásánál": "An error occurred while reading the folder",
+		"A file nem található :(": "The file was not found :(",
+
+		
+		"Sikeresen hozzáadva": "Successfully added",
+		"Sikeresen törölve": "Successfully removed",
+		"Sikertelen törlés": "Deletion failed",
+		"Sikeresen megváltoztatva": "Successfully updated",
 		"Siker": "Success",
 		"Hiba": "Error",
 		"Szerver hiba": "Server error"
+	},
+
+
+	"watch": {
+		"info_please_wait": "Please <span class='bigger'>wait</span> a few minutes and then you can come back!",
+		"info_only_vtt_subtitles": "It depends on the browser, but it may only support <span class='bigger'>.vtt</span> subtitles",
+		"vlc_unlocks_all_langs_and_everything": "If you watch it in VLC, all the subtitles and audio tracks in the file will be available, Unfortunately, almost no browsers support these 🙁",
+		"not_supported_so_download": "Since this is in an unsupported video format, if you download this file (or the whole video), you can open it using the <span class='bigger'>VLC</span> program",
+		"file_not_found": "<span class='bigger'>File not found</span>",
+
+		"open_with_vlc": "Open with VLC",
+		"download_full_video": "Download Full Video",
+		"upload_subtitle": "Upload subtitle",
+		"uploaded_subitle": "Uploaded Subtitle"
 	},
 
 
@@ -134,7 +189,7 @@
 		"searched_movies": "Searched Movies",
 		"nothing_here": "There's nothing here, please type something into the search box",
 		"nothing_here_mymovies": "There's nothing here, add something to your account from the searches",
-		"own_movies": "My Movies",
+		"own_movies": "Your Movies",
 
 		"wishlisted_movies_btn_hide": "Hide your wishlist movies",
 		"wishlisted_movies_btn_show": "Show your wishlist movies",
@@ -148,13 +203,169 @@
 		"searched_series": "Searched Series",
 		"nothing_here": "There's nothing here, please type something into the search box",
 		"nothing_here_myseries": "There's nothing here, add something to your account from the searches",
-		"own_series": "My Series",
+		"own_series": "Your Series",
 
 		"started_series_btn_hide": "Hide your started series",
 		"started_series_btn_show": "Show your started series",
 		"wishlisted_series_btn_hide": "Hide your wishlisted series",
 		"wishlisted_series_btn_show": "Show your wishlisted series",
 		"watched_series_btn_hide": "Hide your watched series",
-		"watched_series_btn_show": "Show your watched series"
+		"watched_series_btn_show": "Show your watched series",
+
+		"all_added_series_number": "All added series: ",
+		"all_watched_series_number": "All watched series: ",
+		"all_started_series_number": "All started series: ",
+		"all_wishlisted_series_number": "All wishlisted series: ",
+		"all_watched_episodes_number": "All watched episodes: "
+	},
+
+
+	"movie": {
+		"runtime": "Runtime",
+		"release": "Release",
+		"original_language": "Original Language",
+		"budget": "Budget",
+		"state": "State",
+		"collection": "Collection",
+		"production_companies": "Production Companies",
+		"spoken_languages": "Spoken Languages",
+		"cast": "Cast",
+		"crew": "Crew",
+		"show_credits": "Show Credits",
+		"hide_credits": "Hide Credits",
+
+		"Released": "Released",
+		"Planned": "Planned",
+		"In Production": "In Production",
+		"Post Production": "Post Production",
+		"Canceled": "Canceled",
+
+		"note": "Note",
+
+		"watch_here": "Watch here",
+		"no_available_data": "No available data",
+		"search_for_credits": "Search for cast",
+		"search_for_more_credits": "Search for more cast",
+		"not_available_trailer": "No available trailers :",
+		"not_available_video": "No available videos :",
+		"search_for_more_trailers": "Search for more trailers on YouTube",
+		"search_for_trailers": "Search for trailers on YouTube",
+		"search_for_videos": "Search for videos on YouTube",
+		"search_for_more_videos": "Search for more videos on YouTube",
+
+		"google_search": "Google Search",
+		"show_videos": "Show videos",
+		"trailers_title": "Trailers",
+		"videos_title": "Videos",
+
+		"remove_wishlist": "Remove from Wishlist",
+		"add_wishlist": "Add to Wishlist",
+		"remove_watched": "Mark as not watched",
+		"add_watched": "Mark as watched",
+		"add_note": "Add Note",
+		"change_note": "Change Note",
+		"change_link": "Change Link",
+		"add_link": "Add Link",
+		"own_url": "Own Link",
+
+		"watched_date": "Watched",
+		"wishlisted_date": "Added to Wishlist",
+		"link_added_date": "Link added",
+		"note_updated_date": "Note updated"
+	},
+
+
+	"cl_series": {
+		"please_wait_a_bit": "Please wait a few moments ...",
+		"dont_reload": "(Dont reload the page)",
+
+
+		"runtime": "Runtime",
+		"original_language": "Original Language",
+		"state": "State",
+		"creator": "Creator",
+		"network": "Network",
+		"production_companies": "Production Companies",
+		"spoken_languages": "Spoken Languages",
+		"show_credits": "Show Credits",
+		"hide_credits": "Hide Credits",
+		"cast": "Cast",
+		"crew": "Crew",
+		"series_homepage": "Series Homepage",
+		"imdb_search": "IMDB Search",
+		"google_search": "Google Search",
+
+		"show_multiple_links": "Show more links",
+		"hide_multiple_links": "Hide links",
+
+		"Ended": "Ended",
+		"Returning Series": "Returning Series",
+		"Planned": "Planned",
+		"In Production": "In Production",
+		"Post Production": "Post Production",
+		"Canceled": "Canceled",
+
+		"number_of_seasons": "Number of Seasons: ",
+		"number_of_all_episodes": "Number of Episodes:",
+		"average_length": "Average length:",
+		"next_release": "Next Release:",
+		"last_watched_episode": "Last watched episode:",
+		"season": "season",
+		"episode": "episode",
+
+
+		"summary_table": "Summary table",
+		"rating_awesome": "Awesome",
+		"rating_great": "Great",
+		"rating_good": "Good",
+		"rating_regular": "Regular",
+		"rating_bad": "Bad",
+		"rating_garbage": "Garbage",
+		"rating_no_data": "No Data",
+
+		"seen_episodes": "Watched episodes",
+		"spent_hours": "Hours spent",
+
+		"note": "Note",
+		"watch_here": "Watch here",
+		"no_available_data": "No available data",
+		"search_for_credits": "Search for cast",
+		"search_for_more_credits": "Search for more cast",
+		
+		"show_videos": "Show videos",
+		"trailers_title": "Trailers",
+		"videos_title": "Videos",
+		"not_available_trailer": "No available trailers :",
+		"not_available_video": "No available videos :",
+		"search_for_more_trailers": "Search for more trailers on YouTube",
+		"search_for_trailers": "Search for trailers on YouTube",
+		"search_for_videos": "Search for videos on YouTube",
+		"search_for_more_videos": "Search for more videos on YouTube",
+
+		"extra_info_midSeasons": "(In many places, the season is uploaded in two parts. That's why there's a second counter)",
+		"overview": "Overview",
+
+		"remove_wishlist": "Remove from Wishlist",
+		"add_wishlist": "Add to Wishlist",
+		"mark_as_not_finished": "Mark as not finished",
+		"mark_as_finished": "Mark as finished",
+		"mark_as_watched": "Mark as Watched",
+		"mark_as_not_watched": "Mark as not Watched",
+		"add_note": "Add Note",
+		"change_note": "Change Note",
+		"change_link": "Change Link",
+		"add_link": "Add Link",
+		"own_url": "Own Link",
+
+		"watched_date": "Watched",
+		"started_date": "Started",
+		"wishlisted_date": "Added to Wishlist",
+		"link_added_date": "Link added",
+		"note_updated_date": "Note updated",
+
+		"normal_font": "Normal Font",
+		"special_font": "Special Font",
+		"stop_music": "Stop Music",
+		"start_music": "Start music"
 	}
 }

@@ -68,7 +68,7 @@ async function loggedIn() {
 
 
         } else {
-            notify("Hiba történt az API-al", "error")
+            notify("API Error", "error")
         }
     
     } catch(e) {
@@ -805,15 +805,15 @@ function showAvailableInfo() {
         iBetuInfoBox.style.pointerEvents = "none"
         iBetuInfoBox.innerHTML = `
             <div class="box cant_select" style="border-bottom: none;">
-                <h4>Információ</h4>
+                <h4 data-t="basic.info">Információ</h4>
                 <h5>X</h5>
                 <hr>
-                <div><p>Összes hozzáadott sorozatok száma: </p><p>${sumOfElkezdettSorozatok + sumOfMegnezettSorozatok + sumOfWishlistesSorozatok}</p></div>
-                <div><p>Megnézett sorozatok száma: </p><p>${sumOfMegnezettSorozatok}</p></div>
-                <div><p>Elkezdett sorozatok száma: </p><p>${sumOfElkezdettSorozatok}</p></div>
-                <div><p>Kívánságlistás sorozatok száma: </p><p>${sumOfWishlistesSorozatok}</p></div>
+                <div><p data-t="series.all_added_series_number">Összes hozzáadott sorozatok száma: </p><p>${sumOfElkezdettSorozatok + sumOfMegnezettSorozatok + sumOfWishlistesSorozatok}</p></div>
+                <div><p data-t="series.all_watched_series_number">Megnézett sorozatok száma: </p><p>${sumOfMegnezettSorozatok}</p></div>
+                <div><p data-t="series.all_started_series_number">Elkezdett sorozatok száma: </p><p>${sumOfElkezdettSorozatok}</p></div>
+                <div><p data-t="series.all_wishlisted_series_number">Kívánságlistás sorozatok száma: </p><p>${sumOfWishlistesSorozatok}</p></div>
                 <br>
-                <div><p>Összesen megnézett epizódok száma: </p><p>${sumOfMegnezettEpizodok}</p></div>
+                <div><p data-t="series.all_watched_episodes_number">Összesen megnézett epizódok száma: </p><p>${sumOfMegnezettEpizodok}</p></div>
             </div>
         `
 

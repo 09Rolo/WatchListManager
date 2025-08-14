@@ -16,7 +16,23 @@
 		"lang_hu": "Magyar",
 		"lang_en": "Angol",
 		"release_date": "Megjelenés: ",
-		"search_placeholder": "Kezdj el írni"
+		"search_placeholder": "Kezdj el írni",
+
+		"hours": "óra",
+		"minutes": "perc",
+
+		"Directing": "Rendező",
+    	"Writing": "Író",
+    	"Production": "Producer",
+    	"Camera": "Operatőr",
+    	"Editing": "Vágó",
+    	"Art": "Látványtervező",
+    	"Sound": "Hang",
+    	"Costume & Make-Up": "Jelmez és smink",
+    	"Visual Effects": "Vizuális effektek",
+    	"Lighting": "Világítás",
+    	"Crew": "Stábtag",
+    	"Acting": "Szereplő és"
 	},
 
 
@@ -45,10 +61,49 @@
 		"Elküldtük az email címre a linket!": "Elküldtük az email címre a linket!",
 		"Sikeresen megváltoztatva, Mostmár bejelentkezhetsz!": "Sikeresen megváltoztatva, Mostmár bejelentkezhetsz!",
 		"Már nem érvényes a link vagy rossz email címet adtál meg": "Már nem érvényes a link vagy rossz email címet adtál meg",
+		"URL kimásolva!": " URL kimásolva!",
+		"Írj be valamit előtte": "Írj be valamit előtte",
+		"A link ugyan az": "A link ugyan az",
+		"Helytelen URL": "Helytelen URL",
+		"Az összes kiválasztás törlődött": "Az összes kiválasztás törlődött",
 
+		"API adatok sikeresen lekérve": "API adatok sikeresen lekérve",
+		"Már benne van a kívánságlistádban": "Már benne van a kívánságlistádban",
+		"Már láttad ezt a filmet": "Már láttad ezt a filmet",
+		"Már elkezdted nézni ezt a sorozatot": "Már elkezdted nézni ezt a sorozatot",
+		"Nincs benne a kívánságlistában": "Nincs benne a kívánságlistában",
+		"Nincs a kívánságlistán semmi": "Nincs a kívánságlistán semmi",
+		"Már benne van a megnézett listában": "Már benne van a megnézett listában",
+		"Nincs benne a megnézett listában": "Nincs benne a megnézett listában",
+		"Nincs a megnézettek között semmi": "Nincs a megnézettek között semmi",
+		"Nincs a linkek között semmi": "Nincs a linkek között semmi",
+		"Nincs a jegyzetek között semmi": "Nincs a jegyzetek között semmi",
+		"Engedély megtagadva!": "Engedély megtagadva!",
+		"Hiba történt a mappa beolvasásánál": "Hiba történt a mappa beolvasásánál",
+		"A file nem található :(": "A file nem található :(",
+
+
+		"Sikeresen hozzáadva": "Sikeresen hozzáadva",
+		"Sikeresen törölve": "Sikeresen törölve",
+		"Sikertelen törlés": "Sikertelen törlés",
+		"Sikeresen megváltoztatva": "Sikeresen megváltoztatva",
 		"Siker": "Siker",
 		"Hiba": "Hiba",
 		"Szerver hiba": "Szerver hiba"
+	},
+
+
+	"watch": {
+		"info_please_wait": "Kérlek szépen <span class='bigger'>várj</span> egy pár percet itt vagy vissza is jöhetsz később!",
+		"info_only_vtt_subtitles": "Böngészőtől függ, de lehet, hogy csak a <span class='bigger'>.vtt</span> feliratokat támogatja a böngésző",
+		"vlc_unlocks_all_langs_and_everything": "Ha VLC-ben nézed akkor elérhetővé válik az összes felirat / hangsáv ami a file-ban benne van. Csak sajnos kb egyik böngésző sem támogatja ezeket 🙁",
+		"not_supported_so_download": "Mivel ez egy nem támogatott videó formátumban van, ezért ha letöltöd ezt a filet (vagy az egész videót) akkor meg tudod nyitni <span class='bigger'>VLC</span> program használatával",
+		"file_not_found": "<span class='bigger'>A File nem található</span>",
+
+		"open_with_vlc": "Nyisd meg VLC-vel",
+		"download_full_video": "Teljes videó letöltése",
+		"upload_subtitle": "Felirat Feltöltése",
+		"uploaded_subitle": "Feltöltött Felirat"
 	},
 
 
@@ -155,6 +210,162 @@
 		"wishlisted_series_btn_hide": "Kívánságlistás sorozataid elrejtése",
 		"wishlisted_series_btn_show": "Kívánságlistás sorozataid megjelenítése",
 		"watched_series_btn_hide": "Megnézett sorozataid elrejtése",
-		"watched_series_btn_show": "Megnézett sorozataid megjelenítése"
+		"watched_series_btn_show": "Megnézett sorozataid megjelenítése",
+
+		"all_added_series_number": "Összes hozzáadott sorozatok száma: ",
+		"all_watched_series_number": "Megnézett sorozatok száma: ",
+		"all_started_series_number": "Elkezdett sorozatok száma: ",
+		"all_wishlisted_series_number": "Kívánságlistás sorozatok száma: ",
+		"all_watched_episodes_number": "Összesen megnézett epizódok száma: "
+	},
+
+
+	"movie": {
+		"runtime": "Játékidő",
+		"release": "Megjelenés",
+		"original_language": "Eredeti nyelv",
+		"budget": "Költségvetés",
+		"state": "Állapota",
+		"collection": "Kollekció",
+		"production_companies": "Gyártók",
+		"spoken_languages": "Beszélt nyelvek",
+		"cast": "Szereplők",
+		"crew": "Készítők",
+		"show_credits": "Stáb megjelenítése",
+		"hide_credits": "Stáb elrejtése",
+
+		"Released": "Megjelent",
+		"Planned": "Tervezett",
+		"In Production": "Készítés alatt",
+		"Post Production": "Utómunka alatt",
+		"Canceled": "Elkaszálva",
+
+		"note": "Jegyzet",
+
+		"watch_here": "Nézd itt",
+		"no_available_data": "Nincs elérhető adat",
+		"search_for_credits": "Stáb keresése",
+		"search_for_more_credits": "Több stáb keresése",
+		"not_available_trailer": "Nincs elérhető trailer :",
+		"not_available_video": "Nincs elérhető videó :",
+		"search_for_more_trailers": "További trailerek keresése YouTube-on",
+		"search_for_trailers": "Trailer keresése YouTube-on",
+		"search_for_videos": "Videók keresése YouTube-on",
+		"search_for_more_videos": "További videók keresése YouTube-on",
+
+		"google_search": "Google Keresés",
+		"show_videos": "Videók mutatása",
+		"trailers_title": "Trailerek",
+		"videos_title": "Videók",
+
+		"remove_wishlist": "Kivétel a kívánságlistából",
+		"add_wishlist": "Kívánságlistára rakás",
+		"remove_watched": "Jelölés nem megnézettnek",
+		"add_watched": "Jelölés megnézettnek",
+		"add_note": "Jegyzet hozzáadása",
+		"change_note": "Jegyzet változtatása",
+		"change_link": "Link változtatása",
+		"add_link": "Link hozzáadása",
+		"own_url": "Saját Link",
+
+		"watched_date": "Megnézve",
+		"wishlisted_date": "Kívánságlistához adva",
+		"link_added_date": "Link adva",
+		"note_updated_date": "Jegyzet frissítve"
+	},
+
+
+	"cl_series": {
+		"please_wait_a_bit": "Kérlek várj egy kicsit ...",
+		"dont_reload": "(Ne töltsd újra az oldalt)",
+
+
+		"runtime": "Futamidő",
+		"original_language": "Eredeti nyelv",
+		"state": "Állapota",
+		"creator": "Készítő",
+		"network": "Csatorna",
+		"production_companies": "Gyártók",
+		"spoken_languages": "Beszélt nyelvek",
+		"show_credits": "Stáb megjelenítése",
+		"hide_credits": "Stáb elrejtése",
+		"cast": "Szereplők",
+		"crew": "Készítők",
+		"series_homepage": "Hivatalos Oldala",
+		"imdb_search": "IMDB Keresés",
+		"google_search": "Google Keresés",
+
+		"show_multiple_links": "Több link mutatása",
+		"hide_multiple_links": "Kevesebb link mutatása",
+
+		"Ended": "Befejezve",
+		"Returning Series": "Folyamatban lévő sorozat",
+		"Planned": "Tervezett",
+		"In Production": "Készítés alatt",
+		"Post Production": "Utómunka alatt",
+		"Canceled": "Elkaszálva",
+
+		"number_of_seasons": "Évadok száma:",
+		"number_of_all_episodes": "Epizódok száma:",
+		"average_length": "Átlag hossz:",
+		"next_release": "Következő megjelenés:",
+		"last_watched_episode": "Utoljára látott epizód:",
+		"season": "évad",
+		"episode": "rész",
+
+		
+		"summary_table": "Összesítő táblázat",
+		"rating_awesome": "Tökéletes",
+		"rating_great": "Kiváló",
+		"rating_good": "Jó",
+		"rating_regular": "Átlagos",
+		"rating_bad": "Rossz",
+		"rating_garbage": "Szemét",
+		"rating_no_data": "Nincs Adat",
+
+		"seen_episodes": "Látott epizódok",
+		"spent_hours": "Eltöltött órák",
+
+		"note": "Jegyzet",
+		"watch_here": "Nézd itt",
+		"no_available_data": "Nincs elérhető adat",
+		"search_for_credits": "Stáb keresése",
+		"search_for_more_credits": "Több stáb keresése",
+		
+		"show_videos": "Videók mutatása",
+		"trailers_title": "Trailerek",
+		"videos_title": "Videók",
+		"not_available_trailer": "Nincs elérhető trailer :",
+		"not_available_video": "Nincs elérhető videó :",
+		"search_for_more_trailers": "További trailerek keresése YouTube-on",
+		"search_for_trailers": "Trailer keresése YouTube-on",
+		"search_for_videos": "Videók keresése YouTube-on",
+		"search_for_more_videos": "További videók keresése YouTube-on",
+
+		"extra_info_midSeasons": "(Sok helyen külön töltik fel a seasont a felénél kettéosztva. Azért van a második számláló)",
+		"overview": "Áttekintés",
+
+		"remove_wishlist": "Kivétel a kívánságlistából",
+		"add_wishlist": "Kívánságlistára rakás",
+		"mark_as_not_finished": "Jelölés nem befejezettnek",
+		"mark_as_finished": "Mark as befejezettnek",
+		"mark_as_watched": "Jelölés megnézettnek",
+		"mark_as_not_watched": "Jelölés nem megnézettnek",
+		"add_note": "Jegyzet hozzáadása",
+		"change_note": "Jegyzet változtatása",
+		"change_link": "Link változtatása",
+		"add_link": "Link hozzáadása",
+		"own_url": "Saját Link",
+
+		"watched_date": "Megnézve",
+		"started_date": "Elkezdve",
+		"wishlisted_date": "Kívánságlistához adva",
+		"link_added_date": "Link adva",
+		"note_updated_date": "Jegyzet frissítve",
+
+		"normal_font": "Normál Betűtípus",
+		"special_font": "Speciális Betűtípus",
+		"stop_music": "Zene megállítása",
+		"start_music": "Zene lejátszása"
 	}
 }

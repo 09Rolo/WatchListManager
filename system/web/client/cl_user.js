@@ -156,7 +156,7 @@ async function copyTxt() {
     document.execCommand("copy"); // For older browsers
     document.body.removeChild(tempInput);
 
-    notify(sajaturl.innerHTML + " URL kimásolva!", "info");
+    notify(sajaturl.innerHTML + t("notifs.URL kimásolva!"), "info");
 }
 
 

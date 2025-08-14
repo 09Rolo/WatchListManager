@@ -48,36 +48,36 @@
 
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menü</h5>
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel" data-t="basic.menu">Menü</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Bezárás"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" id="navtartalom">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/">Főoldal</a>
+                                <a class="nav-link" href="/" data-t="basic.homepage">Főoldal</a>
                             </li>
 
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/sorozatok">Sorozatok</a>
+                                <a class="nav-link" href="/sorozatok" data-t="basic.series">Sorozatok</a>
                             </li>
 
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.series_language">
                                     Nyelv
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <div id="menu_language">
                                         <li>
-                                            <a class="dropdown-item" href="/sorozat/" id="menu_language_hu">
+                                            <a class="dropdown-item" href="/sorozat/" id="menu_language_hu" data-t="basic.lang_hu">
                                                 Magyar
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="/sorozat/" id="menu_language_en">
+                                            <a class="dropdown-item" href="/sorozat/" id="menu_language_en" data-t="basic.lang_en">
                                                 Angol
                                             </a>
                                         </li>
@@ -90,7 +90,7 @@
                             <!--Fiók dropdown cucc-->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false" data-t="basic.account">
                                     Fiók
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -104,12 +104,12 @@
 
                                     <div id="menu_login_register">
                                         <li>
-                                            <a class="dropdown-item" href="/auth/login">
+                                            <a class="dropdown-item" href="/auth/login" data-t="basic.login">
                                                 Bejelentkezés
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="/auth/register">
+                                            <a class="dropdown-item" href="/auth/register" data-t="basic.register">
                                                 Regisztráció
                                             </a>
                                         </li>
@@ -120,7 +120,7 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#" id="menu_logout_button">Kijelentkezés</a>
+                                            <a class="dropdown-item" href="#" id="menu_logout_button" data-t="basic.logout">Kijelentkezés</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -138,15 +138,16 @@
         <div id="loadingparent" style="display: none;">
             <div class="loadingcucc">
                 <span class="loader"></span>
-                <h5>Kérlek várj egy kicsit ...</h5>
-                <p>(Ne töltsd újra az oldalt)</p>
+                <h5 data-t="cl_series.please_wait_a_bit">Kérlek várj egy kicsit ...</h5>
+                <p data-t="cl_series.dont_reload">(Ne töltsd újra az oldalt)</p>
             </div>
         </div>
 
 
-        <!--Többi ide-->
+        <!--Többi ide, nagyrésze jssel kerül be ugye-->
         <div class="main">
             <div class="resz row" id="elsoresz">
+                <!--
                 <div class="adatok col-md-7 col-12">
                     <div class="felso">
                         <h2 id="cim" class="underline_hover"></h2>
@@ -172,7 +173,7 @@
 
                         <div class="bottominteractions">
                             <div id="linkbox">
-                                <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a> <!--<span class="bold">Saját link</span>-->
+                                <a href="" target="_blank" rel="noopener noreferrer" id="sajaturl"></a>
                                 <a href="" target="_blank" rel="noopener noreferrer" id="serverLink"></a>
                                 <hr>
                                 <a href="https://www.imdb.com/title/" target="_blank" rel="noopener noreferrer" id="imdblink">IMDB Link</a>
@@ -218,7 +219,9 @@
                     <img src="" id="fadedimg" class="img-fluid">
                     <img src="" is="posterimg" class="img-fluid">
                 </div>
+                -->
             </div>
+            
 
             <hr>
 
