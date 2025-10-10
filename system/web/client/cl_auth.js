@@ -376,8 +376,8 @@ function manageLang() {
     if (getLanguageCookie() != null) {
         language = getLanguageCookie()
 
-        loadTranslations(language)
     }
+    loadTranslations(language)
 }
 
 manageLang()

@@ -110,7 +110,7 @@ app.post("/login", async (req, res) => {
                             return res.status(401).json({ message: "notifs.Helytelen jelszó", type: "error" });
                         }
 
-                        const token = jwt.sign({ user_id: result[0].user_id, username: result[0].username, email: result[0].email }, process.env.SECRET_KEY, { expiresIn: "100h" });
+                        const token = jwt.sign({ user_id: result[0].user_id, username: result[0].username, email: result[0].email }, process.env.SECRET_KEY, { expiresIn: "1000h" });
                         res.status(200).json({ message: "notifs.Sikeres bejelentkezés", type: "success", token, user_id: result[0].user_id, username: result[0].username, email: result[0].email });
                     } catch(e) {}
 

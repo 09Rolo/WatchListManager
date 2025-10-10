@@ -8,6 +8,20 @@ window.onload = async () => {
 
 
 
+var language = 'hu'
+
+function manageLang() {
+    if (getLanguageCookie() != null) {
+        language = getLanguageCookie()
+
+    }
+    loadTranslations(language)
+}
+
+manageLang()
+
+
+
 //Bejelentkezés dolgok
 async function login(details, donotify) {
     try {

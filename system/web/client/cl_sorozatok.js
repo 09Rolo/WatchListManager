@@ -477,6 +477,7 @@ async function isFullyWatched(elem) {
     var watchedEpisodes = 0
     var vanSpecialSeasonje = false
     var s0asEpizodok = []
+    var voltAzUtcsoSeason = false
 
     try {
         const getData = await fetch(`https://api.themoviedb.org/3/tv/${elem}?api_key=${API_KEY}&language=${language}`)
@@ -485,19 +486,20 @@ async function isFullyWatched(elem) {
         if (adatok) {
             var now = new Date()
 
-
             if (adatok.seasons[0].season_number == 1) {
-                for (let seasons = 0; seasons < adatok.seasons.length; seasons++) {
+                for (let seasons = 0; seasons < adatok.seasons.length-1; seasons++) {//utcso ne legyen benne azt később rendezem
                     const element = adatok.seasons[seasons];
 
                     if (new Date(element.air_date) <= now) {
                         allEpisodes += element.episode_count
                     }
                 }
+
+
             } else if(adatok.seasons[0].season_number != 1) {
                 vanSpecialSeasonje = true
 
-                for (let seasons = 1; seasons < adatok.seasons.length; seasons++) {
+                for (let seasons = 1; seasons < adatok.seasons.length-1; seasons++) {//utcso ne legyen benne azt később rendezem
                     const element = adatok.seasons[seasons];
                     
                     if (new Date(element.air_date) <= now) {
@@ -505,6 +507,45 @@ async function isFullyWatched(elem) {
                     }
                 }
             }
+
+
+            
+            if (!voltAzUtcsoSeason) {//itt rendezem az utcso seasont mert nem fix hogy minden rész meg van jelenve
+                voltAzUtcsoSeason = true
+
+                if (adatok.status != "Ended" && adatok.status != "Canceled") {
+                    let lastSeason = adatok.seasons[adatok.seasons.length-1]
+                    let releasedEpsCount = 0
+
+                    try {
+                        const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${elem}/season/${lastSeason.season_number}?api_key=${API_KEY}&language=${language}`)
+                        const season = await getData_seasons.json()
+                    
+                        let now_tonorm = new Date().setHours(0, 0, 0, 0)
+
+                        for (let e in season.episodes) {
+                            let epdate_tonorm = new Date(season.episodes[e].air_date).setHours(0, 0, 0, 0)
+                        
+                            if (epdate_tonorm <= now_tonorm) {
+                                if (epdate_tonorm < now_tonorm) {
+                                    releasedEpsCount = releasedEpsCount + 1
+                                }
+                            
+                                if (epdate_tonorm === now_tonorm && season.episodes[e].runtime) {
+                                    releasedEpsCount = releasedEpsCount + 1
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e)
+                    }
+                
+                    allEpisodes += releasedEpsCount
+                } else {
+                    allEpisodes += adatok.seasons[adatok.seasons.length-1].episode_count
+                }
+            }
+
 
             
 

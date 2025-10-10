@@ -138,8 +138,9 @@ function manageLang() {
             langcodes = "en-US"
         }
 
-        loadTranslations(language)
     }
+    
+    loadTranslations(language)
 }
 
 manageLang()

@@ -712,8 +712,6 @@ async function getData() {
         translatePage()
 
 
-        dataAdded = true
-
 
         var nagyobb0percnel = 0
 
@@ -767,6 +765,10 @@ async function getData() {
     }
 
     translatePage()
+
+
+
+    dataAdded = true
 }
 
 
@@ -846,7 +848,7 @@ async function checkWatched(id) {
                     }
 
 
-                    var date = new Date(result.dataVissza[i].added_at); 
+                    var date = new Date(result.dataVissza[i].added_at);
                     var localDate = date.toLocaleDateString(langcodes); // Hungarian format (YYYY.MM.DD) vagy más
 
                     if (eloszorBasicDate == undefined || eloszorBasicDate > date) {
@@ -885,7 +887,29 @@ async function checkWatched(id) {
 
 
             if (voltmar) {
-                if (allEpisodes.every(el => episodesWatched.includes(el))) {
+                var allEpisodes_aminekemkell = allEpisodes_jsonok.filter(el => {
+                    let epdate_tonorm = new Date(el.air_date).setHours(0, 0, 0, 0)
+                    let now_tonorm = new Date().setHours(0, 0, 0, 0)
+
+                    if (epdate_tonorm <= now_tonorm) {
+                        if (epdate_tonorm < now_tonorm) {
+                            return true
+                        }
+
+                        if (epdate_tonorm === now_tonorm && el.runtime) {
+                            return true
+                        }
+
+                        return false
+                    }
+
+                    return false
+                });
+
+                //console.log(allEpisodes_aminekemkell)
+
+
+                if (allEpisodes_aminekemkell.every(el => episodesWatched.includes(el.id))) {
                     return "vegig"
                 } else {
                     return "elkezdte"
@@ -1949,7 +1973,7 @@ async function addEpsToWatched() {
                 //console.log(json)
                 //console.log(currDate, epDate, currDate >= epDate, json.runtime, currDate >= epDate && json.runtime > 0)
 
-                if (currDate >= epDate && json.runtime > 0) {
+                if (currDate >= epDate) {
                     try {
                         var details = {
                             user_id: JSON.parse(localStorage.user).user_id,

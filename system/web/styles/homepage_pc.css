@@ -134,11 +134,13 @@ body {
 }
 
 .kartya p {
+    text-align: center;
     width: fit-content;
-    margin: 10px 10px;
+    margin: 10px auto;
 }
 
 .kartya p.needtype, .kartya p.typed {
+    text-align: center;
     font-size: 1.2rem;
     width: fit-content;
     margin: 15px auto !important;

@@ -803,6 +803,7 @@ h2 {
     padding-bottom: 10px;
     padding-left: 25px;
     padding-right: 25px;
+    text-align: center;
 
     display: flex;
     flex-direction: column;
