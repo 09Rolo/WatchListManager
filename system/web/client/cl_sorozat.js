@@ -767,6 +767,7 @@ async function getData() {
     translatePage()
 
 
+    document.getElementById("reload_if_nothing_text").style.display = "none"
 
     dataAdded = true
 }

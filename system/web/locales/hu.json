@@ -221,6 +221,8 @@
 
 
 	"movie": {
+		"reload_if_nothing_is_showing": "Kérlek töltsd újra az oldalt hogyha semmi nem jelenik meg!",
+		
 		"runtime": "Játékidő",
 		"release": "Megjelenés",
 		"original_language": "Eredeti nyelv",
@@ -278,6 +280,8 @@
 	"cl_series": {
 		"please_wait_a_bit": "Kérlek várj egy kicsit ...",
 		"dont_reload": "(Ne töltsd újra az oldalt)",
+
+		"reload_if_nothing_is_showing": "Kérlek töltsd újra az oldalt hogyha semmi nem jelenik meg!",
 
 
 		"runtime": "Futamidő",

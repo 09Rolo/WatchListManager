@@ -316,6 +316,8 @@ async function getData() {
             </div>
         `
 
+        document.getElementById("reload_if_nothing_text").style.display = "none"
+
         dataAdded = true
 
         setUpcomingErtekelesCucc()

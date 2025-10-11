@@ -221,6 +221,8 @@
 
 
 	"movie": {
+		"reload_if_nothing_is_showing": "Please reload the page if nothing is showing!",
+
 		"runtime": "Runtime",
 		"release": "Release",
 		"original_language": "Original Language",
@@ -278,6 +280,8 @@
 	"cl_series": {
 		"please_wait_a_bit": "Please wait a few moments ...",
 		"dont_reload": "(Dont reload the page)",
+
+		"reload_if_nothing_is_showing": "Please reload the page if nothing is showing!",
 
 
 		"runtime": "Runtime",
