@@ -643,7 +643,7 @@ function ManageTimelineBeforeData() {
     document.getElementById("timeline-kulso").style.display = ""
 
     //console.log(MaJelenikMeg)
-    for(let i in MaJelenikMeg) {document.getElementById("majelenikmeg").style.display = ""} //valamiért csak így lehet sajna, de az a lényeg ha van benne valami akkor megjeleníti a divet
+    for(let i in MaJelenikMeg) {if (document.getElementById("majelenikmeg")) {document.getElementById("majelenikmeg").style.display = ""}} //valamiért csak így lehet sajna, de az a lényeg ha van benne valami akkor megjeleníti a divet
 
 
     var evek = document.getElementById("evek")
@@ -687,9 +687,9 @@ function ManageTimelineAfterData() {
     const remainingPx = remainingRatio * monthWidth;
 
     if (day != daysInMonth) {//nem ucsó nap a hóban
-        document.getElementById(`idovonal_${formatDate(new Date(year, month), true, "year_and_month")}`).style.minWidth = remainingPx + "px"
-        document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-end`).style.left = remainingPx + 5 + "px"
-        document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-start`).innerHTML = formatDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()))
+        if (document.getElementById(`idovonal_${formatDate(new Date(year, month), true, "year_and_month")}`)) {document.getElementById(`idovonal_${formatDate(new Date(year, month), true, "year_and_month")}`).style.minWidth = remainingPx + "px"}
+        if (document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-end`)) {document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-end`).style.left = remainingPx + 5 + "px"}
+        if (document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-start`)) {document.querySelector(`#idovonal_${formatDate(new Date(year, month), true, "year_and_month")} .timeline-start`).innerHTML = formatDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()))}
 
         switchMonth(formatDate(now, true, "year_and_month"), true)
     } else {
@@ -715,13 +715,14 @@ function GiveClickFunctionToMonths() {
 
 
 function switchMonth(date, dontscroll, dontnotify) {
-    document.querySelector(".idovonalak").style.display = "none"
+    if (document.querySelector(".idovonalak")) {document.querySelector(".idovonalak").style.display = "none"}
+
     document.querySelectorAll(".idovonal").forEach(vonal => {vonal.style.display = "none"})
 
     if (!document.querySelector(`#honap_${date}`).classList.contains("selected")) {
         if (document.querySelector(`#idovonal_${date}`)) {
-                document.querySelector(".idovonalak").style.display = ""
-                document.querySelector(`#idovonal_${date}`).style.display = ""
+                if (document.querySelector(".idovonalak")) {document.querySelector(".idovonalak").style.display = ""}
+                if (document.querySelector(`#idovonal_${date}`)) {document.querySelector(`#idovonal_${date}`).style.display = ""}
 
                 document.querySelectorAll(`.honap`).forEach(ho => ho.classList.remove("selected"))
                 document.querySelector(`#honap_${date}`).classList.add("selected")
@@ -733,6 +734,7 @@ function switchMonth(date, dontscroll, dontnotify) {
                         block: 'center'
                     }); //és ez valamiért elbassza az évek locationját :DDDD
                     document.getElementById("evek").style.bottom = "-20px"
+
 
                     setTimeout(() => {
                         window.scrollTo({
