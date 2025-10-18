@@ -58,6 +58,33 @@ IF EXIST .env (
     echo PORT=999 > .env
 )
 
+
+echo.
+echo A 80as es a 443as portok legyenek majd kinyitva a tuzfalnal
+echo.
+
+echo A win-acme-t toltsd le, setupold fel
+echo.
+echo Stoppold a szervert ha fut
+echo.
+echo M
+echo 2 Manual Input
+echo wlm.kissroland.hu
+echo Enter
+echo 4 Single Certificate
+echo 2 Server verification files from memory
+echo 2 RSA key
+echo Fontos, 2 PEM encoded files
+echo Ide a path, macskakorom nelkul, ahova mentse a pem fileokat
+echo 1 None
+echo 5 No additional store steps
+echo 3 No additional installation steps
+echo.
+
+start "" https://www.win-acme.com/
+
+
+
 :: Ask user before stopping the running server
 tasklist | findstr /I "node.exe" >nul
 IF %ERRORLEVEL% EQU 0 (

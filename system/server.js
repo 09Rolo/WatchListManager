@@ -10,25 +10,52 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 
-
 const express = require('express');
 const path = require('path');
 const app = express();
+const fs = require('fs');
+const https = require('https');
+const http = require('http');
 
 
-const PORT = process.env.PORT
+const PORThttp = process.env.PORThttp
+const PORThttps = process.env.PORThttps
+const winacme_key_path = process.env.winacme_key_path
+const winacme_cert_path = process.env.winacme_cert_path
+const winacme_ca_path = process.env.winacme_ca_path
 
 
 app.use(express.static(path.join(__dirname, 'web')));
-
 app.use(express.json());
+
 
 app.get('/', async(req, res) => {
     res.sendFile(path.join(__dirname, "web", "index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`Fut, port: ${PORT}`);
+
+
+// Paths to your Let’s Encrypt PEM files
+const options = {
+  	key: fs.readFileSync(winacme_key_path),
+  	cert: fs.readFileSync(winacme_cert_path),
+  	ca: fs.readFileSync(winacme_ca_path)
+};
+
+
+// HTTPS server on port 443
+https.createServer(options, app).listen(PORThttps, () => {
+  	console.log(`HTTPS server fut a ${PORThttps} porton`);
+});
+
+
+// HTTP server on port 80 → redirect to HTTPS
+http.createServer((req, res) => {
+  	const host = req.headers.host;
+  	res.writeHead(301, { Location: 'https://' + host + req.url });
+  	res.end();
+}).listen(PORThttp, () => {
+  	console.log(`HTTP redirectel a ${PORThttp} porton a httpsre`);
 });
 
 
@@ -84,4 +111,4 @@ require("./sorozatok_filmek.js")
 
 app.use((req, res) => {
   	res.status(404).sendFile(path.join(__dirname, 'web', '404.html'));
-});
+})

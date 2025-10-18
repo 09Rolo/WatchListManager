@@ -1,4 +1,5 @@
 /node_modules/**/*
+/HTTPS_Certificates/**/*
 
 # dotenv environment variables file
 .env
