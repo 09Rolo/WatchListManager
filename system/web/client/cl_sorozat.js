@@ -2630,8 +2630,9 @@ if (getSpecialCookie() == "be") {
                     navtartalom.innerHTML += `
                         <span class="navbar-text cant_select" id="nav_font"> | ${t("cl_series.normal_font")} |</span>
                     `
-                    document.getElementById("nav_font").addEventListener("click", nav_fontButton)
 
+                    document.getElementById("nav_font").addEventListener("click", nav_fontButton)
+                    document.getElementById("nav_font").style.color = "white"
 
                     var fontSzoveg = `
                         @font-face {
@@ -2723,27 +2724,59 @@ var tartalomadva = false
 function SpecialThingsAudioManage(season) {
 if (isSpecial){
 
+
     if (!tartalomadva) {
         navtartalom.innerHTML += `
-            <span class="navbar-text cant_select" id="nav_music"> | ${t("cl_series.stop_music")} | </span>
+            <span class="navbar-text cant_select" data-state="turn_off" id="nav_music"> | ${t("cl_series.stop_music")} | </span>
         `
         tartalomadva = true
+
+
+        if (document.getElementById("nav_music")) {document.getElementById("nav_music").removeEventListener("click", nav_musicbutton)}
+        if (document.getElementById("nav_font")) {document.getElementById("nav_font").removeEventListener("click", nav_fontButton)}
+
+        //---
+
+        if (document.getElementById("nav_music")) {document.getElementById("nav_music").addEventListener("click", nav_musicbutton)}
+        if (document.getElementById("nav_font")) {document.getElementById("nav_font").addEventListener("click", nav_fontButton)} //valamiért megint meg kell adni az eventlistenert mert elbaszodik ha nem adom meg neki, fogalmam sincs miért
+    } else {
+
+        if (document.getElementById("nav_music")) {document.getElementById("nav_music").removeEventListener("click", nav_musicbutton)}
+        if (document.getElementById("nav_font")) {document.getElementById("nav_font").removeEventListener("click", nav_fontButton)}
+
+        //---
 
         if (document.getElementById("nav_music")) {document.getElementById("nav_music").addEventListener("click", nav_musicbutton)}
         if (document.getElementById("nav_font")) {document.getElementById("nav_font").addEventListener("click", nav_fontButton)} //valamiért megint meg kell adni az eventlistenert mert elbaszodik ha nem adom meg neki, fogalmam sincs miért
     }
-    
-    
+
+
+
 
     if (!audioPlayed) {
-        if(document.querySelector("#audio_ALL")) {
-            document.querySelector("#audio_ALL").play()
-            audioPlayed = true
-        } else if(document.querySelector(`#audio_S${season}`)) {
-            document.querySelector(`#audio_S${season}`).play()
-            audioPlayed = true
+        let nav_music = document.getElementById("nav_music")
+
+        if (nav_music.dataset.state == "turn_off") { //mert akkor a gomb stoppolni fogja amit megnyomja tehát mehet a zene most
+            if(document.querySelector("#audio_ALL")) {
+                document.querySelector("#audio_ALL").play()
+                audioPlayed = true
+            } else if(document.querySelector(`#audio_S${season}`)) {
+                document.querySelector(`#audio_S${season}`).play()
+                audioPlayed = true
+            }
+        } else {//alapból a gomb el fogja inditani, szóval most nem kell indítani
+            if(document.querySelector("#audio_ALL")) {
+                document.querySelector("#audio_ALL").play()
+                audioPlayed = true
+            } else if(document.querySelector(`#audio_S${season}`)) {
+                document.querySelector(`#audio_S${season}`).play()
+                audioPlayed = true
+            }
+
+            nav_musicbutton("", true)
         }
-    } else {
+
+    } else {//ha már megy egy zene és évadot váltunk
         var auds = document.querySelectorAll("audio")
 
         auds.forEach(aud => {
@@ -2764,6 +2797,15 @@ if (isSpecial){
     })
 
 
+
+    if (nav_music.dataset.state == "turn_off") {
+        nav_music.innerHTML = ` | ${t("cl_series.stop_music")} | `
+        nav_music.style.color = "red"
+    } else if (nav_music.dataset.state == "turn_on") {
+        nav_music.innerHTML = ` | ${t("cl_series.start_music")} | `
+        nav_music.style.color = "green"
+    }
+
     translatePage()
 }
 }
@@ -2778,7 +2820,7 @@ if (isSpecial) {
 
     if (fullypause) {
         var auds = document.querySelectorAll("audio")
-                
+
         auds.forEach(aud => {
             if (!aud.paused && !aud.ended && aud.readyState > 2) {
                 aud.pause()
@@ -2788,9 +2830,9 @@ if (isSpecial) {
         })
         
         audioPlayed = false
-        nav_music.innerHTML = ` | ${t("cl_series.start_music")} | `
+        nav_music.dataset.state = "turn_on"
     } else {
-        if(nav_music.innerHTML == ` | ${t("cl_series.stop_music")} | `) {
+        if(nav_music.dataset.state == "turn_off") {
             var auds = document.querySelectorAll("audio")
                 
             auds.forEach(aud => {
@@ -2802,18 +2844,29 @@ if (isSpecial) {
             })
         
             audioPlayed = false
-            nav_music.innerHTML = ` | ${t("cl_series.start_music")} | `
+            nav_music.dataset.state = "turn_on"
         } else {
             utcsozene.play()
             audioPlayed = true
-            nav_music.innerHTML = ` | ${t("cl_series.stop_music")} | `
+            nav_music.dataset.state = "turn_off"
         }
     }
 
 
+
+    if (nav_music.dataset.state == "turn_off") {
+        nav_music.innerHTML = ` | ${t("cl_series.stop_music")} | `
+        nav_music.style.color = "red"
+    } else if (nav_music.dataset.state == "turn_on") {
+        nav_music.innerHTML = ` | ${t("cl_series.start_music")} | `
+        nav_music.style.color = "green"
+    }
+
     translatePage()
 }
 }
+
+
 
 
 
@@ -2824,10 +2877,12 @@ if (isSpecial) {
 
     if (currFont == "specialSeriesFont") {
         nav_font.innerHTML = ` | ${t("cl_series.special_font")} | `
+        nav_font.style.color = "orange"
         document.body.style.fontFamily = "var(--font-main)"
         document.body.classList.remove("specialFontosElem")
     } else {
         nav_font.innerHTML = ` | ${t("cl_series.normal_font")} | `
+        nav_font.style.color = "white"
         document.body.style.fontFamily = "specialSeriesFont, sans-serif"
         document.body.classList.add("specialFontosElem")
     }
@@ -3069,7 +3124,6 @@ function fillInPersons() {
 
 
 
-//------------------------
 
 
 function idetifyHosszuSzoveg() {
