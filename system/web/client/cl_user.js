@@ -93,6 +93,32 @@ menu_logout_button.onclick = async () => {
 
 
 
+
+var language = 'hu'
+
+function manageLang() {
+    const sectionParts = window.location.pathname.split("/")
+    const section = sectionParts[3]
+
+    if (section && section == "hu") {
+        language = "hu"
+    } else if (section && section == "en") {
+        language = "en"
+    }
+
+
+    if (getLanguageCookie() != null && !section) {
+        language = getLanguageCookie()
+    }
+
+    loadTranslations(language)
+}
+
+manageLang()
+
+
+
+
 function alapok() {
     if(JSON.parse(localStorage.getItem("user"))) {
         if(decodeURIComponent(window.location.pathname.split("/")[2]) == JSON.parse(localStorage.getItem("user")).username) { //saját magad vagy
@@ -117,7 +143,8 @@ function alapok() {
         koszonto2.innerHTML = `${decodeURIComponent(window.location.pathname.split("/")[2])} ${t("user.wishlist")}`
         getWishlisted()
     }
-    
+
+    translatePage()
 }
 
 
@@ -254,31 +281,6 @@ function adjustSwitcherToLang() {
 }
 
 adjustSwitcherToLang()
-
-
-
-var language = 'hu'
-
-function manageLang() {
-    const sectionParts = window.location.pathname.split("/")
-    const section = sectionParts[3]
-
-    if (section && section == "hu") {
-        language = "hu"
-    } else if (section && section == "en") {
-        language = "en"
-    }
-
-
-    if (getLanguageCookie() != null && !section) {
-        language = getLanguageCookie()
-    }
-
-    loadTranslations(language)
-}
-
-manageLang()
-
 
 
 

@@ -185,14 +185,14 @@
 }
 
 .bluredimg {
-    position: absolute;
-    top: 0;
-    left: -7%;
-    height: 430px;
+    position: absolute !important;
+    top: 0 !important;
+    left: -8% !important;
+    max-height: 430px !important;
     border-radius: 15px;
 
-    filter: blur(15px);
-    z-index: -1;
+    filter: blur(15px) !important;
+    z-index: -1 !important;
 }
 
 
