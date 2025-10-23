@@ -10,6 +10,11 @@ const menu_logout_button = document.getElementById("menu_logout_button")
 var watchedMovies = []
 var wishlistedMovies = []
 
+var sumOfMegnezettFilmek = 0
+var sumOfWishlistesFilmek = 0
+var sumOfMegnezettIdo = 0
+
+
 
 window.onload = async () => {
     menu_account.style.display = "none"
@@ -345,6 +350,7 @@ async function getWatched() {
 
                 setTimeout(() => {
                     watchedMovies.push(result.dataVissza[i].media_id)
+                    sumOfMegnezettFilmek += 1
                 }, 100);
                 
             }
@@ -376,6 +382,7 @@ async function getWishlisted() {
         if (response.ok) {
             for(let i in result.dataVissza) {
                 wishlistedMovies.push(result.dataVissza[i].media_id)
+                sumOfWishlistesFilmek += 1
             }
         }
     } catch(e) {
@@ -478,6 +485,7 @@ async function fillSajatMovies() {
                 observer.observe(image)
             })
 
+            sumOfMegnezettIdo += adatok.runtime
             GiveHrefToAdatlapButton()
         }
     }
@@ -488,6 +496,8 @@ async function fillSajatMovies() {
     checkImgLoaded()
 
     loadTranslations(language)
+
+    showAvailableInfo()
 }
 
 
@@ -525,4 +535,74 @@ function toggleWatched() {
     }
 
     translatePage()
+}
+
+
+
+
+
+function toHoursAndMinutes(totalMinutes) {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return { hours, minutes };
+}
+
+
+
+function showAvailableInfo() {
+
+    if (sumOfMegnezettFilmek > 0 || sumOfWishlistesFilmek > 0) {
+        let ibetu = document.createElement("div")
+        ibetu.id = "infoIBetu"
+        ibetu.innerHTML = `
+            <button onclick="toggleIBetuInfo()"><i class="bi bi-info-circle"></i></button>
+        `
+
+        let iBetuInfoBox = document.createElement("div")
+        iBetuInfoBox.id = "iBetuInfoBox"
+        iBetuInfoBox.style.opacity = 0
+        iBetuInfoBox.style.pointerEvents = "none"
+        iBetuInfoBox.innerHTML = `
+            <div class="box cant_select" style="border-bottom: none;">
+                <h4 data-t="basic.info">Információ</h4>
+                <h5>X</h5>
+                <hr>
+                <div><p data-t="movies.all_added_movies_number">Összes hozzáadott filmek száma: </p><p>${sumOfMegnezettFilmek + sumOfWishlistesFilmek}</p></div>
+                <div><p data-t="movies.all_watched_movies_number">Megnézett filmek száma: </p><p>${sumOfMegnezettFilmek}</p></div>
+                <div><p data-t="movies.all_wishlisted_movies_number">Kívánságlistás filmek száma: </p><p>${sumOfWishlistesFilmek}</p></div>
+                <br>
+                <div><p data-t="movies.all_watched_time">Összesen eltöltött idő: </p><p>${toHoursAndMinutes(sumOfMegnezettIdo)["hours"]} ${t("basic.hours")} ${toHoursAndMinutes(sumOfMegnezettIdo)["minutes"]} ${t("basic.minutes")} (${sumOfMegnezettIdo} ${t("basic.minutes")})</p></div>
+            </div>
+        `
+
+        //${toHoursAndMinutes(adatok.runtime)["hours"]} ${t("basic.hours")} ${toHoursAndMinutes(adatok.runtime)["minutes"]} ${t("basic.minutes")} (${adatok.runtime} ${t("basic.minutes")})
+
+        document.getElementById("main").appendChild(ibetu)
+        document.getElementById("main").appendChild(iBetuInfoBox)
+
+
+
+        document.getElementById("iBetuInfoBox").addEventListener("click", (e) => {
+            if (document.getElementById("iBetuInfoBox").style.opacity == 1) {
+                toggleIBetuInfo()
+            } else {
+                document.getElementById("iBetuInfoBox").style.pointerEvents = "none"
+            }
+        })
+    }
+
+}
+
+
+function toggleIBetuInfo() {
+    const iBetuInfoBox = document.getElementById("iBetuInfoBox")
+
+    if (iBetuInfoBox.style.opacity == 0) {
+        document.getElementById("iBetuInfoBox").style.pointerEvents = "all"
+        iBetuInfoBox.style.opacity = 1
+    } else if(iBetuInfoBox.style.opacity == 1) {
+        document.getElementById("iBetuInfoBox").style.pointerEvents = "none"
+        iBetuInfoBox.style.opacity = 0
+    }
+
 }

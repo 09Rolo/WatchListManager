@@ -2720,6 +2720,7 @@ if (getSpecialCookie() == "be") {
 var audioPlayed = false
 var navtartalom = document.getElementById("navtartalom")
 var tartalomadva = false
+var utcsozene
 
 function SpecialThingsAudioManage(season) {
 if (isSpecial){
@@ -2731,11 +2732,6 @@ if (isSpecial){
         `
         tartalomadva = true
 
-
-        if (document.getElementById("nav_music")) {document.getElementById("nav_music").removeEventListener("click", nav_musicbutton)}
-        if (document.getElementById("nav_font")) {document.getElementById("nav_font").removeEventListener("click", nav_fontButton)}
-
-        //---
 
         if (document.getElementById("nav_music")) {document.getElementById("nav_music").addEventListener("click", nav_musicbutton)}
         if (document.getElementById("nav_font")) {document.getElementById("nav_font").addEventListener("click", nav_fontButton)} //valamiért megint meg kell adni az eventlistenert mert elbaszodik ha nem adom meg neki, fogalmam sincs miért
@@ -2764,16 +2760,18 @@ if (isSpecial){
                 document.querySelector(`#audio_S${season}`).play()
                 audioPlayed = true
             }
-        } else {//alapból a gomb el fogja inditani, szóval most nem kell indítani
-            if(document.querySelector("#audio_ALL")) {
-                document.querySelector("#audio_ALL").play()
-                audioPlayed = true
-            } else if(document.querySelector(`#audio_S${season}`)) {
-                document.querySelector(`#audio_S${season}`).play()
-                audioPlayed = true
-            }
 
-            nav_musicbutton("", true)
+        } else {//alapból a gomb el fogja inditani, szóval most nem kell indítani
+            //itt a hiba
+            if(document.querySelector("#audio_ALL")) {
+                utcsozene = document.querySelector("#audio_ALL")
+                audioPlayed = false
+
+            } else if(document.querySelector(`#audio_S${season}`)) {
+                utcsozene = document.querySelector(`#audio_S${season}`)
+                audioPlayed = false
+                
+            }
         }
 
     } else {//ha már megy egy zene és évadot váltunk
@@ -2812,7 +2810,6 @@ if (isSpecial){
 
 
 
-var utcsozene
 
 function nav_musicbutton(e, fullypause) {
 if (isSpecial) {

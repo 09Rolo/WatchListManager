@@ -194,7 +194,12 @@
 		"wishlisted_movies_btn_hide": "Kívánságlistás filmeid elrejtése",
 		"wishlisted_movies_btn_show": "Kívánságlistás filmeid megjelenítése",
 		"watched_movies_btn_hide": "Megnézett filmeid elrejtése",
-		"watched_movies_btn_show": "Megnézett filmeid megjelenítése"
+		"watched_movies_btn_show": "Megnézett filmeid megjelenítése",
+
+		"all_added_movies_number": "Összes hozzáadott filmek száma: ",
+		"all_watched_movies_number": "Megnézett filmek száma: ",
+		"all_wishlisted_movies_number": "Kívánságlistás filmek száma: ",
+		"all_watched_time": "Összesen eltöltött idő: "
 	},
 
 
