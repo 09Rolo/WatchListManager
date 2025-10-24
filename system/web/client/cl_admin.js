@@ -21,7 +21,7 @@ async function loggedIn() {
     try {
         const response = await fetch(`${location.origin}/getUserGroup`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify({username: JSON.parse(localStorage.getItem("user")).username})
         })
     
@@ -36,7 +36,7 @@ async function loggedIn() {
                 try {
                     const response = await fetch(`${location.origin}/getAPIinfo`, {
                         method: "GET",
-                        headers: { 'Content-Type': 'application/json' }
+                        headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token }
                     })
                     
                     const result = await response.json()
@@ -345,7 +345,7 @@ async function setBtnFunction(btn) {
         
         const response = await fetch(`${location.origin}/changeServerLink`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(details)
         })
         
@@ -368,7 +368,7 @@ async function existingServerLinkKezeles() {
     try {
         const response = await fetch(`${location.origin}/getServerLinks`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -394,7 +394,7 @@ async function existingServerLinkKezeles() {
     try {
         const response = await fetch(`${location.origin}/getServerLinks`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -571,7 +571,7 @@ async function fillInUsers() {
     try {
         const response = await fetch(`${location.origin}/getUsers`, {
             method: "GET",
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token }
         })
     
         const result = await response.json()
@@ -760,7 +760,7 @@ async function userManageOKButtonClicked(elemparent, mit) {
     
         const response = await fetch(`${location.origin}/changeUser`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(details)
         })
     
@@ -792,7 +792,7 @@ async function sqlElozmenyWatchedEpsFill() {
 
         const response = await fetch(`${location.origin}/getSQLElozmenyek`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
 

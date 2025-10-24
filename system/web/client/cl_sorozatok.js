@@ -557,7 +557,7 @@ async function isFullyWatched(elem) {
             try {
                 const response = await fetch(`${location.origin}/getWatched`, {
                     method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                     body: JSON.stringify(amiMegy)
                 })
             

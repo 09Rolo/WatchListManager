@@ -87,7 +87,7 @@ async function loggedIn() {
     try {
         const response = await fetch(`${location.origin}/getUserGroup`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify({username: JSON.parse(localStorage.getItem("user")).username})
         })
     
@@ -159,15 +159,16 @@ function GiveHrefToAdatlapButton() {
 
 
 function checkHashtag() {
-    const urlHash = window.location.hash.substr(1)
-    if (urlHash.includes("info")) {
-        document.getElementById("infoBox").style.display = ""
-    }
+    setTimeout(() => {
+        const urlHash = window.location.hash.substr(1)
+        if (urlHash.includes("info")) {
+            document.getElementById("infoBox").style.display = ""
+        }
+    }, 800);
 }
 
-setTimeout(() => {
-    checkHashtag()
-}, 1000);
+checkHashtag()
+
 
 
 
@@ -469,8 +470,9 @@ async function fillInData() {
 function DoTimelineData() {
     ManageTimelineBeforeData()
 
+    let day = undefined
 
-    for(let day in Datumok) {
+    for(day in Datumok) {
         for(let date in Datumok[day]) {
             for(let id in Datumok[day][date]) {
                 var mettolmeddigtxt
@@ -505,8 +507,16 @@ function DoTimelineData() {
             var sname
             var poster
 
+
             if (MaJelenikMeg[date][id].length > 1) {
-                mettolmeddigtxt = `S${MaJelenikMeg[date][id][0].season_number} | E${MaJelenikMeg[date][id][0].episode_number} - E${MaJelenikMeg[date][id][Datumok[day][date][id].length - 1].episode_number}`
+
+                try {
+                    mettolmeddigtxt = `S${MaJelenikMeg[date][id][0].season_number} | E${MaJelenikMeg[date][id][0].episode_number} - E${MaJelenikMeg[date][id][Datumok[day][date][id].length - 1].episode_number}`
+                } catch(e) {
+                    console.log(e)
+                    mettolmeddigtxt = `S${MaJelenikMeg[date][id][0].season_number} | E${MaJelenikMeg[date][id][0].episode_number} - E${MaJelenikMeg[date][id][MaJelenikMeg[date][id].length -1].episode_number}`
+                }
+
             } else {
                 mettolmeddigtxt = `S${MaJelenikMeg[date][id][0].season_number} E${MaJelenikMeg[date][id][0].episode_number}`
             }

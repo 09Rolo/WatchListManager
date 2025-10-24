@@ -3,6 +3,7 @@ const express = require("express")
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const jwt = require("jsonwebtoken");
 
 const db = require("./db.js")
 const app = require("./server.js")
@@ -23,9 +24,32 @@ app.get("/getAPIinfo", async (req, res) => {
 
 
 
+// biztonságosság
+const verifyToken = (req, res, next) => {
+    const token = req.headers["authorization"];
+
+    if (!token) {
+        return res.status(403).json({ message: "notifs.Engedély megtagadva", type: "error" });
+    } 
+
+    try {
+        const verified = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = verified;
+
+        next();
+    } catch (error) {
+        res.status(401).json({ message: "notifs.Helytelen token", type: "error" });
+    }
+};
+
+
+
+
 //Wishlist
-app.post("/addWishlist", async (req, res) => {
-    const { user_id, media_id, media_type } = req.body;
+app.post("/addWishlist", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const { media_id, media_type } = req.body;
+
 
     if (media_type == "movie") {
         try {
@@ -119,8 +143,9 @@ app.post("/addWishlist", async (req, res) => {
 
 
 
-app.post("/removeWishlist", async (req, res) => {
-    const { user_id, media_id, media_type } = req.body;
+app.post("/removeWishlist", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const { media_id, media_type } = req.body;
 
     if (media_type == "movie") {
         try {
@@ -267,8 +292,9 @@ app.post("/getWishlist", async (req, res) => {
 
 
 //Watched
-app.post("/addWatched", async (req, res) => {
-    const { user_id, media_id, media_type, ep_id } = req.body;
+app.post("/addWatched", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const { media_id, media_type, ep_id } = req.body;
 
     if (media_type == "movie") {
         try {
@@ -411,8 +437,9 @@ app.post("/addWatched", async (req, res) => {
 
 
 
-app.post("/removeWatched", async (req, res) => {
-    const { user_id, media_id, media_type, ep_id } = req.body;
+app.post("/removeWatched", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const { media_id, media_type, ep_id } = req.body;
 
     if (media_type == "movie") {
         try {
@@ -558,8 +585,9 @@ app.post("/getWatched", async (req, res) => {
 
 //---------------------------------------------------------------------------Linkek------------------------------
 
-app.post("/changeLink", async (req, res) => {
-    const { user_id, media_id, media_type, link_url } = req.body;
+app.post("/changeLink", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const { media_id, media_type, link_url } = req.body;
 
     if (media_type == "movie") {
         try {
@@ -694,8 +722,9 @@ app.post("/changeLink", async (req, res) => {
 
 
 
-app.post("/getLinks", async (req, res) => {
-    const {user_id, tipus} = req.body
+app.post("/getLinks", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const {tipus} = req.body
 
     if(tipus == "movie") {
         try {
@@ -767,8 +796,9 @@ app.post("/getLinks", async (req, res) => {
 
 //---------------------------------------------------------------------------Noteok------------------------------
 
-app.post("/changeNote", async (req, res) => {
-    const { user_id, media_id, media_type, note } = req.body;
+app.post("/changeNote", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const { media_id, media_type, note } = req.body;
 
     if (media_type == "movie") {
         try {
@@ -901,8 +931,9 @@ app.post("/changeNote", async (req, res) => {
 
 
 
-app.post("/getNotes", async (req, res) => {
-    const {user_id, tipus} = req.body
+app.post("/getNotes", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
+    const {tipus} = req.body
 
     if(tipus == "movie") {
         try {

@@ -420,7 +420,7 @@ async function checkLink(id) {
     try {
         const response = await fetch(`${location.origin}/getLinks`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -456,7 +456,7 @@ async function checkNote(id) {
     try {
         const response = await fetch(`${location.origin}/getNotes`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -630,7 +630,7 @@ wishlist.onclick = async() => {
     
             const response = await fetch(`${location.origin}/addWishlist`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
     
@@ -656,7 +656,7 @@ wishlist.onclick = async() => {
     
             const response = await fetch(`${location.origin}/removeWishlist`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
     
@@ -693,7 +693,7 @@ watched.onclick = async() => {
     
             const response = await fetch(`${location.origin}/addWatched`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
     
@@ -720,7 +720,7 @@ watched.onclick = async() => {
     
             const response = await fetch(`${location.origin}/removeWatched`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
     
@@ -760,7 +760,7 @@ linkbutton.onclick = async() => {
         
             const response = await fetch(`${location.origin}/changeLink`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
         
@@ -788,7 +788,7 @@ linkbutton.onclick = async() => {
             
                 const response = await fetch(`${location.origin}/changeLink`, {
                     method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                     body: JSON.stringify(details)
                 })
             
@@ -830,7 +830,7 @@ notebutton.onclick = async() => {
         
             const response = await fetch(`${location.origin}/changeNote`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
         

@@ -13,6 +13,9 @@ var belepesnelNote
 var seasonokSzama = 0
 
 
+var mas_user_id = undefined
+
+
 window.onload = async () => {
     menu_account.style.display = "none"
     menu_login_register.style.display = "none"
@@ -60,7 +63,7 @@ async function loggedIn() {
     try {
         const response = await fetch(`${location.origin}/getAPIinfo`, {
             method: "GET",
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token }
         })
     
         const result = await response.json()
@@ -84,7 +87,7 @@ async function loggedIn() {
     try {
         const response = await fetch(`${location.origin}/getUserGroup`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify({username: JSON.parse(localStorage.getItem("user")).username})
         })
     
@@ -97,6 +100,10 @@ async function loggedIn() {
     } catch(e) {
         console.error(e)
     }
+
+
+
+    adminsIDInput()
 }
 
 
@@ -782,9 +789,11 @@ var linkAddolva
 var noteFrissitve
 
 
-async function checkWishlist(id) {
+async function checkWishlist(id, userID) {
+    let user_id = userID || JSON.parse(localStorage.user).user_id
+
     var amiMegy = {
-        user_id: JSON.parse(localStorage.user).user_id,
+        user_id: user_id,
         tipus: "tv"
     }
 
@@ -818,14 +827,18 @@ async function checkWishlist(id) {
 
 
 
-async function checkWatched(id) {
+async function checkWatched(id, userID) {
+    let user_id = userID || JSON.parse(localStorage.user).user_id
+
+    console.log(user_id)
+
     var lastEpisodeWatched
     var eloszorBasicDate
     var utoljaraBasicDate
 
 
     var amiMegy = {
-        user_id: JSON.parse(localStorage.user).user_id,
+        user_id: user_id,
         tipus: "tv"
     }
 
@@ -932,16 +945,18 @@ async function checkWatched(id) {
 
 
 
-async function checkLink(id) {
+async function checkLink(id, userID) {
+    let user_id = userID || JSON.parse(localStorage.user).user_id
+
     var amiMegy = {
-        user_id: JSON.parse(localStorage.user).user_id,
+        user_id: user_id,
         tipus: "tv"
     }
 
     try {
         const response = await fetch(`${location.origin}/getLinks`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -968,16 +983,18 @@ async function checkLink(id) {
 
 
 
-async function checkNote(id) {
+async function checkNote(id, userID) {
+    let user_id = userID || JSON.parse(localStorage.user).user_id
+
     var amiMegy = {
-        user_id: JSON.parse(localStorage.user).user_id,
+        user_id: user_id,
         tipus: "tv"
     }
 
     try {
         const response = await fetch(`${location.origin}/getNotes`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -1028,8 +1045,8 @@ const datumok = document.getElementById("datumok")
 
 
 //megnézni megnézte e vagy wishlisten van e
-async function wishlistManage() {
-    var isWishlisted = await checkWishlist(id)
+async function wishlistManage(userID) {
+    var isWishlisted = await checkWishlist(id, userID)
 
     if (isWishlisted) {
         wishlist.innerHTML = '<i class="bi bi-bookmark-dash-fill"></i>'
@@ -1051,12 +1068,12 @@ async function wishlistManage() {
     translatePage()
 }
 
-wishlistManage()
+wishlistManage(userID)
 
 
 
-async function watchedManage() {
-    var isWatched = await checkWatched(id)
+async function watchedManage(userID) {
+    var isWatched = await checkWatched(id, userID)
 
     if (isWatched == "vegig") {
         watched.innerHTML = '<i class="bi bi-file-excel-fill"></i>'
@@ -1089,7 +1106,7 @@ async function watchedManage() {
     translatePage()
 }
 
-watchedManage()
+watchedManage(userID)
 
 
 
@@ -1150,8 +1167,6 @@ noteManage()
 
 
 
-
-
 wishlist.onclick = async() => {
 
     if (wishlist.dataset.do == "add") {
@@ -1164,7 +1179,7 @@ wishlist.onclick = async() => {
     
             const response = await fetch(`${location.origin}/addWishlist`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
     
@@ -1190,7 +1205,7 @@ wishlist.onclick = async() => {
     
             const response = await fetch(`${location.origin}/removeWishlist`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
     
@@ -1262,7 +1277,7 @@ linkbutton.onclick = async() => {
         
             const response = await fetch(`${location.origin}/changeLink`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
         
@@ -1290,7 +1305,7 @@ linkbutton.onclick = async() => {
             
                 const response = await fetch(`${location.origin}/changeLink`, {
                     method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                     body: JSON.stringify(details)
                 })
             
@@ -1333,7 +1348,7 @@ notebutton.onclick = async() => {
         
             const response = await fetch(`${location.origin}/changeNote`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
         
@@ -1999,7 +2014,7 @@ async function addEpsToWatched() {
                     
                         const response = await fetch(`${location.origin}/addWatched`, {
                             method: "POST",
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                             body: JSON.stringify(details)
                         })
                     
@@ -2039,7 +2054,7 @@ async function addEpsToWatched() {
                     
                         const response = await fetch(`${location.origin}/addWatched`, {
                             method: "POST",
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                             body: JSON.stringify(details)
                         })
                     
@@ -2071,7 +2086,7 @@ async function addEpsToWatched() {
                 
                     const response = await fetch(`${location.origin}/addWatched`, {
                         method: "POST",
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                         body: JSON.stringify(details)
                     })
                 
@@ -2119,7 +2134,7 @@ async function removeEpsFromWatched() {
         
             const response = await fetch(`${location.origin}/removeWatched`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
                 body: JSON.stringify(details)
             })
         
@@ -2906,7 +2921,7 @@ async function manageServerLink() {
     try {
         const response = await fetch(`${location.origin}/getServerLinks`, {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": localStorage.token },
             body: JSON.stringify(amiMegy)
         })
     
@@ -3160,5 +3175,23 @@ function idetifyHosszuSzoveg() {
                 }
             }
         })
+    }
+}
+
+
+
+
+async function adminsIDInput() {
+    if (userGroup) {
+        if (userGroup != "user") {
+            
+            let mas_user_id = new URLSearchParams(window.location.search).get("mas_user_id")
+            if (mas_user_id) {
+                alert(`Te most a kovetkezo id-t nezed: ${mas_user_id}`)
+                alert("Csak a wishlist vagy watched statusat tudod, sorry")
+
+                userID = mas_user_id
+            }
+        }
     }
 }

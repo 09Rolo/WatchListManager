@@ -205,11 +205,12 @@ app.get("/getUsers", async (req, res) => {
 
 
 //get group
-app.post("/getUserGroup", async (req, res) => {
+app.post("/getUserGroup", verifyToken, async (req, res) => {
+    const user_id = req.user.user_id
     const { username } = req.body;
 
     try {
-        const user = db.query("SELECT * FROM users WHERE username = ?", [username], async function (err, result) {
+        const user = db.query("SELECT * FROM users WHERE user_id = ? AND username = ?", [user_id, username], async function (err, result) {
             if (!err) {
                 if (result.length == 0) {
                     res.status(401).json({ message: "notifs.Hiba", type: "error" })
