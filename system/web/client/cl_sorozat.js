@@ -47,6 +47,7 @@ var episodesInMainSeasonsWatched = []
 var seriesTitle = ""
 
 var userGroup = "user"
+var userID = undefined
 
 
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
@@ -3192,6 +3193,28 @@ async function adminsIDInput() {
 
                 userID = mas_user_id
             }
+
+
+            document.getElementById("navtartalom").innerHTML += `
+                <li class="nav-item">
+                    <input type="text" placeholder="ADMINONLY: ID" id="mas_user_id_input"></input>
+                </li>
+            `
+
+            document.getElementById("mas_user_id_input").addEventListener("keypress", (e) => {
+                if(e.key == "Enter") {
+                    e.preventDefault()
+
+                    var url = new URL(window.location)
+                    url.searchParams.set("mas_user_id", document.getElementById("mas_user_id_input").value)
+                    window.history.replaceState({}, "", url)
+
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 200);
+                }
+            })
+
         }
     }
 }
