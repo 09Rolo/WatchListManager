@@ -599,3 +599,154 @@ function setUpcomingErtekelesCucc() {
         })
     }, 100);
 }
+
+
+
+
+
+//-------------------------------------------------------Displacement try
+
+/*
+function getDisplacementMap(width, height, radius, depth){
+    const yStart = Math.ceil((radius / height) * 15);
+    const yEnd = Math.floor(100 - (radius / height) * 15);
+    const xStart = Math.ceil((radius / width) * 15);
+    const xEnd = Math.floor(100 - (radius / width) * 15);
+
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+          <defs>
+            <style>
+              .mix { mix-blend-mode: screen; }
+            </style>
+
+            <linearGradient id="Y" x1="0" x2="0" y1="${yStart}%" y2="${yEnd}%">
+              <stop offset="0%" stop-color="#0F0"/>
+              <stop offset="100%" stop-color="#000"/>
+            </linearGradient>
+
+            <linearGradient id="X" x1="${xStart}%" x2="${xEnd}%" y1="0" y2="0">
+              <stop offset="0%" stop-color="#F00"/>
+              <stop offset="100%" stop-color="#000"/>
+            </linearGradient>
+
+            <filter id="blurFilter">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+          </defs>
+
+          <rect x="0" y="0" width="${width}" height="${height}" fill="#808080"/>
+          <g filter="url(#blurFilter)">
+            <rect x="0" y="0" width="${width}" height="${height}" fill="#000080"/>
+            <rect x="0" y="0" width="${width}" height="${height}" fill="url(#Y)" class="mix"/>
+            <rect x="0" y="0" width="${width}" height="${height}" fill="url(#X)" class="mix"/>
+            <rect x="${depth}" y="${depth}" width="${width - 2*depth}" height="${height - 2*depth}" fill="#808080" rx="${radius}" ry="${radius}" filter="blur(${depth}px)"/>
+          </g>
+        </svg>`;
+
+
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+*/
+
+
+
+function getDisplacementMap(width, height, radius, depth){
+    const yStart = Math.ceil((radius / height) * 15);
+    const yEnd = Math.floor(100 - (radius / height) * 15);
+    const xStart = Math.ceil((radius / width) * 15);
+    const xEnd = Math.floor(100 - (radius / width) * 15);
+
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+          <defs>
+            <style>
+              .mix { mix-blend-mode: screen; }
+            </style>
+
+            <linearGradient id="Y" x1="0" x2="0" y1="${yStart}%" y2="${yEnd}%">
+              <stop offset="0%" stop-color="#0F0"/>
+              <stop offset="100%" stop-color="#000"/>
+            </linearGradient>
+
+            <linearGradient id="X" x1="${xStart}%" x2="${xEnd}%" y1="0" y2="0">
+              <stop offset="0%" stop-color="#F00"/>
+              <stop offset="100%" stop-color="#000"/>
+            </linearGradient>
+
+            <filter id="blurFilter">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+          </defs>
+
+          <rect x="0" y="0" width="${width}" height="${height}" fill="#808080"/>
+          <g filter="url(#blurFilter)">
+            <rect x="0" y="0" width="${width}" height="${height}" fill="#000080"/>
+            <rect x="0" y="0" width="${width}" height="${height}" fill="url(#Y)" class="mix"/>
+            <rect x="0" y="0" width="${width}" height="${height}" fill="url(#X)" class="mix"/>
+            <rect x="${depth}" y="${depth}" width="${width - 2*depth}" height="${height - 2*depth}" fill="#808080" rx="${radius}" ry="${radius}" filter="blur(${depth}px)"/>
+          </g>
+        </svg>`;
+
+
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+
+
+
+
+if (document.getElementById("svg_for_LiquidGlass")) {
+    const el = document.querySelector('.bg-dark');
+    var style = getComputedStyle(el)
+
+    var width = el.offsetWidth
+    var height = el.offsetHeight
+    var radius = parseFloat(style.borderRadius)
+    var depth = Math.min(width, height) * 0.1
+
+
+
+    document.getElementById("svg_for_LiquidGlass").innerHTML += `
+        <defs>
+            <style>.mix { mix-blend-mode: screen; }</style>
+
+            <linearGradient id="Y" x1="0" y1="0" x2="0" y2="100%">
+                <stop offset="0%" stop-color="#0F0"/>       <!-- top edge -->
+                <stop offset="15%" stop-color="#808080"/>   <!-- fade to neutral -->
+                <stop offset="85%" stop-color="#808080"/>   <!-- center neutral -->
+                <stop offset="100%" stop-color="#0F0"/>     <!-- bottom edge -->
+            </linearGradient>
+
+    
+            <linearGradient id="X" x1="0" x2="100%" y1="0" y2="0">
+                <stop offset="0%" stop-color="#F00"/>       <!-- left edge -->
+                <stop offset="15%" stop-color="#808080"/>   <!-- fade to neutral -->
+                <stop offset="85%" stop-color="#808080"/>   <!-- center neutral -->
+                <stop offset="100%" stop-color="#F00"/>     <!-- right edge -->
+            </linearGradient>
+
+    
+            <filter id="blurFilter">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+
+
+            <filter id="LiquidGlass">
+                <feImage x="0" y="0" width="${width}" height="${height}" href="${getDisplacementMap(width, height, radius, depth)}" result="displacementMap" preserveAspectRatio="none" />
+                <feDisplacementMap in="SourceGraphic" in2="displacementMap" scale="50" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+
+
+        </defs>
+
+        <!-- Base rectangle -->
+        <rect x="0" y="0" width="${width}" height="${height}" fill="#808080"/>
+
+        <!-- Gradient overlay -->
+        <g filter="url(#blurFilter)">
+            <rect x="0" y="0" width="${width}" height="${height}" fill="url(#Y)" class="mix"/>
+            <rect x="0" y="0" width="${width}" height="${height}" fill="url(#X)" class="mix"/>
+        </g>
+    `
+}
