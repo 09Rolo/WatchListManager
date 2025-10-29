@@ -3,6 +3,8 @@
         {
             "title": "Attack On Titan",
             "id": 1429,
+            "font": "AOT_Font.ttf",
+            "font_settings": "letter-spacing: 0.2rem;",
             "mode":"music",
             "settings": {
                 "0": ["AoT_Opening_Movie.mp3", 0.1],
@@ -81,6 +83,86 @@
             "mode":"music",
             "settings": {
                 "ALL": ["GoT_Opening.mp3", 0.3],
+                "loop": false
+            }
+        },
+        {
+            "title": "Dan Da Dan",
+            "id": 240411,
+            "mode":"music",
+            "settings": {
+                "ALL": ["DANDADAN Opening.mp3", 0.06],
+                "loop": false
+            }
+        },
+        {
+            "title": "Chainsaw Man",
+            "id": 114410,
+            "mode":"music",
+            "settings": {
+                "ALL": ["CHAINSAW MAN Opening.mp3", 0.025],
+                "loop": false
+            }
+        },
+        {
+            "title": "Family Guy",
+            "id": 1434,
+            "mode":"music",
+            "settings": {
+                "ALL": ["Family Guy Intro.mp3", 0.08],
+                "loop": false
+            }
+        },
+        {
+            "title": "Arcane",
+            "id": 94605,
+            "font":"Arcane_Font.otf",
+            "font_settings":"letter-spacing: 0.1rem;",
+            "mode":"music",
+            "settings": {
+                "ALL": ["Arcane Opening.mp3", 0.06],
+                "loop": false
+            }
+        },
+        {
+            "title": "Rick and Morty",
+            "id": 60625,
+            "font":"RickAndMorty_Font.ttf",
+            "font_settings":"font-size: 1.3rem;letter-spacing: 0.2rem;",
+            "mode":"music",
+            "settings": {
+                "ALL": ["Rick and Morty Intro.mp3", 0.04],
+                "loop": false
+            }
+        },
+        {
+            "title": "Mushoku Tensei Jobless Reincarnation",
+            "id": 94664,
+            "font":"JoblessReincarnation_Font.ttf",
+            "font_settings":"letter-spacing: 0.1rem;",
+            "mode":"music",
+            "settings": {
+                "ALL": ["Mushoku Tensei Opening.mp3", 0.01],
+                "loop": false
+            }
+        },
+        {
+            "title": "Hazbin Hotel",
+            "id": 94954,
+            "font":"HazbinHotel_Font.ttf",
+            "font_settings":"font-size: 1.3rem;letter-spacing: 0.2rem;",
+            "mode":"music",
+            "settings": {
+                "ALL": ["Hazbin Hotel Intro.mp3", 0.1],
+                "loop": false
+            }
+        },
+        {
+            "title": "Gravity Falls",
+            "id": 40075,
+            "mode":"music",
+            "settings": {
+                "ALL": ["Gravity Falls Opening.mp3", 0.1],
                 "loop": false
             }
         }
