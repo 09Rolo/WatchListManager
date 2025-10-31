@@ -212,7 +212,9 @@ function formatDate(date, nodots, extra) {
 
 
 function melyikNap(szam, formatum) {
-    if (szam == 0) {
+    console.log(szam)
+
+    if (szam == 1) {
         if (formatum == "rövid") {
             if (t("homepage.monday_short")) {return t("homepage.monday_short")} else {
                 return "H"
@@ -222,7 +224,7 @@ function melyikNap(szam, formatum) {
                 return "Hétfő"
             }
         }
-    } else if (szam == 1) {
+    } else if (szam == 2) {
         if (formatum == "rövid") {
             if (t("homepage.tuesday_short")) {return t("homepage.tuesday_short")} else {
                 return "K"
@@ -232,7 +234,7 @@ function melyikNap(szam, formatum) {
                 return "Kedd"
             }
         }
-    } else if (szam == 2) {
+    } else if (szam == 3) {
         if (formatum == "rövid") {
             if (t("homepage.wednesday_short")) {return t("homepage.wednesday_short")} else {
                 return "Sze"
@@ -242,7 +244,7 @@ function melyikNap(szam, formatum) {
                 return "Szerda"
             }
         }
-    } else if (szam == 3) {
+    } else if (szam == 4) {
         if (formatum == "rövid") {
             if (t("homepage.thursday_short")) {return t("homepage.thursday_short")} else {
                 return "Cs"
@@ -252,7 +254,7 @@ function melyikNap(szam, formatum) {
                 return "Csütörtök"
             }
         }
-    } else if (szam == 4) {
+    } else if (szam == 5) {
         if (formatum == "rövid") {
             if (t("homepage.friday_short")) {return t("homepage.friday_short")} else {
                 return "P"
@@ -262,7 +264,7 @@ function melyikNap(szam, formatum) {
                 return "Péntek"
             }
         }
-    } else if (szam == 5) {
+    } else if (szam == 6) {
         if (formatum == "rövid") {
             if (t("homepage.saturday_short")) {return t("homepage.saturday_short")} else {
                 return "Szo"
@@ -272,7 +274,7 @@ function melyikNap(szam, formatum) {
                 return "Szombat"
             }
         }
-    } else if (szam == 6) {
+    } else if (szam == 0) {//elvileg a vasárnap az a 0.nap
         if (formatum == "rövid") {
             if (t("homepage.sunday_short")) {return t("homepage.sunday_short")} else {
                 return "V"

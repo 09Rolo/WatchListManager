@@ -3201,19 +3201,21 @@ async function adminsIDInput() {
                 </li>
             `
 
-            document.getElementById("mas_user_id_input").addEventListener("keypress", (e) => {
-                if(e.key == "Enter") {
-                    e.preventDefault()
+            setTimeout(() => {
+                document.getElementById("mas_user_id_input").addEventListener("keypress", (e) => {
+                    if(e.key == "Enter") {
+                        e.preventDefault()
 
-                    var url = new URL(window.location)
-                    url.searchParams.set("mas_user_id", document.getElementById("mas_user_id_input").value)
-                    window.history.replaceState({}, "", url)
+                        var url = new URL(window.location)
+                        url.searchParams.set("mas_user_id", document.getElementById("mas_user_id_input").value)
+                        window.history.replaceState({}, "", url)
 
-                    setTimeout(() => {
-                        window.location.reload()
-                    }, 200);
-                }
-            })
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 200);
+                    }
+                })
+            }, 1000);
 
         }
     }

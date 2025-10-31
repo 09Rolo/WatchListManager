@@ -465,6 +465,8 @@ button, button *, a, a * {
 
 
 
+
+
 .container-fluid {
     justify-content: center !important;
 }
@@ -533,13 +535,20 @@ button, button *, a, a * {
     margin-top: 5px !important;
     border-radius: 20px !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.5) !important;
     color: white !important;
+    
+    background-color: rgba(0, 0, 0, 0.5) !important;
+
+    -webkit-backdrop-filter:
+        blur(1px)
+        brightness(1.1)
+        url(#LiquidGlass) !important;
+
 
     backdrop-filter:
-    blur(1px)
-    brightness(1.1)
-    url(#LiquidGlass) !important;
+        blur(1px)
+        brightness(1.1)
+        url(#LiquidGlass) !important;
 }
 
 
@@ -578,3 +587,15 @@ button, button *, a, a * {
 .card-body-wishlisted {
     background-color: transparent;
 }
+
+
+
+
+
+@media screen and (max-width: 500px) {
+    .bg-dark {
+        backdrop-filter: blur(7px) !important;
+        -webkit-backdrop-filter: blur(7px) !important;
+    }
+}
+
