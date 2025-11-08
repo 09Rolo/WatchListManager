@@ -1105,6 +1105,9 @@ async function watchedManage(userID) {
 
 
     translatePage()
+
+
+    KendeCucca()
 }
 
 watchedManage(userID)
@@ -3220,3 +3223,16 @@ async function adminsIDInput() {
         }
     }
 }
+
+
+
+
+function KendeCucca() {
+    if (userGroup == "admin" || userGroup == "owner") {
+        let watchedtext = document.getElementById("watchedtext")
+
+        watchedtext.innerText = "Mark as befejezettnek"
+        watchedtext.dataset.t = ""
+    }
+}
+
