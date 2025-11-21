@@ -50,6 +50,16 @@ var userGroup = "user"
 var userID = undefined
 
 
+var marEltuntAReloadText = false
+document.getElementById("reload_if_nothing_text").style.display = "none"
+setTimeout(() => {
+    if (!marEltuntAReloadText) {
+        document.getElementById("reload_if_nothing_text").style.display = ""
+    }
+}, 4000);
+
+
+
 //welcomer.innerHTML = `Üdvözlet ${JSON.parse(localStorage.getItem("user")).username}!`
 async function loggedIn() {
     menu_login_register.style.display = "none"
@@ -776,6 +786,7 @@ async function getData() {
 
 
     document.getElementById("reload_if_nothing_text").style.display = "none"
+    marEltuntAReloadText = true
 
     dataAdded = true
 }
@@ -2609,6 +2620,32 @@ async function putInVideok() {
 
 
 
+function getCssRulesForClass(className) {
+    const result = [];
+
+    for (const sheet of document.styleSheets) {
+        let rules;
+
+        try {
+            rules = sheet.cssRules; // may throw for cross-origin styles
+        } catch {
+            continue; // skip external restricted styles
+        }
+
+
+        for (const rule of rules) {
+            if (rule.selectorText === `.${className}`) {
+                result.push(rule.style);
+            }
+        }
+    }
+
+    return result;
+}
+
+
+
+
 var isSpecial = false
 
 
@@ -2637,6 +2674,7 @@ if (getSpecialCookie() == "be") {
 
     //Dolgozhatunk is vele végre
     
+
     for(let i in sseries) {
         if (sseries[i].id == id) {
             isSpecial = true
@@ -2727,6 +2765,32 @@ if (getSpecialCookie() == "be") {
 
         }
     }
+
+
+
+    var rulesSpecialSeriesClass = getCssRulesForClass("specialFontosElem")
+    var rulesToReset = []
+
+
+    for (let declaredStyle in rulesSpecialSeriesClass[0]) {
+        if (!isNaN(declaredStyle)) {
+            if (!rulesToReset.includes(rulesSpecialSeriesClass[0][declaredStyle])) {
+                rulesToReset.push(rulesSpecialSeriesClass[0][declaredStyle])
+            }
+        }
+    }
+
+
+    document.querySelectorAll('*').forEach(el => {
+        const font = getComputedStyle(el).fontFamily;
+        if (!font.includes("specialSeriesFont")) {
+            for (let ruleToReset of rulesToReset) {
+                console.log(ruleToReset)
+                el.style.setProperty(ruleToReset, "initial")
+            }
+        }
+    });
+
 
 
     translatePage()

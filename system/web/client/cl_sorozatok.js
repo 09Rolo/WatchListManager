@@ -125,19 +125,32 @@ manageLang()
 
 
 
+function manageBackgroundWhenLoaded() {
+    if (document.body.dataset.extrapagedetails) {
+        if (document.body.dataset.extrapagedetails == "sorozatok.html") {
+            document.querySelector(".bgimage").style.backgroundImage = 'url("../imgs/sorozatok_hatter_full.jpg")'
+        }
+    }
+}
+
+
+
 
 //image observer cucc, hogy ne buggoljon annyira a weboldal elvileg?
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
-            img.src = img.dataset.src;
+
+            if (img.src != img.dataset.src) {
+                img.src = img.dataset.src;
+            }
         
             checkImgLoaded(2000)
             //observer.unobserve(img);
-        } else {
-            const img = entry.target;
-            img.src = "./imgs/placeholder.png";
+        //} else {
+        //    const img = entry.target;
+        //    img.src = "./imgs/placeholder.png";
         }
     });
 });
@@ -623,6 +636,7 @@ async function isFullyWatched(elem) {
 
 
 
+var leKellKerniMertLehetSzarANet = true
 
 ///DBből, ha all az indexelhet akkor mehet
 
@@ -688,6 +702,8 @@ async function fillSajatSeries() {
 
             sumOfElkezdettSorozatok += 1
             GiveHrefToAdatlapButton()
+
+            leKellKerniMertLehetSzarANet = false
         }
     }
 
@@ -773,13 +789,26 @@ async function fillSajatSeries() {
     }
 
 
+    manageBackgroundWhenLoaded()
+
     setUpcomingErtekelesCucc()
 
     checkImgLoaded()
     
     showAvailableInfo()
 
+    showGoUpArrow()
+
     translatePage()
+
+
+
+    if (leKellKerniMertLehetSzarANet) {
+        setTimeout(() => {
+            fillSajatSeries()
+            leKellKerniMertLehetSzarANet = false
+        }, 10000); //hat ez van, remelem mukodni fog majd mobilneten is a vonaton pl vagy barhol, nem hinnem hogy rosszabb a jel mint a 3G
+    }
 }
 
 
@@ -886,4 +915,20 @@ function toggleIBetuInfo() {
         iBetuInfoBox.style.opacity = 0
     }
 
+}
+
+
+
+function showGoUpArrow() {
+    let goUpArrow = document.createElement("div")
+    goUpArrow.id = "goUpArrow"
+    goUpArrow.innerHTML = `
+        <button onclick="goUpArrowFunc()"><i class="bi bi-arrow-up-circle"></i></button>
+    `
+
+    document.getElementById("main").appendChild(goUpArrow)
+}
+
+function goUpArrowFunc() {
+    document.getElementById("topOfThePage").scrollIntoView({ behavior: 'smooth' });
 }

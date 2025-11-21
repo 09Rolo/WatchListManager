@@ -165,6 +165,16 @@
                 "ALL": ["Gravity Falls Opening.mp3", 0.1],
                 "loop": false
             }
+        },
+        {
+            "title": "Pluribus",
+            "id": 225171,
+            "font":"Pluribus/Anta-Regular.ttf",
+            "mode":"music",
+            "settings": {
+                "ALL": ["Pluribus Intro Music.mp3", 0.1],
+                "loop": false
+            }
         }
   ]
 }

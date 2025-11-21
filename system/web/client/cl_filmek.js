@@ -112,18 +112,30 @@ manageLang()
 
 
 
+function manageBackgroundWhenLoaded() {
+    if (document.body.dataset.extrapagedetails) {
+        if (document.body.dataset.extrapagedetails == "filmek.html") {
+            document.querySelector(".bgimage").style.backgroundImage = 'url("../imgs/filmek_hatter_full.jpg")'
+        }
+    }
+}
+
+
 
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
-            img.src = img.dataset.src;
+
+            if (img.src != img.dataset.src) {
+                img.src = img.dataset.src;
+            }
         
             checkImgLoaded(2000)
             //observer.unobserve(img);
-        } else {
-            const img = entry.target;
-            img.src = "./imgs/placeholder.png";
+        //} else {
+        //    const img = entry.target;
+        //    img.src = "./imgs/placeholder.png";
         }
     });
 });
@@ -394,6 +406,8 @@ getWishlisted()
 
 
 
+var leKellKerniMertLehetSzarANet = true
+
 ///DBből, ha all az indexelhet akkor mehet
 
 async function fillSajatMovies() {
@@ -448,6 +462,8 @@ async function fillSajatMovies() {
             })
 
             GiveHrefToAdatlapButton()
+
+            leKellKerniMertLehetSzarANet = false
         }
     }
 
@@ -491,6 +507,8 @@ async function fillSajatMovies() {
     }
 
 
+    manageBackgroundWhenLoaded()
+
     setUpcomingErtekelesCucc()
 
     checkImgLoaded()
@@ -498,6 +516,17 @@ async function fillSajatMovies() {
     loadTranslations(language)
 
     showAvailableInfo()
+
+    showGoUpArrow()
+
+
+
+    if (leKellKerniMertLehetSzarANet) {
+        setTimeout(() => {
+            fillSajatMovies()
+            leKellKerniMertLehetSzarANet = false
+        }, 10000); //hat ez van, remelem mukodni fog majd mobilneten is a vonaton pl vagy barhol, nem hinnem hogy rosszabb a jel mint a 3G
+    }
 }
 
 
@@ -605,4 +634,20 @@ function toggleIBetuInfo() {
         iBetuInfoBox.style.opacity = 0
     }
 
+}
+
+
+
+function showGoUpArrow() {
+    let goUpArrow = document.createElement("div")
+    goUpArrow.id = "goUpArrow"
+    goUpArrow.innerHTML = `
+        <button onclick="goUpArrowFunc()"><i class="bi bi-arrow-up-circle"></i></button>
+    `
+
+    document.getElementById("main").appendChild(goUpArrow)
+}
+
+function goUpArrowFunc() {
+    document.getElementById("topOfThePage").scrollIntoView({ behavior: 'smooth' });
 }

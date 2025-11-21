@@ -614,11 +614,11 @@ h2 {
 }
 
 .gombok button {
-    font-size: 40px;
+    font-size: 40px !important;
 }
 
 .gombok button:hover {
-    font-size: 45px;
+    font-size: 45px !important;
 }
 
 
@@ -1331,7 +1331,8 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    font-size: 1rem !important;
+    letter-spacing: normal !important;
     
 }
 
@@ -1410,5 +1411,7 @@ h2 {
 
 #last_seen {
     font-family: var(--font-main);
+    letter-spacing: normal !important;
+    font-size: 1rem !important;
 }
 

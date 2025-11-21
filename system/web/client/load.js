@@ -3,6 +3,18 @@ kurzor()
 
 
 //--------------------------------------------------------Loading cuccok
+
+
+var ideiglenesAlapLanguage = 'hu'
+if (getLanguageCookie() != null) {
+    ideiglenesAlapLanguage = getLanguageCookie()
+}
+if (ideiglenesAlapLanguage != "hu") {
+    document.querySelector("#betolto_szoveg h2").innerText = "Loading"
+}
+
+
+
 document.addEventListener("DOMContentLoaded", (event) => {
     loaded()
 });

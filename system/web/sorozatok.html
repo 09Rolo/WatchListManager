@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="/styles/sorozatok_pc.css">
     <link rel="stylesheet" href="/styles/sorozatok_mobile.css">
 
+    <link rel="preload" href="/imgs/sorozatok_hatter_full.jpg" as="image" fetchpriority="low">
+
 </head>
 
-<body onload="loaded()">
+<body onload="loaded()" data-extrapagedetails="sorozatok.html">
     <div id="top"></div>
     <div id="fuggony"></div>
 
@@ -31,7 +33,7 @@
 
     <div class="bg">
         <div class="bgfade"></div>
-        <div class="bgimage"></div>
+        <div class="bgimage" loading="lazy" fetchpriority="low"></div>
     </div>
     
 
@@ -142,7 +144,7 @@
             </div>
         </nav>
 
-        <div class="navbarfixmarginja"></div>
+        <div class="navbarfixmarginja" id="topOfThePage"></div>
 
 
         <!--Többi ide-->
