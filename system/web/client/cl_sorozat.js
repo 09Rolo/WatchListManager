@@ -43,6 +43,7 @@ var watchedMinutes = 0
 
 var episodesWatched = []
 var episodesInMainSeasonsWatched = []
+var episodesWatchedDates = []
 
 var seriesTitle = ""
 
@@ -896,6 +897,9 @@ async function checkWatched(id, userID) {
                     }
 
                     episodesWatched.push(result.dataVissza[i].episode_id)
+
+                    episodesWatchedDates.push({episode_id: result.dataVissza[i].episode_id, watched_at: result.dataVissza[i].added_at}) //csak mert miért ne :D
+
                 }
             }
 
@@ -1823,6 +1827,7 @@ function loadSeasonData(s) {
                         <p class="ep_num">${epnumtext}.</p>
                         <p>${ep.name}</p>
                         <p>(${ep.air_date}, ${hossz})</p>
+                        <p id="${ep.id}_watched_at" class="watched_at"></p>
                         <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
                         <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)" data-t="cl_series.overview">Áttekintés</button>
                     </div>
@@ -1842,6 +1847,7 @@ function loadSeasonData(s) {
                         <p>${ep.name}</p>
                         <i>(DEV ONLY) Ep ID:${ep.id}</i>
                         <p>(${ep.air_date}, ${hossz})</p>
+                        <p id="${ep.id}_watched_at" class="watched_at"></p>
                         <div id="ertekeles" class="rating" style="color: ${ratingColor(ep.vote_average)};">${ep.vote_average.toFixed(1)}</div>
                         <button class="overviewButton" onclick="showOverview(this.parentElement.parentElement)" data-t="cl_series.overview">Áttekintés</button>
                     </div>
@@ -1879,10 +1885,28 @@ function loadSeasonData(s) {
             ep.classList.add("watched")
             utoljaraMegnezettEp = ep
         }
+
+
+        const watchedData = episodesWatchedDates.find(e => e.episode_id === parseInt(ep.id, 10));
+
+        if (watchedData) {
+            let watched_at = watchedData.watched_at
+            
+            if (watched_at) {
+                var watched_at_tonorm = new Date(watched_at).toLocaleDateString(langcodes)
+                //console.log(watched_at_tonorm)
+                if (watched_at_tonorm) {
+                    document.getElementById(`${ep.id}_watched_at`).innerHTML = `
+                        (<p data-t="cl_series.watched_date">Megnézve</p>: <p>${watched_at_tonorm}</p>)
+                    `
+                }
+            }
+        }
     });
 
 
 
+    translatePage()
 
 
 
@@ -2789,7 +2813,7 @@ if (getSpecialCookie() == "be") {
         const font = getComputedStyle(el).fontFamily;
         if (!font.includes("specialSeriesFont")) {
             for (let ruleToReset of rulesToReset) {
-                console.log(ruleToReset)
+                //console.log(ruleToReset)
                 el.style.setProperty(ruleToReset, "initial")
             }
         }

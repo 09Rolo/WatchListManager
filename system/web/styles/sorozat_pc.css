@@ -882,6 +882,19 @@ h2 {
 }
 
 
+.episode .watched_at {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    font-size: medium;
+}
+.episode .watched_at p {
+    text-decoration: none !important;
+}
+
+
+
+
 #episodes hr {
     width: 100% !important;
     color: var(--red-theme);
@@ -1415,3 +1428,11 @@ h2 {
     font-size: 1rem !important;
 }
 
+
+#mas_user_id_input {
+    border: none;
+    border-radius: 15px;
+    padding: 3px;
+    max-width: 150px;
+    margin: 3px 10px 0px 10px;
+}
