@@ -35,7 +35,7 @@ document.addEventListener("visibilitychange", function() {
         const now = Date.now();
         const idleTime = now - lastActive;
 
-        if (idleTime > 300000 && window.innerWidth > 760) { //gépen nem kell újratölteni, mert csak idegesítő lesz
+        if (idleTime > 300000 && window.innerWidth < 760) { //gépen nem kell újratölteni, mert csak idegesítő lesz
             location.reload();
         }
     } else {

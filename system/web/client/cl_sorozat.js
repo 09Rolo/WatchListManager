@@ -1862,6 +1862,7 @@ function loadSeasonData(s) {
         
     }
 
+    
     episodes_container.innerHTML += `
         <hr>
         <div class="alsoResz">
@@ -1895,9 +1896,11 @@ function loadSeasonData(s) {
             if (watched_at) {
                 var watched_at_tonorm = new Date(watched_at).toLocaleDateString(langcodes)
                 //console.log(watched_at_tonorm)
+                //console.log(new Date(watched_at).getHours(), new Date(watched_at).getMinutes())
+
                 if (watched_at_tonorm) {
                     document.getElementById(`${ep.id}_watched_at`).innerHTML = `
-                        (<p data-t="cl_series.watched_date">Megnézve</p>: <p>${watched_at_tonorm}</p>)
+                        <p data-t="cl_series.watched_date">Megnézve</p>: <p>${watched_at_tonorm} (${new Date(watched_at).getHours()}:${new Date(watched_at).getMinutes()})</p>
                     `
                 }
             }
@@ -3327,4 +3330,3 @@ function KendeCucca() {
         watchedtext.dataset.t = ""
     }
 }
-
