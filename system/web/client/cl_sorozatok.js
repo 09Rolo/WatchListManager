@@ -503,7 +503,7 @@ async function isFullyWatched(elem) {
                 for (let seasons = 0; seasons < adatok.seasons.length-1; seasons++) {//utcso ne legyen benne azt később rendezem
                     const element = adatok.seasons[seasons];
 
-                    if (new Date(element.air_date) <= now) {
+                    if (element.air_date && (new Date(element.air_date) <= now)) {
                         allEpisodes += element.episode_count
                     }
                 }
@@ -514,8 +514,8 @@ async function isFullyWatched(elem) {
 
                 for (let seasons = 1; seasons < adatok.seasons.length-1; seasons++) {//utcso ne legyen benne azt később rendezem
                     const element = adatok.seasons[seasons];
-                    
-                    if (new Date(element.air_date) <= now) {
+
+                    if (element.air_date && (new Date(element.air_date) <= now)) {
                         allEpisodes += element.episode_count
                     }
                 }
@@ -530,27 +530,30 @@ async function isFullyWatched(elem) {
                     let lastSeason = adatok.seasons[adatok.seasons.length-1]
                     let releasedEpsCount = 0
 
-                    try {
-                        const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${elem}/season/${lastSeason.season_number}?api_key=${API_KEY}&language=${language}`)
-                        const season = await getData_seasons.json()
-                    
-                        let now_tonorm = new Date().setHours(0, 0, 0, 0)
 
-                        for (let e in season.episodes) {
-                            let epdate_tonorm = new Date(season.episodes[e].air_date).setHours(0, 0, 0, 0)
+                    if (lastSeason.air_date) { //mert ha mondjuk most lett bejelentve akkor nincs is neki megjelenési dátuma :D
+                        try {
+                            const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${elem}/season/${lastSeason.season_number}?api_key=${API_KEY}&language=${language}`)
+                            const season = await getData_seasons.json()
                         
-                            if (epdate_tonorm <= now_tonorm) {
-                                if (epdate_tonorm < now_tonorm) {
-                                    releasedEpsCount = releasedEpsCount + 1
-                                }
+                            let now_tonorm = new Date().setHours(0, 0, 0, 0)
+
+                            for (let e in season.episodes) {
+                                let epdate_tonorm = new Date(season.episodes[e].air_date).setHours(0, 0, 0, 0)
                             
-                                if (epdate_tonorm === now_tonorm && season.episodes[e].runtime) {
-                                    releasedEpsCount = releasedEpsCount + 1
+                                if (epdate_tonorm <= now_tonorm) {
+                                    if (epdate_tonorm < now_tonorm) {
+                                        releasedEpsCount = releasedEpsCount + 1
+                                    }
+                                
+                                    if (epdate_tonorm === now_tonorm && season.episodes[e].runtime) {
+                                        releasedEpsCount = releasedEpsCount + 1
+                                    }
                                 }
                             }
+                        } catch (e) {
+                            console.error(e)
                         }
-                    } catch (e) {
-                        console.error(e)
                     }
                 
                     allEpisodes += releasedEpsCount

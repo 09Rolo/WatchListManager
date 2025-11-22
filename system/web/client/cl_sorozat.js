@@ -917,7 +917,10 @@ async function checkWatched(id, userID) {
                     let epdate_tonorm = new Date(el.air_date).setHours(0, 0, 0, 0)
                     let now_tonorm = new Date().setHours(0, 0, 0, 0)
 
-                    if (epdate_tonorm <= now_tonorm) {
+                    if (!el.air_date) {epdate_tonorm = null}
+
+
+                    if (epdate_tonorm && epdate_tonorm <= now_tonorm) {
                         if (epdate_tonorm < now_tonorm) {
                             return true
                         }
@@ -2017,8 +2020,9 @@ async function addEpsToWatched() {
                 var currDate = new Date()
                 //console.log(json)
                 //console.log(currDate, epDate, currDate >= epDate, json.runtime, currDate >= epDate && json.runtime > 0)
+                //oké, és még valami, nyilván ha nincs dateje akkor egyértelműen 1970 január 1-je lesz szóval basszameg erre nem is gondoltam :DDDD
 
-                if (currDate >= epDate) {
+                if (currDate >= epDate && json.air_date) {
                     try {
                         var details = {
                             user_id: JSON.parse(localStorage.user).user_id,
@@ -2058,7 +2062,7 @@ async function addEpsToWatched() {
             //Valószínűleg a Special Seasonből való rész lett bejelölve
 
             if (epDate) {
-                if (currDate >= epDate) {
+                if (currDate >= epDate && json.air_date) {
                     try {
                         var details = {
                             user_id: JSON.parse(localStorage.user).user_id,

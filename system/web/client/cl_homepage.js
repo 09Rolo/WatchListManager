@@ -212,7 +212,7 @@ function formatDate(date, nodots, extra) {
 
 
 function melyikNap(szam, formatum) {
-    console.log(szam)
+    //console.log(szam)
 
     if (szam == 1) {
         if (formatum == "rövid") {
