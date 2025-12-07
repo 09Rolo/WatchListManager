@@ -1335,9 +1335,9 @@ h2 {
 }
 
 @keyframes coloring {
-  0%   { stroke: rgb(0, 255, 162); }
-  50%  { stroke: rgb(30, 255, 0); }
-  100% { stroke: rgb(0, 255, 162); }
+  0%   { stroke: rgb(0, 255, 162); background-color: rgb(0, 255, 162); }
+  50%  { stroke: rgb(30, 255, 0); background-color: rgb(30, 255, 0);}
+  100% { stroke: rgb(0, 255, 162); background-color: rgb(0, 255, 162);}
 } 
 
 
@@ -1436,4 +1436,41 @@ h2 {
     padding: 3px;
     max-width: 150px;
     margin: 3px 10px 0px 10px;
+}
+
+
+
+.fullyWatchedSeason {
+    background-color: rgb(80, 180, 0);
+    color: black;
+    animation: coloring 3s infinite ease-in-out;
+    border: none;
+}
+
+.partiallyWatchedSeason {
+    background-color: rgb(202, 133, 53);
+    color: black;
+    border: none;
+}
+
+.comingSoonSeason {
+    background-color: rgb(65, 165, 210);
+    color: black;
+    border: none;
+}
+
+
+.selectedSeason {
+    /*background-color: rgba(221, 255, 0, 0.8) !important;*/
+    background-color: var(--red-underline) !important;
+    animation: none !important;
+}
+
+
+.season_comingsoonHeader {
+    width: fit-content;
+    margin: 40px auto;
+    font-size: 1.6rem;
+    text-decoration: underline;
+    text-align: center;
 }

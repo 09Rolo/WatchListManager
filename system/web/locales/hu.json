@@ -321,6 +321,8 @@
 		"last_watched_episode": "Utoljára látott epizód:",
 		"season": "évad",
 		"episode": "rész",
+		"coming_soon": "(Hamarosan)",
+		"coming_soon_header": "Ez az évad még nem jelent meg.",
 
 		
 		"summary_table": "Összesítő táblázat",

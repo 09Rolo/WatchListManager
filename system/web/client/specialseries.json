@@ -62,6 +62,7 @@
         {
             "title": "Stranger Things",
             "id": 66732,
+            "font":"/Stranger_Things_font.ttf",
             "mode":"music",
             "settings": {
                 "ALL": ["ST_Opening.mp3", 0.3],

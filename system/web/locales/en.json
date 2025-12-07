@@ -321,6 +321,8 @@
 		"last_watched_episode": "Last watched episode:",
 		"season": "season",
 		"episode": "episode",
+		"coming_soon": "(Coming Soon)",
+		"coming_soon_header": "This season is not yet released.",
 
 
 		"summary_table": "Summary table",

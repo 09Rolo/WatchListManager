@@ -498,7 +498,7 @@ async function fillInLetezoLinkek() {
 
 
                 document.querySelectorAll(".adatlap-button").forEach(el => {
-                    el.href = `${window.location.origin}/sorozat/${el.id}`
+                    el.href = `${window.location.origin}/film/${el.id}`
                 })
 
             }

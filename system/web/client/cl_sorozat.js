@@ -36,6 +36,7 @@ window.onload = async () => {
 var API_KEY = ""
 var GOOGLE_API = ""
 
+var allSeasonsNum = 0
 var allEpisodes = []
 var allEpisodes_jsonok = []
 var sumMinutes = 0
@@ -553,8 +554,10 @@ async function getData() {
 
                 //console.log(seasonok)
                 seasonlist.innerHTML += `
-                    <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
+                    <button onclick="changeSeason(this)" id="season${seasonok.season_number}" class="season">${seasonok.season_number}</button>
                 `
+
+                allSeasonsNum = seasonok.season_number
 
 
                 table_seasons.innerHTML += `
@@ -625,8 +628,10 @@ async function getData() {
 
                 //console.log(seasonok)
                 seasonlist.innerHTML += `
-                    <button onclick="changeSeason(this)" class="season">${seasonok.season_number}</button>
+                    <button onclick="changeSeason(this)" id="season${seasonok.season_number}" class="season">${seasonok.season_number}</button>
                 `
+
+                allSeasonsNum = seasonok.season_number
 
                 if (season > 0) { //extrákat nem számolja bele az összes epizódnál, ezért nem kellene, hogy pl 62/62-t néztél meg és még mindig "nem láttad" az egészet
                     table_seasons.innerHTML += `
@@ -902,6 +907,9 @@ async function checkWatched(id, userID) {
 
                 }
             }
+
+
+            displaySeasonStateInList()
 
             
             var generalcucc = document.getElementById("general")
@@ -1496,7 +1504,8 @@ async function changeSeason(btn, seasonnum, eptoselect) {
         Array.prototype.forEach.call(season_buttons, function(ele) {
 
 
-            if (ele.style.backgroundColor == "rgba(0, 255, 0, 0.6)" && ele.innerHTML == seasonnum) {
+            //if (ele.style.backgroundColor == "rgba(0, 255, 0, 0.6)" && ele.innerHTML == seasonnum) {
+            if (ele.dataset.selected == "yes" && ele.innerHTML == seasonnum) {
                 haveToClearSelection = false
 
                 setTimeout(() => {
@@ -1510,12 +1519,15 @@ async function changeSeason(btn, seasonnum, eptoselect) {
                 }, 1000);
 
 
-            } else if(ele.style.backgroundColor != "rgba(0, 255, 0, 0.6)" && ele.innerHTML == seasonnum) {
+            //} else if(ele.style.backgroundColor != "rgba(0, 255, 0, 0.6)" && ele.innerHTML == seasonnum) {
+            } else if(ele.dataset.selected != "yes" && ele.innerHTML == seasonnum) {
                 haveToClearSelection = true
 
                 season_num = seasonnum
-                ele.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
-                ele.style.borderColor = "rgb(0, 255, 0)"
+                //ele.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
+                //ele.style.borderColor = "rgb(0, 255, 0)"
+                ele.dataset.selected = "yes"
+                ele.classList.add("selectedSeason")
 
 
                 setTimeout(() => {
@@ -1531,8 +1543,10 @@ async function changeSeason(btn, seasonnum, eptoselect) {
 
                 canDoIt = true
             } else {
-                ele.style.backgroundColor = "rgba(0,0,0,0.4)"
-                ele.style.borderColor = "var(--red-underline)"
+                //ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+                //ele.style.borderColor = "var(--red-underline)"
+                ele.dataset.selected = "no"
+                ele.classList.remove("selectedSeason")
             }
             
         });
@@ -1582,17 +1596,22 @@ async function changeSeason(btn, seasonnum, eptoselect) {
         selectedEpisodes = []
 
 
-        if (btn.style.borderColor != "rgb(0, 255, 0)") {
+        //if (btn.style.borderColor != "rgb(0, 255, 0)") {
+        if (btn.dataset.selected != "yes") {
             season_num = btn.innerHTML
 
             season_buttons = document.getElementsByClassName("season")
             Array.prototype.forEach.call(season_buttons, function(ele) {
-                ele.style.backgroundColor = "rgba(0,0,0,0.4)"
-                ele.style.borderColor = "var(--red-underline)"
+                //ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+                //ele.style.borderColor = "var(--red-underline)"
+                ele.dataset.selected = "no"
+                ele.classList.remove("selectedSeason")
             });
         
-            btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
-            btn.style.borderColor = "rgb(0, 255, 0)"
+            //btn.style.backgroundColor = "rgba(0, 255, 0, 0.6)"
+            //btn.style.borderColor = "rgb(0, 255, 0)"
+            btn.dataset.selected = "yes"
+            btn.classList.add("selectedSeason")
         
             try {
                 const getData_seasons = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_num}?api_key=${API_KEY}&language=${language}`)
@@ -1605,8 +1624,10 @@ async function changeSeason(btn, seasonnum, eptoselect) {
         } else {
             season_buttons = document.getElementsByClassName("season")
             Array.prototype.forEach.call(season_buttons, function(ele) {
-                ele.style.backgroundColor = "rgba(0,0,0,0.4)"
-                ele.style.borderColor = "var(--red-underline)"
+                //ele.style.backgroundColor = "rgba(0,0,0,0.4)"
+                //ele.style.borderColor = "var(--red-underline)"
+                ele.dataset.selected = "no"
+                ele.classList.remove("selectedSeason")
             });
 
             const container = document.getElementById("seasonpage")
@@ -1751,6 +1772,41 @@ function handleArrowClick(e, utoljaraMegnezettEp, arrowBtn) {
 
 
 
+function displaySeasonStateInList() {
+    for (let s_num = 1; s_num < allSeasonsNum+1; s_num++) {
+        var amennyibennevan = 0
+        var amennyiosszvan = 0
+
+        Array.prototype.forEach.call(allEpisodes_jsonok, function(ep) {
+            if (ep.season_number == s_num) {
+                if (episodesWatched.includes(parseInt(ep.id, 10))) {
+                    amennyibennevan += 1
+                }
+
+                amennyiosszvan += 1
+            }
+        })
+
+
+
+        if (amennyiosszvan > 0) {
+            if (amennyibennevan >= amennyiosszvan) {
+                var seasonInList = document.querySelector(`#seasonlist #season${s_num}`)
+                seasonInList.classList.add("fullyWatchedSeason")
+            } else if (amennyibennevan > 0 && amennyibennevan < amennyiosszvan) {
+                var seasonInList = document.querySelector(`#seasonlist #season${s_num}`)
+                seasonInList.classList.add("partiallyWatchedSeason")
+            }
+        } else {
+            var seasonInList = document.querySelector(`#seasonlist #season${s_num}`)
+            seasonInList.classList.add("comingSoonSeason")
+        }
+    }
+}
+
+
+
+
 function loadSeasonData(s) {
     const container = document.getElementById("seasonpage")
     //console.log(s)
@@ -1766,25 +1822,42 @@ function loadSeasonData(s) {
 
     SpecialThingsAudioManage(num)
 
-    container.innerHTML = `
-        <div class="infok">
-            <h3>${name}</h3>
-            <h5>(${date})</h5>
-            <p class="hosszulehet" data-allapot="zarva">${overview}</p>
-            <div id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</div>
-        </div>
 
-        <div class="row kozeprow">
-            <div id="episodes" class="col-md-7 col-12">
-                
+    if ((date == undefined) || (date != undefined && episodes.length == 0)) {
+        container.innerHTML = `
+            <div class="infok">
+                <h3>${name}</h3>
+                <h5 data-t="cl_series.coming_soon">()</h5>
             </div>
-            
-            <div id="evadposter" class="col-md-4 col-10">
-                <img src="https://image.tmdb.org/t/p/original${poster}" id="evadfadedimg" class="img-fluid">
-                <img src="https://image.tmdb.org/t/p/original${poster}" id="evadposterimg" class="img-fluid">
+
+            <div class="row kozeprow">
+               <h6 class="season_comingsoonHeader" data-t="cl_series.coming_soon_header"></h6>
             </div>
-        </div>
-    `
+        `
+
+
+        document.getElementById(`season${num}`).classList.add("comingSoonSeason")
+    } else {
+        container.innerHTML = `
+            <div class="infok">
+                <h3>${name}</h3>
+                <h5>(${date})</h5>
+                <p class="hosszulehet" data-allapot="zarva">${overview}</p>
+                <div id="ertekeles" class="rating" style="color: ${ratingColor(rating)};">${rating.toFixed(1)}</div>
+            </div>
+
+            <div class="row kozeprow">
+                <div id="episodes" class="col-md-7 col-12">
+
+                </div>
+
+                <div id="evadposter" class="col-md-4 col-10">
+                    <img src="https://image.tmdb.org/t/p/original${poster}" id="evadfadedimg" class="img-fluid">
+                    <img src="https://image.tmdb.org/t/p/original${poster}" id="evadposterimg" class="img-fluid">
+                </div>
+            </div>
+        `
+    }
 
 
     idetifyHosszuSzoveg() //az overviewnek kell
